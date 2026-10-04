@@ -2,7 +2,7 @@
 
 This is the contract between a model and the benchmark: what the model is told, what it can choose, how often it is asked, and what the body does on its own. Every bot on a leaderboard uses the same interface version.
 
-**Status: draft, before any code.** This is the document to argue with. Everything marked *open* is a question we want opinions on before it is fixed. Once code exists, the reference implementation is `src/craft_arena_bench/` and if this document and the code disagree, the code is right and this document has a bug.
+**Status: draft, before any code.** The main design choices were settled on 4 Oct 2026 and are marked *decided*; the rest is open to argument until stage 2 ends. Once code exists, the reference implementation is `src/craft_arena_bench/` and if this document and the code disagree, the code is right and this document has a bug.
 
 ## Summary
 
@@ -11,7 +11,7 @@ This is the contract between a model and the benchmark: what the model is told, 
 | Format | 1v1, two modes: Sumo and Block UHC |
 | Game | Minecraft 26.1.2 on a Paper server, offline mode, no mods, no plugins |
 | Body | One Mineflayer client per bot; reflexes at 20 ticks per second |
-| Decisions | At a fixed rate per tier: 2, 5 or 20 per second |
+| Decisions | At a fixed rate per tier: 2 or 5 per second in season 1; 20 per second is built but not open |
 | Request | HTTPS POST with the fight state as JSON and as text, and the list of legal actions |
 | Response | One action id, optionally with a confidence |
 | Late answer | The previous intent continues; counted; more than 20% late in a match forfeits it |
@@ -45,9 +45,9 @@ A tier fixes how often the model is asked. Between decisions the body keeps exec
 
 The budget is measured by the harness from sending the request to receiving the full response, so it includes network time. Entrants choose which tiers to enter; a bot has a separate rating per tier and mode.
 
-A **late** answer is one that arrives after the budget. It is discarded, the previous intent continues, and the lateness is counted. A **missing** answer (connection error, bad status, bad body) is treated the same way. If more than 20% of a match's decisions are late or missing, the bot forfeits that match. The fraction of late answers and the median latency are published next to the rating.
+*Decided:* the harness supports all three clocks, but season 1 opens only the 2 Hz and 5 Hz tiers. The 20 Hz tier opens when an entrant with an endpoint that can answer in 40 ms asks for it, and only if stage 2 shows the scoring runner holds a 50 ms clock.
 
-*Open:* whether the 20 Hz tier is in season 1 at all. On a free CI runner the harness itself may not keep a 50 ms clock reliably; stage 2 measures this.
+A **late** answer is one that arrives after the budget. It is discarded, the previous intent continues, and the lateness is counted. A **missing** answer (connection error, bad status, bad body) is treated the same way. If more than 20% of a match's decisions are late or missing, the bot forfeits that match. The fraction of late answers and the median latency are published next to the rating.
 
 *Open:* the budgets. 400/150/40 ms leave the harness 100/50/10 ms to build the request and apply the answer. Too tight for a remote API at 5 Hz? Tell us.
 
@@ -79,7 +79,7 @@ A **late** answer is one that arrives after the budget. It is discarded, the pre
     "pos": [9.1, -60.0, 1.0], "yaw": 265.0, "pitch": 2.0,
     "velocity": [-0.2, 0.0, 0.0], "on_ground": false,
     "held": "bow", "visible": true, "distance": 6.6,
-    "health_estimate": 20.0,
+    "health": 20.0,
     "blocks_placed_recently": 3,
     "charging_bow": true
   },
@@ -111,7 +111,7 @@ Field notes:
 
 - **Units.** Positions in blocks (Minecraft coordinates, Y up). Velocities in blocks per tick. Yaw and pitch in degrees as Minecraft reports them. Health in half-hearts out of 20. `seconds_left` is wall clock to the mode's cap.
 - **`decision`** counts the requests in this match from 1; **`tick`** is the server tick since the match started. Together they let an endpoint notice its own late answers.
-- **`self.health`** is exact: the body reads its own health. **`opponent.health_estimate`** is the harness's best estimate from the damage events it has seen the opponent take, because the game does not send other players' health to a client. It is what a human would know. *Open:* publish the exact value instead, since the harness has it? It would make the two players' information symmetric and remove a source of noise, at the cost of realism.
+- **`self.health`** and **`opponent.health`** are both exact. The game does not send other players' health to a client, but the harness runs both bodies and has both numbers. *Decided:* exact rather than a human-like estimate, so both bots have the same information and ratings carry no noise from the harness's bookkeeping. This is a benchmark of decisions, not a realism test.
 - **`opponent.visible`** is line of sight from the bot's eyes. When false, `pos` and `velocity` are the last seen values and `distance` is to that position.
 - **`history`** holds the last 2 seconds (40 ticks) of events: `took_damage`, `dealt_damage`, `opponent_placed_blocks`, `opponent_shot`, `fell`, `knocked_back`, `sudden_death_started`.
 - **`actions`** lists only the actions that are legal right now (for example no `shoot_bow` without arrows, no `bucket_lava` once used). The response must pick one of them. The order is fixed per mode, so an endpoint that scores by letter can rely on it.
@@ -130,6 +130,8 @@ Field notes:
 
 An action is an **intent**: it stays in force until the next decision replaces it. The body executes the intent every tick and layers its reflexes over it. The split between the two is the heart of the interface and is fixed for a version.
 
+*Decided:* intents persist. The alternative, actions that run for a fixed burst and fall back to `hold`, would punish the slow tiers, whose whole point is that the body plays on between decisions. The cost is that one bad choice at 2 Hz lasts half a second.
+
 The body does, on every tick, without asking:
 
 | Reflex | What it does | Can an intent switch it off? |
@@ -145,7 +147,7 @@ The body does, on every tick, without asking:
 
 The body does not: choose where to go, decide when to shoot, place blocks, use buckets, or change weapons except as an intent says.
 
-*Open:* is this too much reflex? The test in stage 1 is that a random-choice model, the scripted house bot and a good model must be clearly separated in rating. If random does well, the reflexes decide too much and something moves into the action list.
+*Decided:* the reflex layer stays this thick for season 1. A thinner body, where the model also times swings or aims, would make the 2 Hz tier unplayable and the tiers incomparable. The gate is the **separation test** in stage 1: a random-choice model, the scripted house bot and a good model must land clearly apart in rating. If random does well, the reflexes decide too much, and interface version 2 moves something into the action list.
 
 ## Actions
 
@@ -179,7 +181,7 @@ Square arena 24 by 24 inside walls 6 high, floor at y = -60. Each bot starts wit
 | `bucket_lava` | Places lava between the bot and the opponent when they are within 4 blocks, then retreats two steps; the lava bucket is spent | lava bucket in inventory and opponent within 4 blocks |
 | `hold` | Stands, aims, swings in reach | always |
 
-*Open:* the list is deliberately short (10). MCJev's workshop lets people define their own actions. We keep one list per mode so bots are comparable; more actions mean more decisions matter and more ways for the body to be wrong. Propose additions with a reason.
+*Decided:* the lists stay as drafted (6 and 10). MCJev's workshop lets people define their own actions; we keep one list per mode so bots are comparable, and because every action is body code that can fail in ways that look like model weakness. Additions are welcome as proposals and land as a new interface version, never inside a season.
 
 ## Match flow
 
@@ -197,11 +199,18 @@ The seed fixes the arena layout (Block UHC has small random pillars and the odd 
 
 `INTERFACE_VERSION` covers everything on this page except the arena geometry and items, which are `MODE_SET_VERSION`. Either bump starts a new leaderboard. Within a season, neither changes.
 
-## Open questions, collected
+## Decisions and open questions, collected
 
-1. Is the 20 Hz tier in season 1?
-2. Are the budgets right?
-3. Exact opponent health, or an estimate?
-4. Is the reflex layer too thick (see the three-way separation test)?
-5. Anything missing from the action lists?
-6. The text template.
+Decided on 4 Oct 2026, before any code:
+
+1. Opponent health is sent exactly, not estimated.
+2. The reflex layer stays thick for season 1; the stage 1 separation test is the gate for thinning it.
+3. The harness supports a 20 Hz clock, but season 1 opens only 2 Hz and 5 Hz. 20 Hz opens on request, if the runner holds the clock.
+4. Intents persist until the next decision.
+5. The action lists stay as drafted; additions come as a new interface version.
+
+Still open, settled by stage 2 measurements or by whoever argues well:
+
+1. The budgets (400/150/40 ms).
+2. The text template.
+3. The history window (2 s) and event list.

@@ -233,10 +233,10 @@ Each stage ends with something runnable and a short written check. Estimates ass
 1. Name (§3).
 2. Minecraft/Paper version for season 1 (default: latest Paper stable at stage 0).
 3. N matches per pair (default 20) and the three tiers (default 2/5/20 Hz) — to be confirmed after stage 2 measurements.
-4. Whether the 20 Hz tier is in season 1 at all.
+4. Whether the 20 Hz tier is in season 1 at all. Decided 4 Oct 2026: the clock is built, the tier is not opened until an entrant asks and stage 2 shows the runner holds it.
 5. Whether to run a public human-playable server (default: no; it costs money and moderation).
 6. What the MCJev author said (stage 0, step 1), and whether DJev enters. Status 4 Oct 2026: told, positive. Yogya does not expect DJev to enter, so the 20 Hz tier has no known candidate entrant and the headline-entrant idea in stage 6 step 21 is dropped unless that changes.
-7. The reflex/decision boundary (§4) — the author's opinion is worth getting.
+7. The reflex/decision boundary (§4) — the author's opinion is worth getting. Decided 4 Oct 2026: thick reflexes for season 1, gated by the stage 1 separation test; opponent health sent exactly; intents persist; action lists as drafted. Details in `docs/INTERFACE.md`.
 
 ## 10. How to work with Yogya (read this)
 
