@@ -1,0 +1,11 @@
+# Changes to the code, the workflows and the rules need a maintainer's review.
+# Submission pull requests only touch submissions/, which has no owner here.
+/src/        @yogyam
+/body/       @yogyam
+/adapters/   @yogyam
+/arenas/     @yogyam
+/.github/    @yogyam
+/tests/      @yogyam
+/docs/       @yogyam
+/RULES.md    @yogyam
+/pyproject.toml @yogyam

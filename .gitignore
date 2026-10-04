@@ -1,0 +1,23 @@
+.venv/
+__pycache__/
+*.egg-info/
+.pytest_cache/
+.ruff_cache/
+build/
+dist/
+.DS_Store
+
+# The Minecraft server: the jar and the world are downloaded or generated, never committed
+server/*
+!server/.gitignore
+!server/server.properties
+!server/start.sh
+!server/eula.txt
+
+# Node
+node_modules/
+
+# Local run output
+site/
+/runs/
+*.log

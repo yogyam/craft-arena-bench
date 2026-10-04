@@ -1,0 +1,18 @@
+{
+  "name": "craft-arena-bench-body",
+  "version": "0.0.1",
+  "private": true,
+  "description": "Mineflayer body for CraftArenaBench: reflexes and an intent interface, no decision logic",
+  "license": "MIT",
+  "type": "module",
+  "engines": {
+    "node": ">=22"
+  },
+  "dependencies": {
+    "mineflayer": "^4.39.0",
+    "ws": "^8.18.0"
+  },
+  "scripts": {
+    "test": "node --test"
+  }
+}

@@ -1,0 +1,17 @@
+cff-version: 1.2.0
+title: "CraftArenaBench: an AI-vs-AI benchmark for Minecraft decision models"
+message: "If you use CraftArenaBench or its results, please cite it as below."
+type: software
+authors:
+  - family-names: Mehrotra
+    given-names: Yogya
+repository-code: "https://github.com/yogyam/craft-arena-bench"
+license: MIT
+version: 0.0.1
+date-released: "2026-10-04"
+keywords:
+  - benchmark
+  - decision models
+  - Minecraft
+  - Mineflayer
+  - leaderboard

@@ -1,0 +1,6 @@
+# Everything in here is downloaded or generated; the jar is never committed (Mojang/PaperMC terms)
+*
+!.gitignore
+!server.properties
+!start.sh
+!eula.txt

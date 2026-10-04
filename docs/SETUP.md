@@ -1,0 +1,83 @@
+# Developer setup
+
+What a maintainer or contributor needs to run a match locally. Entrants don't need any of this; they only host an endpoint.
+
+## Versions (season 1)
+
+| Piece | Version | Why this one |
+|---|---|---|
+| Minecraft / Paper | 26.1.2, Paper build 74 | The newest version both Paper and Mineflayer support. Paper's current release (26.2) has no Mineflayer support yet. |
+| Java | 25 | Paper 26.x refuses to start on anything older. |
+| Node | 22 | Mineflayer 4.39 |
+| Python | 3.12 or 3.13 | The harness and service layer |
+
+Minecraft moved to year-based version numbers in 2026 (1.21.11 was followed by 26.1). Many tutorials are for the old numbering.
+
+## Install
+
+macOS (Homebrew):
+
+```bash
+brew install openjdk@25          # formula, no admin password needed; the Temurin cask needs sudo
+brew install node                # 22 or newer
+cd craft-arena-bench
+uv venv --python 3.12 .venv && source .venv/bin/activate     # or python3.12 -m venv .venv
+pip install -e ".[dev]"
+(cd body && npm install)
+```
+
+Ubuntu runners in CI get Java from `actions/setup-java` and Node from `actions/setup-node`.
+
+## The server
+
+The Paper jar is downloaded, never committed (PaperMC's and Mojang's terms). `server/` holds only the config files; everything else in it is ignored by git.
+
+```bash
+cd server
+curl -s https://fill.papermc.io/v3/projects/paper/versions/26.1.2/builds \
+  | python3 -c "import json,sys; d=json.load(sys.stdin)[0]['downloads']['server:default']; print(d['url']); print(d['checksums']['sha256'])"
+curl -L -o paper.jar "<the url printed>"
+shasum -a 256 paper.jar            # must match the printed checksum
+./start.sh                         # first start takes ~6 s on an M-series Mac; Ctrl-C or "stop" to quit
+```
+
+PaperMC's old `api.papermc.io/v2` API was shut down in 2026; use `fill.papermc.io/v3`.
+
+`server.properties` is committed: offline mode, a flat world (grass at y = -61, bedrock at y = -64, so bots stand at y = -60), no structures, no spawn protection, RCON on port 25575 with a local-only password. The harness talks to the server over RCON for commands and reads state through each bot's own Mineflayer client, never from server logs.
+
+The line `ERROR: No key layers in MapLike[{}]` on the first boot is Paper complaining about the empty flat-world settings; the world is still generated as the standard flat preset. Harmless.
+
+## Game rules
+
+Game rule names changed to snake_case in 26.1 and some were renamed outright; the camelCase names do not work. The harness sets these at the start of every match:
+
+| Rule | Value | Old name |
+|---|---|---|
+| `spawn_mobs`, `spawn_monsters`, `spawn_phantoms`, `spawn_patrols`, `spawn_wandering_traders`, `spawn_wardens` | false | doMobSpawning and friends |
+| `advance_time`, `advance_weather` | false | doDaylightCycle, doWeatherCycle |
+| `natural_health_regeneration` | false | naturalRegeneration |
+| `immediate_respawn` | true | doImmediateRespawn |
+| `respawn_radius` | 0 | spawnRadius |
+| `random_tick_speed` | 0 | randomTickSpeed |
+| `fire_spread_radius_around_player` | 0 | doFireTick (roughly) |
+| `mob_griefing` | false | mobGriefing |
+| `keep_inventory` | true | keepInventory |
+| `show_advancement_messages` | false | announceAdvancements |
+| `players_sleeping_percentage` | 101 | same |
+
+The full list comes from the server itself: an op'd Mineflayer bot's `tabComplete('/gamerule ')` returns all 116 names (`body/dev/gamerule_probe.mjs`).
+
+## The stage 0 check
+
+With the server running:
+
+```bash
+cd body && node dev/two_bots.mjs
+```
+
+connects two bots, sets the game rules, teleports them two blocks apart, gives one a diamond sword and has it swing six times, and prints both bots' health as each bot's own client reports it. Expected: both bots in `/list`, the second bot's health well below 20. Note that the server keeps a player's health and inventory between connections, so a match must reset both at its start.
+
+## Known rough edges
+
+- `bot.blockAt` returns `undefined` for a tick or two after spawn until the chunk arrives; wait for it before reading the world.
+- Other players' health is not sent over the protocol. Each body reports its own health; the harness has both bodies, so it has both numbers.
