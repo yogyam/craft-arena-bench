@@ -9,7 +9,7 @@ Status: Stage 0 in progress (started 4 Oct 2026). No code exists yet.
 Decisions recorded 4 Oct 2026:
 - Name: **CraftArenaBench** (chosen by Yogya; not one of the §3 candidates). Repository `yogyam/craft-arena-bench`, Python package `craft_arena_bench`. "Tick Arena" remains in this document as the old working title where it appears.
 - Stage 0 step 1 done: Yogya has told the MCJev author about the plan; the response was positive. Details of what was said still to be recorded below in §9.
-- The repository lives in this folder (`/Users/yogyamehrotra/Desktop/MC Arena`), not a new one. Local git only until Yogya says to create the GitHub repository.
+- The repository lives in this folder (`/Users/yogyamehrotra/Desktop/MC Arena`), not a new one. Local git only. Yogya's decision (4 Oct 2026): create the GitHub repository once the project has something of value in it, not before.
 - Season 1 versions: Minecraft **26.1.2** on **Paper build 74**, **Java 25**, Mineflayer 4.39. Reason: Paper's current release (26.2) is not supported by Mineflayer yet; 26.1 is the newest version both support and is Mineflayer's default. Fallback is 1.21.11 on Java 21. Note that 26.x needs Java 25 (the plan said 21) and that game rule names changed to snake_case in 26.1 (`spawn_mobs`, `advance_time`, ...); see `docs/SETUP.md`.
 - Stage 0 step 3 passed on 4 Oct 2026: Paper boots in 6 s, two Mineflayer bots connect, one hits the other, both health values read from their own clients (see `body/dev/two_bots.mjs`).
 
@@ -235,7 +235,7 @@ Each stage ends with something runnable and a short written check. Estimates ass
 3. N matches per pair (default 20) and the three tiers (default 2/5/20 Hz) — to be confirmed after stage 2 measurements.
 4. Whether the 20 Hz tier is in season 1 at all.
 5. Whether to run a public human-playable server (default: no; it costs money and moderation).
-6. What the MCJev author said (stage 0, step 1), and whether DJev enters. Status 4 Oct 2026: told, positive; specifics (opinion on the interface, on the reflex boundary, and whether DJev enters) not yet recorded.
+6. What the MCJev author said (stage 0, step 1), and whether DJev enters. Status 4 Oct 2026: told, positive. Yogya does not expect DJev to enter, so the 20 Hz tier has no known candidate entrant and the headline-entrant idea in stage 6 step 21 is dropped unless that changes.
 7. The reflex/decision boundary (§4) — the author's opinion is worth getting.
 
 ## 10. How to work with Yogya (read this)
