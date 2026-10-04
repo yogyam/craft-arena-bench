@@ -54,7 +54,16 @@ def _closing_speed(me: dict, opp: dict) -> float:
     return (opp["velocity"][0] * dx + opp["velocity"][2] * dz) / norm
 
 
-POLICIES = {"random": lambda seed: RandomPolicy(seed), "house": lambda seed: HouseSumo()}
+class Circler:
+    """Always circles. The simplest competent movement; a 3B language model at 2 Hz converged on exactly this, and the house bot could not push it off."""
+
+    name = "circler"
+
+    def decide(self, request: dict) -> str:
+        return "strafe_right"
+
+
+POLICIES = {"random": lambda seed: RandomPolicy(seed), "house": lambda seed: HouseSumo(), "circler": lambda seed: Circler()}
 
 
 def make_policy(name: str, seed: int = 0) -> Policy:

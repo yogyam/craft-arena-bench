@@ -72,3 +72,4 @@ def test_house_bot_charges_sidesteps_and_respects_the_edge():
 def test_make_policy():
     assert make_policy("house").name == "house-sumo"
     assert make_policy("random", 3).name == "random"
+    assert make_policy("circler").decide(_req([0.5, -49, 0.5], [3.5, -49, 0.5])) == "strafe_right"

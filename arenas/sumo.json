@@ -23,7 +23,7 @@
   ],
   "_effects_note": "Resistance V: no damage is taken, only knockback. Sumo is decided by falling, never by health.",
   "attributes": {
-    "minecraft:knockback_resistance": 0.5
+    "minecraft:knockback_resistance": 0.0
   },
-  "_attributes_note": "Half knockback: a vanilla sprint hit carries about 4 blocks, which decides a round in two hits. Halved, a round takes several exchanges."
+  "_attributes_note": "Vanilla knockback. Halving it (0.5) made a constantly circling bot impossible to push off: every match drew at the cap. At 0.0 the house bot beats a circler in 24 to 56 s and a random bot in 3 to 6 s."
 }

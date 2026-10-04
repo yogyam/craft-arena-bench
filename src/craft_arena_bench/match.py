@@ -1,17 +1,22 @@
-"""Plays one match: arena, bodies, tier clock, policies, referee, replay."""
+"""Plays one match: arena, bodies, tier clock, deciders (endpoints or in-process policies), referee, replay.
+
+The decision clock never waits for an answer. At a decision tick the request goes out as a task; the body keeps
+executing the last intent; when the answer arrives inside the budget it becomes the new intent, otherwise it is
+counted as late and dropped. More than FORFEIT_LATE_FRACTION late or missing answers in a match forfeits it.
+"""
 
 from __future__ import annotations
 
 import asyncio
 import secrets
 import time
-from dataclasses import asdict, dataclass
+from dataclasses import asdict, dataclass, field
 from pathlib import Path
 
 from . import INTERFACE_VERSION, MODE_SET_VERSION
 from .arena import SumoArena
 from .body import Body
-from .policies import Policy
+from .endpoint import Decider, Decision
 from .rcon import Rcon
 from .referee import Outcome, SumoReferee
 from .replay import ReplayRecorder
@@ -21,6 +26,8 @@ from .tiers import TICKS_PER_SECOND, Tier
 COUNTDOWN_TICKS = 3 * TICKS_PER_SECOND
 SETTLE_TICKS = 10
 BOT_NAMES = ("BotA", "BotB")
+FORFEIT_LATE_FRACTION = 0.20
+MIN_DECISIONS_FOR_FORFEIT = 10  # a 3-second match should not be forfeited on two late answers
 
 
 @dataclass
@@ -38,15 +45,29 @@ class MatchResult:
     a_health: float
     b_health: float
     decisions: int
-    a_late: int
-    b_late: int
-    wall_seconds: float
+    a_stats: dict = field(default_factory=dict)
+    b_stats: dict = field(default_factory=dict)
+    wall_seconds: float = 0.0
     interface_version: int = INTERFACE_VERSION
     mode_set_version: int = MODE_SET_VERSION
     replay: str | None = None
 
     def to_dict(self) -> dict:
         return asdict(self)
+
+
+class _Side:
+    """Per-bot bookkeeping during a match."""
+
+    def __init__(self, body: Body, decider: Decider):
+        self.body = body
+        self.decider = decider
+        self.intent = "hold"
+        self.history: list[dict] = []
+        self.pending: asyncio.Task | None = None
+        self.asked = 0
+        self.late = 0  # late, missing or illegal answers this match
+        self.applied = 0
 
 
 class MatchRunner:
@@ -80,11 +101,12 @@ class MatchRunner:
         self.rcon.close()
 
     async def play(
-        self, seed: int, policy_a: Policy, policy_b: Policy, tier: Tier, replay_dir: Path | None = None
+        self, seed: int, decider_a: Decider, decider_b: Decider, tier: Tier, replay_dir: Path | None = None
     ) -> MatchResult:
         t0 = time.monotonic()
         match_id = secrets.token_hex(8)
         a, b = self.bodies
+        sides = (_Side(a, decider_a), _Side(b, decider_b))
         await asyncio.gather(a.reset(), b.reset())
         self.arena.build(self.rcon)
         self.arena.place_bots(self.rcon, BOT_NAMES, seed)
@@ -103,14 +125,12 @@ class MatchRunner:
                 "mode": self.mode,
                 "tier_hz": tier.hz,
                 "seed": seed,
-                "a": policy_a.name,
-                "b": policy_b.name,
+                "a": decider_a.name,
+                "b": decider_b.name,
                 "interface_version": INTERFACE_VERSION,
                 "mode_set_version": MODE_SET_VERSION,
             }
         )
-        intents = ["hold", "hold"]
-        history: list[list[dict]] = [[], []]
         last_health = [a.latest["self"]["health"], b.latest["self"]["health"]]
         decisions = 0
         tick = 0
@@ -121,20 +141,28 @@ class MatchRunner:
             sa = await a.next_state()
             sb = b.latest
             tick += 1
+            snaps = (sa, sb)
             # Damage events, from exact health (the bodies' own clients).
-            for i, s in enumerate((sa, sb)):
+            for i, s in enumerate(snaps):
                 h = s["self"]["health"]
                 if h < last_health[i] - 1e-6:
-                    history[i].append(
-                        {"tick": tick, "event": "took_damage", "amount": round(last_health[i] - h, 2), "source": "melee"}
-                    )
-                    history[1 - i].append(
-                        {"tick": tick, "event": "dealt_damage", "amount": round(last_health[i] - h, 2), "source": "melee"}
-                    )
+                    amount = round(last_health[i] - h, 2)
+                    sides[i].history.append({"tick": tick, "event": "took_damage", "amount": amount, "source": "melee"})
+                    sides[1 - i].history.append({"tick": tick, "event": "dealt_damage", "amount": amount, "source": "melee"})
                 last_health[i] = h
+            # Answers that have arrived since the last tick become intents.
+            for side in sides:
+                if side.pending is not None and side.pending.done():
+                    await self._apply(side, side.pending.result())
+                    side.pending = None
             if tier.decision_due(tick):
                 decisions += 1
-                for i, (me, opp, policy, body) in enumerate(((sa, sb, policy_a, a), (sb, sa, policy_b, b))):
+                for i, side in enumerate(sides):
+                    if side.pending is not None:
+                        # The previous answer is still outstanding (only possible if the budget exceeds the period). Count it late.
+                        side.pending.cancel()
+                        side.pending = None
+                        side.late += 1
                     req = build_request(
                         mode=self.mode,
                         tier=tier,
@@ -142,30 +170,32 @@ class MatchRunner:
                         decision=decisions,
                         tick=tick,
                         cap_seconds=self.arena.cap_seconds,
-                        me=me,
-                        opp=opp,
+                        me=snaps[i],
+                        opp=snaps[1 - i],
                         platform=self.arena.platform,
-                        history=history[i],
-                        last_intent=intents[i],
-                        late_answers=0,
+                        history=side.history,
+                        last_intent=side.intent,
+                        late_answers=side.late,
                     )
-                    choice = policy.decide(req)
-                    if choice not in {x["id"] for x in req["actions"]}:
-                        raise ValueError(f"{policy.name} chose an illegal action {choice!r}")
-                    if choice != intents[i]:
-                        intents[i] = choice
-                        await body.set_intent(choice)
-            recorder.record(tick, sa, sb, (intents[0], intents[1]))
+                    side.asked += 1
+                    side.pending = asyncio.create_task(side.decider.decide(req, tier.budget_ms))
+            recorder.record(tick, sa, sb, (sides[0].intent, sides[1].intent))
             outcome = referee.update(tick, sa, sb, a.deaths > deaths_at_start[0], b.deaths > deaths_at_start[1])
+            if outcome is None and decisions >= MIN_DECISIONS_FOR_FORFEIT:
+                outcome = self._forfeit(tick, sides)
 
+        for side in sides:
+            if side.pending is not None:
+                side.pending.cancel()
+                side.pending = None
         await asyncio.gather(a.freeze(True), b.freeze(True))
         result = MatchResult(
             match_id=match_id,
             mode=self.mode,
             tier_hz=tier.hz,
             seed=seed,
-            a=policy_a.name,
-            b=policy_b.name,
+            a=decider_a.name,
+            b=decider_b.name,
             winner=outcome.winner,
             reason=outcome.reason,
             ticks=outcome.tick,
@@ -173,8 +203,8 @@ class MatchRunner:
             a_health=a.latest["self"]["health"],
             b_health=b.latest["self"]["health"],
             decisions=decisions,
-            a_late=0,
-            b_late=0,
+            a_stats=self._side_stats(sides[0]),
+            b_stats=self._side_stats(sides[1]),
             wall_seconds=round(time.monotonic() - t0, 2),
         )
         if replay_dir is not None:
@@ -187,3 +217,35 @@ class MatchRunner:
         if errors:
             raise RuntimeError("body errors during match: " + "; ".join(errors))
         return result
+
+    async def _apply(self, side: _Side, d: Decision) -> None:
+        if d.status != "ok":
+            side.late += 1
+            return
+        side.applied += 1
+        if d.choice != side.intent:
+            side.intent = d.choice
+            await side.body.set_intent(d.choice)
+
+    @staticmethod
+    def _forfeit(tick: int, sides: tuple[_Side, _Side]) -> Outcome | None:
+        over = [s.asked and s.late / s.asked > FORFEIT_LATE_FRACTION for s in sides]
+        if over[0] and over[1]:
+            return Outcome(None, "forfeit", tick)
+        if over[0]:
+            return Outcome("b", "forfeit", tick)
+        if over[1]:
+            return Outcome("a", "forfeit", tick)
+        return None
+
+    @staticmethod
+    def _side_stats(side: _Side) -> dict:
+        stats = side.decider.stats
+        return {
+            "asked": side.asked,
+            "applied": side.applied,
+            "late_or_missing": side.late,
+            "late_fraction": round(side.late / side.asked, 4) if side.asked else 0.0,
+            "median_ms": stats.median_ms(),
+            "p90_ms": stats.p90_ms(),
+        }

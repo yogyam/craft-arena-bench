@@ -77,6 +77,32 @@ craft-arena-bench play --a house --b random --tier 5 --matches 5 --seed 0
 
 starts two bodies (`body/src/main.mjs`, one Node process per bot, websocket bridges on ports 8701 and 8702), builds the arena from `arenas/sumo.json`, places the bots from the seed, and plays the matches with in-process policies (`house`, `random`). Results go to `runs/*.json` and replays to `runs/replays/*.json.gz`. Match `i` uses seed `--seed + i`.
 
+## Endpoints
+
+`--a` and `--b` take a policy name (`house`, `random`, `circler`) or an endpoint URL. Reference endpoints live in `adapters/`; see [ADAPTERS.md](ADAPTERS.md).
+
+```bash
+python adapters/local_server.py --policy random --port 9001 --quiet &
+python adapters/local_server.py --policy random --port 9002 --delay-ms 300 --quiet &
+craft-arena-bench play --a house --b http://127.0.0.1:9001 --tier 5 --matches 3     # ~3 ms per decision
+craft-arena-bench play --a house --b http://127.0.0.1:9002 --tier 5 --matches 2     # 300 ms answers: 90% late, forfeits after 10 decisions
+craft-arena-bench play --a house --b http://127.0.0.1:9002 --tier 2 --matches 2     # same endpoint, 400 ms budget: 0% late
+```
+
+The decision clock never waits for an answer: the request goes out as a task, the body keeps executing the last intent, and an answer that arrives inside the budget becomes the new intent. The forfeit rule (more than 20% late or missing, after at least 10 decisions) is in `match.py`.
+
+## Throughput on this Mac (49 matches, 4 Oct 2026)
+
+| | |
+|---|---|
+| Overhead per match (reset, build, teleport, settle, 3 s countdown) | 3.5 s |
+| Sumo match length, observed mix of house, random, circler and a 3B model (mostly at half knockback, since replaced by vanilla) | median 12 s, mean 21 s |
+| Matches per hour | about 150 at that mix; 57 if every match runs to the 60 s cap; 270 for 10 s rounds |
+| One pair at N = 20 | 8 min at that mix, 21 min worst case |
+| A 6 h runner job (if the runner matches the Mac) | 17 pairs worst case, 45 at that mix |
+
+The `ubuntu-latest` measurement waits for the GitHub repository (a throwaway workflow). Until then assume the runner is 2 to 3 times slower than the Mac for the server and plan 15 pairs per run as Boost Arena does.
+
 ## The stage 0 check
 
 With the server running:
