@@ -11,6 +11,7 @@ Decisions recorded 4 Oct 2026:
 - Stage 0 step 1 done: Yogya has told the MCJev author about the plan; the response was positive. Details of what was said still to be recorded below in §9.
 - The repository lives in this folder (`/Users/yogyamehrotra/Desktop/MC Arena`), not a new one. Local git only. Yogya's decision (4 Oct 2026): create the GitHub repository once the project has something of value in it, not before.
 - Season 1 versions: Minecraft **26.1.2** on **Paper build 74**, **Java 25**, Mineflayer 4.39. Reason: Paper's current release (26.2) is not supported by Mineflayer yet; 26.1 is the newest version both support and is Mineflayer's default. Fallback is 1.21.11 on Java 21. Note that 26.x needs Java 25 (the plan said 21) and that game rule names changed to snake_case in 26.1 (`spawn_mobs`, `advance_time`, ...); see `docs/SETUP.md`.
+- Stage 1 (4 Oct 2026): body, Sumo arena, referee, house bot, random bot and `craft-arena-bench play` exist and play full matches. Findings that changed the design: Mineflayer 4.39 drops knockback on 26.1 (patched in the body); Sumo uses Resistance V (no damage) and knockback resistance 0.5 (half knockback) on a 19 by 19 platform; deaths are reported by the body because immediate respawn hides them from the health stream. See `docs/SETUP.md`.
 - Stage 0 step 3 passed on 4 Oct 2026: Paper boots in 6 s, two Mineflayer bots connect, one hits the other, both health values read from their own clients (see `body/dev/two_bots.mjs`).
 
 ---

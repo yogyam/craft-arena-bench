@@ -153,7 +153,7 @@ The body does not: choose where to go, decide when to shoot, place blocks, use b
 
 ### Sumo
 
-Platform of radius 6 at height 10 above the floor, no items, fists only. Falling below the platform loses. 60 s cap; a draw if both still stand.
+A 19 by 19 platform, 10 blocks above the ground, no items, fists only. Both bots have Resistance V, so no damage is ever taken and health stays at 20: Sumo is decided by knockback alone. Both bots have knockback resistance 0.5, because a vanilla sprint hit carries about 4 blocks and would decide a round in two hits; halved, a round takes several exchanges (6 to 45 s in testing). Falling below the platform loses. 60 s cap; a draw if both still stand.
 
 | Action | The body does |
 |---|---|

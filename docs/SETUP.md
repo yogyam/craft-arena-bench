@@ -67,6 +67,16 @@ Game rule names changed to snake_case in 26.1 and some were renamed outright; th
 
 The full list comes from the server itself: an op'd Mineflayer bot's `tabComplete('/gamerule ')` returns all 116 names (`body/dev/gamerule_probe.mjs`).
 
+## Playing matches
+
+With the server running:
+
+```bash
+craft-arena-bench play --a house --b random --tier 5 --matches 5 --seed 0
+```
+
+starts two bodies (`body/src/main.mjs`, one Node process per bot, websocket bridges on ports 8701 and 8702), builds the arena from `arenas/sumo.json`, places the bots from the seed, and plays the matches with in-process policies (`house`, `random`). Results go to `runs/*.json` and replays to `runs/replays/*.json.gz`. Match `i` uses seed `--seed + i`.
+
 ## The stage 0 check
 
 With the server running:
@@ -78,6 +88,11 @@ cd body && node dev/two_bots.mjs
 connects two bots, sets the game rules, teleports them two blocks apart, gives one a diamond sword and has it swing six times, and prints both bots' health as each bot's own client reports it. Expected: both bots in `/list`, the second bot's health well below 20. Note that the server keeps a player's health and inventory between connections, so a match must reset both at its start.
 
 ## Known rough edges
+
+- **Knockback is zero in Mineflayer 4.39 on 26.1** unless patched. The server sends `entity_velocity` as floats in blocks per tick since 1.21.9, but Mineflayer still multiplies by 1/8000, so a hit's knockback rounds to nothing. `body/src/main.mjs` re-applies the raw packet value; `dev/knockback_experiment.py` measures it. Remove the patch once upstream fixes it.
+- **Other players' velocity is not sent while they walk**, only on knockback. The body derives the opponent's velocity from position deltas.
+- **iCloud Drive marks everything under dot-directories as hidden**, and Homebrew's Python skips hidden `.pth` files, so an editable install into `.venv` on the Desktop silently disappears from `sys.path`. The venv lives at `~/.venvs/craft-arena-bench` with `.venv` a symlink to it. Consider keeping the repository outside iCloud-synced folders altogether.
+- **Players respawn on top of the platform** when the world spawn is under it, and `immediate_respawn` makes a death invisible to the health stream. The body reports deaths as messages and the referee uses them.
 
 - `bot.blockAt` returns `undefined` for a tick or two after spawn until the chunk arrives; wait for it before reading the world.
 - Other players' health is not sent over the protocol. Each body reports its own health; the harness has both bodies, so it has both numbers.

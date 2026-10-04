@@ -1,0 +1,29 @@
+{
+  "mode": "sumo",
+  "name": "Sumo platform",
+  "origin": [
+    0,
+    -50,
+    0
+  ],
+  "platform": {
+    "half": 9,
+    "block": "smooth_stone"
+  },
+  "clear": {
+    "half": 16,
+    "height": 14
+  },
+  "spawn_distance": 4.5,
+  "spawn_angles": 8,
+  "fall_y": -52.0,
+  "cap_seconds": 60,
+  "effects": [
+    "minecraft:resistance infinite 4 true"
+  ],
+  "_effects_note": "Resistance V: no damage is taken, only knockback. Sumo is decided by falling, never by health.",
+  "attributes": {
+    "minecraft:knockback_resistance": 0.5
+  },
+  "_attributes_note": "Half knockback: a vanilla sprint hit carries about 4 blocks, which decides a round in two hits. Halved, a round takes several exchanges."
+}
