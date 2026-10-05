@@ -70,7 +70,7 @@ A **late** answer is one that arrives after the budget. It is discarded, the pre
     "health": 17.5, "food": 20, "absorption": 0,
     "held": "diamond_sword",
     "inventory": {"arrow": 12, "cobblestone": 61, "water_bucket": 1, "lava_bucket": 1, "bow": 1, "diamond_sword": 1},
-    "effects": [],
+    "effects": [{"name": "strength", "amplifier": 1}],
     "last_intent": "strafe_left",
     "late_answers": 2
   },
@@ -112,8 +112,10 @@ Field notes:
 - **Units.** Positions in blocks (Minecraft coordinates, Y up). Velocities in blocks per tick. Yaw and pitch in degrees as Minecraft reports them. Health in half-hearts out of 20. `seconds_left` is wall clock to the mode's cap.
 - **`decision`** counts the requests in this match from 1; **`tick`** is the server tick since the match started. Together they let an endpoint notice its own late answers.
 - **`self.health`** and **`opponent.health`** are both exact. The game does not send other players' health to a client, but the harness runs both bodies and has both numbers. *Decided:* exact rather than a human-like estimate, so both bots have the same information and ratings carry no noise from the harness's bookkeeping. This is a benchmark of decisions, not a realism test.
+- **`opponent.charging_bow`** is an approximation in version 1: true when the opponent holds a bow. **`opponent.blocks_placed_recently`** counts blocks that appeared within 4 blocks of the opponent in the last 2 seconds.
+- **`arena.hazards_near`** lists the nearest lava, fire or magma within 4 blocks of the bot as `{kind, distance, direction}`, direction relative to where the bot faces (`ahead`, `behind`, `left`, `right`). Empty in Sumo.
 - **`opponent.visible`** is line of sight from the bot's eyes. When false, `pos` and `velocity` are the last seen values and `distance` is to that position.
-- **`history`** holds the last 2 seconds (40 ticks) of events: `took_damage`, `dealt_damage`, `opponent_placed_blocks`, `opponent_shot`, `fell`, `knocked_back`, `sudden_death_started`.
+- **`history`** holds the last 2 seconds (40 ticks) of events: `took_damage` and `dealt_damage` (with `amount` and `source`: `melee`, `arrow`, `lava`, `fire`, `other`), `opponent_shot`, `shot_arrow`, `placed_water`, `placed_lava`, `bucket_guard` (the reflex poured water because the bot was burning), `dodged_arrow`, `action_failed` (the body could not carry out an intent, with a short `error`), `sudden_death_started`. Block placements by the opponent are in `opponent.blocks_placed_recently` rather than as events.
 - **`actions`** lists only the actions that are legal right now (for example no `shoot_bow` without arrows, no `bucket_lava` once used). The response must pick one of them. The order is fixed per mode, so an endpoint that scores by letter can rely on it.
 - **`text`** is the same state rendered by a fixed template, so a language model can be prompted without the entrant writing a formatter. The template is part of the interface and is in `docs/TEXT_TEMPLATE.md` once written.
 - Nothing identifies the opponent or the seed. Match ids are random.
@@ -141,11 +143,11 @@ The body does, on every tick, without asking:
 | Sprint reset | Stops sprinting for one tick after a hit lands, for knockback | No |
 | Arrow dodge | A one-block sideways step when an arrow is in flight towards the bot | No |
 | Edge guard (Sumo) | Refuses to step off the platform unless the intent is `rush` and the opponent is in reach | No |
-| Lava guard (Block UHC) | Refuses to walk into lava or fire; steps back from a lava source within one block | No |
-| Fall guard | Does not jump or walk off a drop of more than 3 blocks | Yes: `retreat` may drop up to 5 |
+| Lava guard (Block UHC) | Refuses to walk into lava, fire or magma | No |
+| Bucket guard (Block UHC) | Standing in lava or fire with a water bucket: pours it at its feet, whatever the intent, then picks it back up | No |
 | Eat | Nothing. There is no food and `natural_health_regeneration` is off; hearts only go down | – |
 
-The body does not: choose where to go, decide when to shoot, place blocks, use buckets, or change weapons except as an intent says.
+The body does not: choose where to go, decide when to shoot, place blocks, use buckets, or change weapons except as an intent says. Fall damage is off in both modes (walls are 6 high and `pillar_up` stops at 3), so there is no fall guard.
 
 *Decided:* the reflex layer stays this thick for season 1. A thinner body, where the model also times swings or aims, would make the 2 Hz tier unplayable and the tiers incomparable. The gate is the **separation test** in stage 1: a random-choice model, the scripted house bot and a good model must land clearly apart in rating. If random does well, the reflexes decide too much, and interface version 2 moves something into the action list.
 
@@ -167,7 +169,7 @@ Always legal: all six.
 
 ### Block UHC
 
-Square arena 24 by 24 inside walls 6 high, floor at y = -60. Each bot starts with a diamond sword, a bow, 16 arrows, one water bucket, one lava bucket, 64 cobblestone, full health, no armour. Last one standing. At 60 s **sudden death** starts: all damage is doubled and the event is in `history`. 180 s cap: at the cap the bot with more health wins; equal health is a draw.
+Square arena 24 by 24 inside stone-brick walls 6 high, stone floor, bots standing at y = -60. The seed places six cobblestone pillars 2 or 3 blocks tall (none within 3 blocks of a spawn) and picks the spawn axis and sides; spawns are 18 blocks apart. Each bot starts with a diamond sword, a bow, 16 arrows, one water bucket, one lava bucket, 64 cobblestone, full health, no armour. Last one standing. At 60 s **sudden death** starts: both bots get Strength II, so a sword hit does 13 instead of 7 and two hits kill; the event is in `history` and `sudden_death` is true in the request. (Doubling all damage from the harness was tried and does not work: the server refuses extra damage inside the 10-tick invulnerability window after a hit.) 180 s cap: at the cap the bot with more health wins; equal health is a draw.
 
 | Action | The body does | Legal when |
 |---|---|---|
@@ -180,6 +182,8 @@ Square arena 24 by 24 inside walls 6 high, floor at y = -60. Each bot starts wit
 | `bucket_water` | Places water at its feet (breaks fall, blocks lava, slows the opponent) and picks the bucket back up after 2 s | water bucket held in inventory |
 | `bucket_lava` | Places lava between the bot and the opponent when they are within 4 blocks, then retreats two steps; the lava bucket is spent | lava bucket in inventory and opponent within 4 blocks |
 | `hold` | Stands, aims, swings in reach | always |
+
+`shoot_bow`, `place_wall`, `pillar_up`, `bucket_water` and `bucket_lava` take several ticks to carry out (a bow draw is 1 s). While one is in progress the body does not aim, move or swing; a new intent cancels it. `shoot_bow` repeats while the intent holds; the others run once and then the body stands still until the intent changes.
 
 *Decided:* the lists stay as drafted (6 and 10). MCJev's workshop lets people define their own actions; we keep one list per mode so bots are comparable, and because every action is body code that can fail in ways that look like model weakness. Additions are welcome as proposals and land as a new interface version, never inside a season.
 

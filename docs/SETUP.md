@@ -75,7 +75,7 @@ With the server running:
 craft-arena-bench play --a house --b random --tier 5 --matches 5 --seed 0
 ```
 
-starts two bodies (`body/src/main.mjs`, one Node process per bot, websocket bridges on ports 8701 and 8702), builds the arena from `arenas/sumo.json`, places the bots from the seed, and plays the matches with in-process policies (`house`, `random`). Results go to `runs/*.json` and replays to `runs/replays/*.json.gz`. Match `i` uses seed `--seed + i`.
+starts two bodies (`body/src/main.mjs`, one Node process per bot, websocket bridges on ports 8701 and 8702), builds the arena from `arenas/sumo.json`, places the bots from the seed, and plays the matches with in-process policies (`house`, `random`). Results go to `runs/*.json` and replays to `runs/replays/*.json.gz`. Match `i` uses seed `--seed + i`. `--mode block_uhc` plays Block UHC (arena from `arenas/block_uhc.json`, at x = 100, z = 100 so it does not overlap the Sumo platform); `--verbose` prints each side's event counts (damage by source, arrows shot, buckets used, dodges, failed actions) after every match.
 
 ## Endpoints
 
@@ -118,6 +118,8 @@ connects two bots, sets the game rules, teleports them two blocks apart, gives o
 - **Knockback is zero in Mineflayer 4.39 on 26.1** unless patched. The server sends `entity_velocity` as floats in blocks per tick since 1.21.9, but Mineflayer still multiplies by 1/8000, so a hit's knockback rounds to nothing. `body/src/main.mjs` re-applies the raw packet value; `dev/knockback_experiment.py` measures it. Remove the patch once upstream fixes it.
 - **Other players' velocity is not sent while they walk**, only on knockback. The body derives the opponent's velocity from position deltas.
 - **iCloud Drive marks everything under dot-directories as hidden**, and Homebrew's Python skips hidden `.pth` files, so an editable install into `.venv` on the Desktop silently disappears from `sys.path`. The venv lives at `~/.venvs/craft-arena-bench` with `.venv` a symlink to it. Consider keeping the repository outside iCloud-synced folders altogether.
+- **`/damage` is refused inside the invulnerability window** (10 ticks after any hit), whatever the damage type, so the harness cannot mirror damage to double it. Sudden death uses Strength II instead.
+- **The killing blow never shows in the health stream**: with `immediate_respawn` the bot is back at full health inside the same tick. The harness takes the death message and records the remaining health as the last damage event.
 - **Players respawn on top of the platform** when the world spawn is under it, and `immediate_respawn` makes a death invisible to the health stream. The body reports deaths as messages and the referee uses them.
 
 - `bot.blockAt` returns `undefined` for a tick or two after spawn until the chunk arrives; wait for it before reading the world.

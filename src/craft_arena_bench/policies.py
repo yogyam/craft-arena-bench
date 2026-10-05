@@ -63,11 +63,40 @@ class Circler:
         return "strafe_right"
 
 
-POLICIES = {"random": lambda seed: RandomPolicy(seed), "house": lambda seed: HouseSumo(), "circler": lambda seed: Circler()}
+class HouseUhc:
+    """The scripted Block UHC house bot: water when burning, bow at range, lava when losing up close, wall when hurt, otherwise sword."""
+
+    name = "house-uhc"
+
+    def decide(self, request: dict) -> str:
+        legal = {a["id"] for a in request["actions"]}
+        me, opp, arena = request["self"], request["opponent"], request["arena"]
+        dist = opp["distance"] if opp["distance"] is not None else 99.0
+        hazards = arena.get("hazards_near") or []
+        if "bucket_water" in legal and hazards and hazards[0]["kind"] in ("lava", "fire") and hazards[0]["distance"] <= 1.5:
+            return "bucket_water"
+        if "bucket_lava" in legal and me["health"] + 4 < opp["health"]:
+            return "bucket_lava"
+        if "place_wall" in legal and me["health"] <= 8 and dist > 5 and opp.get("charging_bow"):
+            return "place_wall"
+        if "shoot_bow" in legal and dist >= 9 and not request["sudden_death"]:
+            return "shoot_bow"
+        if dist <= 3.0:
+            return "rush"
+        if dist < 6 and request["decision"] % 3 == 0:
+            return "strafe_left" if (request["decision"] // 3) % 2 == 0 else "strafe_right"
+        return "rush"
 
 
-def make_policy(name: str, seed: int = 0) -> Policy:
+POLICIES = {
+    "random": lambda seed, mode: RandomPolicy(seed),
+    "house": lambda seed, mode: HouseUhc() if mode == "block_uhc" else HouseSumo(),
+    "circler": lambda seed, mode: Circler(),
+}
+
+
+def make_policy(name: str, seed: int = 0, mode: str = "sumo") -> Policy:
     try:
-        return POLICIES[name](seed)
+        return POLICIES[name](seed, mode)
     except KeyError:
         raise ValueError(f"unknown policy {name}; choose from {sorted(POLICIES)}") from None

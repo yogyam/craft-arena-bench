@@ -39,3 +39,30 @@ class SumoReferee:
         if tick >= self.cap_ticks:
             return Outcome(None, "cap", tick)
         return None
+
+
+class BlockUhcReferee:
+    """Last one standing. Sudden death (Strength II for both) from `sudden_death_seconds`; at the cap, more health wins."""
+
+    def __init__(self, cap_seconds: int, sudden_death_seconds: int):
+        self.cap_ticks = cap_seconds * TICKS_PER_SECOND
+        self.sudden_death_tick = sudden_death_seconds * TICKS_PER_SECOND
+
+    def sudden_death(self, tick: int) -> bool:
+        return tick >= self.sudden_death_tick
+
+    def update(self, tick: int, a: dict, b: dict, a_died: bool = False, b_died: bool = False) -> Outcome | None:
+        a_dead = a["self"]["health"] <= 0 or a_died
+        b_dead = b["self"]["health"] <= 0 or b_died
+        if a_dead and b_dead:
+            return Outcome(None, "death", tick)
+        if a_dead:
+            return Outcome("b", "death", tick)
+        if b_dead:
+            return Outcome("a", "death", tick)
+        if tick >= self.cap_ticks:
+            ha, hb = a["self"]["health"], b["self"]["health"]
+            if abs(ha - hb) < 1e-6:
+                return Outcome(None, "cap", tick)
+            return Outcome("a" if ha > hb else "b", "cap_health", tick)
+        return None

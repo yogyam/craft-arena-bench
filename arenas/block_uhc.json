@@ -1,0 +1,37 @@
+{
+  "mode": "block_uhc",
+  "name": "Block UHC walled arena",
+  "origin": [
+    100,
+    -60,
+    100
+  ],
+  "_origin_note": "The y is the level the bots stand on. The floor block is one below. Away from the Sumo platform, which sits in the air at the world origin.",
+  "half": 12,
+  "wall_height": 6,
+  "floor_block": "stone",
+  "wall_block": "stone_bricks",
+  "pillars": {
+    "count": 6,
+    "min_height": 2,
+    "max_height": 3,
+    "block": "cobblestone",
+    "keep_clear_of_spawns": 3
+  },
+  "spawn_distance": 9,
+  "spawn_angles": 8,
+  "items": [
+    "diamond_sword 1",
+    "bow 1",
+    "arrow 16",
+    "water_bucket 1",
+    "lava_bucket 1",
+    "cobblestone 64"
+  ],
+  "sudden_death_seconds": 60,
+  "cap_seconds": 180,
+  "sudden_death_effects": [
+    "minecraft:strength infinite 1 true"
+  ],
+  "_sudden_death_note": "Strength II: a diamond sword hit does 13 instead of 7, so two hits kill. Arrows and lava are unchanged."
+}

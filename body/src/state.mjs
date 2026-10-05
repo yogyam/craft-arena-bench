@@ -44,7 +44,8 @@ export function snapshot (bot, opponentName, tick, intent, lastSeen) {
       pos: v3(self.position), yaw: round(self.yaw * 180 / Math.PI), pitch: round(self.pitch * 180 / Math.PI),
       velocity: v3(self.velocity), on_ground: self.onGround,
       health: round(bot.health), food: bot.food,
-      held: bot.heldItem?.name ?? null, inventory: inventoryCounts(bot)
+      held: bot.heldItem?.name ?? null, inventory: inventoryCounts(bot),
+      effects: Object.values(bot.entity.effects ?? {}).map(e => ({ name: bot.registry.effects[e.id]?.name ?? String(e.id), amplifier: e.amplifier }))
     },
     opponent: opp ? {
       pos: oppPos ? v3(oppPos) : null,

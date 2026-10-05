@@ -17,7 +17,7 @@ def main(argv: list[str] | None = None) -> int:
     p = argparse.ArgumentParser(prog="craft-arena-bench", description="An AI-vs-AI benchmark for Minecraft decision models")
     sub = p.add_subparsers(dest="cmd", required=True)
     play = sub.add_parser("play", help="Play matches between two deciders on the local server")
-    play.add_argument("--mode", default="sumo", choices=["sumo"])
+    play.add_argument("--mode", default="sumo", choices=["sumo", "block_uhc"])
     play.add_argument("--a", default="house", help="'house', 'random', or an endpoint URL such as http://127.0.0.1:9001")
     play.add_argument("--b", default="random", help="same")
     play.add_argument("--tier", type=int, default=5, choices=sorted(TIERS))
@@ -25,6 +25,7 @@ def main(argv: list[str] | None = None) -> int:
     play.add_argument("--matches", type=int, default=1)
     play.add_argument("--out", type=Path, default=Path("runs"), help="Where results and replays go")
     play.add_argument("--no-replay", action="store_true")
+    play.add_argument("--verbose", action="store_true", help="Print each side's event counts after every match")
     args = p.parse_args(argv)
     return asyncio.run(_play(args))
 
@@ -32,7 +33,7 @@ def main(argv: list[str] | None = None) -> int:
 async def _play(args) -> int:
     t = tier(args.tier)
     results = []
-    da, db = make_decider(args.a, args.seed), make_decider(args.b, args.seed + 1000)
+    da, db = make_decider(args.a, args.seed, args.mode), make_decider(args.b, args.seed + 1000, args.mode)
     for d in (da, db):
         if isinstance(d, EndpointDecider):
             doc = await d.health()
@@ -46,8 +47,10 @@ async def _play(args) -> int:
                 who = {"a": "A", "b": "B", None: "draw"}[r.winner]
                 lat = f"A {r.a_stats['median_ms']} ms {r.a_stats['late_fraction']:.0%} late | B {r.b_stats['median_ms']} ms {r.b_stats['late_fraction']:.0%} late"
                 print(
-                    f"seed {seed:4d}  {who:>4} by {r.reason:<8} {r.seconds:5.1f} s  {r.decisions:4d} decisions  {lat}  {r.wall_seconds:.1f} s wall"
+                    f"seed {seed:4d}  {who:>4} by {r.reason:<10} {r.seconds:5.1f} s  health {r.a_health:4.1f}/{r.b_health:4.1f}  {r.decisions:4d} decisions  {lat}  {r.wall_seconds:.1f} s wall"
                 )
+                if args.verbose:
+                    print(f"           A events {r.a_events}\n           B events {r.b_events}")
     finally:
         await asyncio.gather(da.close(), db.close())
     args.out.mkdir(parents=True, exist_ok=True)

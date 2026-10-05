@@ -14,11 +14,11 @@ from dataclasses import asdict, dataclass, field
 from pathlib import Path
 
 from . import INTERFACE_VERSION, MODE_SET_VERSION
-from .arena import SumoArena
+from .arena import BlockUhcArena, SumoArena, make_arena
 from .body import Body
 from .endpoint import Decider, Decision
 from .rcon import Rcon
-from .referee import Outcome, SumoReferee
+from .referee import BlockUhcReferee, Outcome, SumoReferee
 from .replay import ReplayRecorder
 from .state import build_request
 from .tiers import TICKS_PER_SECOND, Tier
@@ -28,6 +28,14 @@ SETTLE_TICKS = 10
 BOT_NAMES = ("BotA", "BotB")
 FORFEIT_LATE_FRACTION = 0.20
 MIN_DECISIONS_FOR_FORFEIT = 10  # a 3-second match should not be forfeited on two late answers
+BODY_EVENTS_IN_HISTORY = (
+    "shot_arrow",
+    "placed_water",
+    "placed_lava",
+    "bucket_guard",
+    "dodged_arrow",
+    "action_failed",
+)
 
 
 @dataclass
@@ -47,6 +55,8 @@ class MatchResult:
     decisions: int
     a_stats: dict = field(default_factory=dict)
     b_stats: dict = field(default_factory=dict)
+    a_events: dict = field(default_factory=dict)  # counts of history events: took_damage:melee, shot_arrow, placed_water, ...
+    b_events: dict = field(default_factory=dict)
     wall_seconds: float = 0.0
     interface_version: int = INTERFACE_VERSION
     mode_set_version: int = MODE_SET_VERSION
@@ -81,10 +91,8 @@ class MatchRunner:
         rcon_password: str = "local-dev-only",
         ws_ports: tuple[int, int] = (8701, 8702),
     ):
-        if mode != "sumo":
-            raise ValueError("only sumo is implemented so far")
         self.mode = mode
-        self.arena = SumoArena()
+        self.arena = make_arena(mode)
         self.rcon = Rcon(port=rcon_port, password=rcon_password)
         self.bodies = (
             Body(BOT_NAMES[0], BOT_NAMES[1], ws_ports[0], mode=mode),
@@ -108,17 +116,23 @@ class MatchRunner:
         a, b = self.bodies
         sides = (_Side(a, decider_a), _Side(b, decider_b))
         await asyncio.gather(a.reset(), b.reset())
-        self.arena.build(self.rcon)
+        self.arena.build(self.rcon, seed)
         self.arena.place_bots(self.rcon, BOT_NAMES, seed)
-        platform = self.arena.platform.to_message()
-        await asyncio.gather(a.configure(platform=platform), b.configure(platform=platform))
+        if isinstance(self.arena, SumoArena):
+            bounds, floor_y, config = self.arena.platform, None, {"platform": self.arena.platform.to_message()}
+            referee = SumoReferee(self.arena.fall_y, self.arena.cap_seconds)
+            uhc: BlockUhcArena | None = None
+        else:
+            bounds, floor_y, config = self.arena.bounds, self.arena.floor_y, {"arena": self.arena.to_message()}
+            referee = BlockUhcReferee(self.arena.cap_seconds, self.arena.sudden_death_seconds)
+            uhc = self.arena
+        await asyncio.gather(a.configure(**config), b.configure(**config))
 
         # Let the teleport land, then hold both bots frozen for the countdown.
         for _ in range(SETTLE_TICKS + COUNTDOWN_TICKS):
             await a.next_state()
         await asyncio.gather(a.freeze(False), b.freeze(False))
 
-        referee = SumoReferee(self.arena.fall_y, self.arena.cap_seconds)
         recorder = ReplayRecorder(
             {
                 "match_id": match_id,
@@ -135,6 +149,8 @@ class MatchRunner:
         decisions = 0
         tick = 0
         deaths_at_start = (a.deaths, b.deaths)
+        deaths_seen = deaths_at_start
+        sudden_death_announced = False
         outcome: Outcome | None = None
 
         while outcome is None:
@@ -142,14 +158,38 @@ class MatchRunner:
             sb = b.latest
             tick += 1
             snaps = (sa, sb)
-            # Damage events, from exact health (the bodies' own clients).
+            sudden_death = uhc is not None and referee.sudden_death(tick)
+            if sudden_death and not sudden_death_announced:
+                sudden_death_announced = True
+                for name, side in zip(BOT_NAMES, sides, strict=True):
+                    # Sudden death: Strength II for both, so a sword hit does 13 instead of 7 and two hits kill.
+                    # (Mirroring damage with /damage was tried; the command is refused inside the 10-tick invulnerability window.)
+                    for effect in uhc.spec["sudden_death_effects"]:
+                        self.rcon.command(f"effect give {name} {effect}")
+                    side.history.append({"tick": tick, "event": "sudden_death_started"})
+            # Damage events, from exact health (the bodies' own clients). The body says what hit it.
+            deaths_now = (a.deaths, b.deaths)
             for i, s in enumerate(snaps):
                 h = s["self"]["health"]
+                if deaths_now[i] > deaths_seen[i]:
+                    # The killing blow: the bot respawned with full health inside the tick, so the drop is what was left.
+                    deaths_seen = deaths_now
+                    h = 0.0
                 if h < last_health[i] - 1e-6:
                     amount = round(last_health[i] - h, 2)
-                    sides[i].history.append({"tick": tick, "event": "took_damage", "amount": amount, "source": "melee"})
-                    sides[1 - i].history.append({"tick": tick, "event": "dealt_damage", "amount": amount, "source": "melee"})
-                last_health[i] = h
+                    source = next(
+                        (e.get("source", "other") for e in reversed(s.get("events", [])) if e["event"] == "hurt"), "melee"
+                    )
+                    sides[i].history.append({"tick": tick, "event": "took_damage", "amount": amount, "source": source})
+                    sides[1 - i].history.append({"tick": tick, "event": "dealt_damage", "amount": amount, "source": source})
+                last_health[i] = s["self"]["health"] if h > 0 else 0.0
+                for e in s.get("events", []):
+                    if e["event"] in BODY_EVENTS_IN_HISTORY:
+                        sides[i].history.append(
+                            {"tick": tick, "event": e["event"], **({"error": e["error"]} if "error" in e else {})}
+                        )
+                        if e["event"] == "shot_arrow":
+                            sides[1 - i].history.append({"tick": tick, "event": "opponent_shot"})
             # Answers that have arrived since the last tick become intents.
             for side in sides:
                 if side.pending is not None and side.pending.done():
@@ -172,10 +212,12 @@ class MatchRunner:
                         cap_seconds=self.arena.cap_seconds,
                         me=snaps[i],
                         opp=snaps[1 - i],
-                        platform=self.arena.platform,
+                        platform=bounds,
                         history=side.history,
                         last_intent=side.intent,
                         late_answers=side.late,
+                        sudden_death=sudden_death,
+                        floor_y=floor_y,
                     )
                     side.asked += 1
                     side.pending = asyncio.create_task(side.decider.decide(req, tier.budget_ms))
@@ -200,11 +242,13 @@ class MatchRunner:
             reason=outcome.reason,
             ticks=outcome.tick,
             seconds=round(outcome.tick / TICKS_PER_SECOND, 2),
-            a_health=a.latest["self"]["health"],
-            b_health=b.latest["self"]["health"],
+            a_health=0.0 if outcome.reason == "death" and outcome.winner != "a" else sa["self"]["health"],
+            b_health=0.0 if outcome.reason == "death" and outcome.winner != "b" else sb["self"]["health"],
             decisions=decisions,
             a_stats=self._side_stats(sides[0]),
             b_stats=self._side_stats(sides[1]),
+            a_events=self._event_counts(sides[0]),
+            b_events=self._event_counts(sides[1]),
             wall_seconds=round(time.monotonic() - t0, 2),
         )
         if replay_dir is not None:
@@ -237,6 +281,14 @@ class MatchRunner:
         if over[1]:
             return Outcome("a", "forfeit", tick)
         return None
+
+    @staticmethod
+    def _event_counts(side: _Side) -> dict:
+        counts: dict[str, int] = {}
+        for e in side.history:
+            key = f"{e['event']}:{e['source']}" if "source" in e else e["event"]
+            counts[key] = counts.get(key, 0) + 1
+        return dict(sorted(counts.items()))
 
     @staticmethod
     def _side_stats(side: _Side) -> dict:

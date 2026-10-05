@@ -48,7 +48,7 @@ class Body:
             self.mode,
             cwd=BODY_DIR,
             stdout=asyncio.subprocess.DEVNULL,
-            stderr=asyncio.subprocess.DEVNULL,
+            stderr=None,
         )
         deadline = asyncio.get_running_loop().time() + timeout
         while True:

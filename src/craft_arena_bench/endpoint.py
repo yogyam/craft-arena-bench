@@ -173,10 +173,10 @@ def _check(choice: str, request: dict, latency_ms: float, budget_ms: int) -> Dec
     return Decision(choice, "ok", latency_ms)
 
 
-def make_decider(spec: str, seed: int = 0) -> Decider:
-    """`house`, `random`, or an http(s) URL."""
+def make_decider(spec: str, seed: int = 0, mode: str = "sumo") -> Decider:
+    """`house`, `random`, `circler`, or an http(s) URL."""
     if spec.startswith(("http://", "https://")):
         return EndpointDecider(spec)
     from .policies import make_policy
 
-    return LocalDecider(make_policy(spec, seed))
+    return LocalDecider(make_policy(spec, seed, mode))
