@@ -3,7 +3,7 @@
   "slug": "qwen-2-5-3b-via-ollama",
   "author": "Yogya Mehrotra",
   "github": "yogyam",
-  "endpoint": "https://cdea4ad3361d78.lhr.life",
+  "endpoint": "https://macbook-pro-69.tailb3d4bf.ts.net/qwen",
   "tiers": [
     2
   ],
@@ -13,6 +13,6 @@
   ],
   "interface_version": 1,
   "submitted": "2026-10-05",
-  "description": "qwen2.5:3b through Ollama on a MacBook Pro (M5 Pro), adapters/ollama.py with the default prompt, behind a localhost.run tunnel. The dry-run entrant from docs/SUBMITTING.md.",
+  "description": "qwen2.5:3b through Ollama on a MacBook Pro (M5 Pro), adapters/ollama.py with the default prompt, behind a Tailscale Funnel. The dry-run entrant from docs/SUBMITTING.md.",
   "homepage": "https://github.com/yogyam/craft-arena-bench/blob/main/adapters/ollama.py"
 }

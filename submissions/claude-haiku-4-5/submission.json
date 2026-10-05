@@ -3,7 +3,7 @@
   "slug": "claude-haiku-4-5",
   "author": "Yogya Mehrotra",
   "github": "yogyam",
-  "endpoint": "https://4fbfb673a4ce9e.lhr.life",
+  "endpoint": "https://macbook-pro-69.tailb3d4bf.ts.net/haiku",
   "tiers": [
     1
   ],
@@ -13,6 +13,6 @@
   ],
   "interface_version": 1,
   "submitted": "2026-10-05",
-  "description": "Claude Haiku 4.5 through the official Anthropic SDK (adapters/claude.py, default prompt, no extended thinking), served from a laptop behind a localhost.run tunnel. About 800 ms per decision end to end, hence the 1 Hz tier. The second dry-run entrant.",
+  "description": "Claude Haiku 4.5 through the official Anthropic SDK (adapters/claude.py, default prompt, no extended thinking), served from a laptop behind a Tailscale Funnel. About 800 ms per decision end to end, hence the 1 Hz tier. The second dry-run entrant.",
   "homepage": "https://github.com/yogyam/craft-arena-bench/blob/main/adapters/claude.py"
 }
