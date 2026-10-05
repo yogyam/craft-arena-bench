@@ -7,6 +7,7 @@ An entrant hosts one HTTPS endpoint that speaks [the interface](INTERFACE.md): `
 | `adapters/local_server.py` | Serves an in-process policy (`random`, `house`, `circler`) over HTTP, optionally with a fixed delay | Testing the harness; imitating a slow model with `--delay-ms` |
 | `adapters/openai_compatible.py` | Asks a chat model behind any OpenAI-compatible API to pick an action from the `text` rendering | Any hosted model: OpenAI, Anthropic via a proxy, vLLM, llama.cpp server |
 | `adapters/ollama.py` | `openai_compatible.py` with a local Ollama's defaults | A local open-weight model on your laptop |
+| `adapters/router.py` | Serves several local endpoints under one address as `/<name>/health` and `/<name>/decide` | One tunnel for several bots |
 | `adapters/claude.py` | Asks a Claude model through the official Anthropic SDK (`pip install -e ".[claude]"`) | Claude Haiku 4.5; the other Claude models think before answering and are too slow for the budgets |
 
 All three are stdlib plus `httpx`; run them from a clone with the package installed (see [SETUP.md](SETUP.md)).
@@ -46,6 +47,15 @@ Choose one: rush, strafe_left, strafe_right, retreat, feint, hold.
 ```
 
 The adapter sends this as the user message with a short system prompt and reads the first legal action id in the reply. An unparseable reply keeps the previous intent. You will do better with your own prompt: the full JSON state is in the request too.
+
+## Several bots behind one tunnel
+
+```bash
+python adapters/router.py --port 9000 --route qwen=http://127.0.0.1:9010 --route haiku=http://127.0.0.1:9020
+cloudflared tunnel --url http://127.0.0.1:9000      # or any tunnel in front of port 9000
+```
+
+The endpoints in the manifests are then `https://<host>/qwen` and `https://<host>/haiku`. The interface allows a path in the endpoint; the harness appends `/health` and `/decide`.
 
 ## Hosting it on the internet
 
