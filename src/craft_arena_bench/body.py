@@ -57,7 +57,10 @@ class Body:
                 break
             except OSError:
                 if asyncio.get_running_loop().time() > deadline:
-                    raise BodyError(f"{self.username}: bridge did not come up on port {self.ws_port}") from None
+                    raise BodyError(
+                        f"{self.username}: bridge did not come up on port {self.ws_port}. If the body crashed with EADDRINUSE, a stale body "
+                        f"from an earlier run still holds the port: pkill -f src/main.mjs"
+                    ) from None
                 await asyncio.sleep(0.1)
         self._reader = asyncio.create_task(self._read())
         await asyncio.wait_for(self.spawned.wait(), timeout)

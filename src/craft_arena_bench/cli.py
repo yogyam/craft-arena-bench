@@ -37,7 +37,7 @@ async def _play(args) -> int:
     for d in (da, db):
         if isinstance(d, EndpointDecider):
             doc = await d.health()
-            print(f"{d.url}: health ok, name {doc.get('name')!r}")
+            print(f"{d.url}: health ok, name {doc.get('name')!r}", flush=True)
     try:
         async with MatchRunner(mode=args.mode) as runner:
             for i in range(args.matches):
@@ -47,17 +47,18 @@ async def _play(args) -> int:
                 who = {"a": "A", "b": "B", None: "draw"}[r.winner]
                 lat = f"A {r.a_stats['median_ms']} ms {r.a_stats['late_fraction']:.0%} late | B {r.b_stats['median_ms']} ms {r.b_stats['late_fraction']:.0%} late"
                 print(
-                    f"seed {seed:4d}  {who:>4} by {r.reason:<10} {r.seconds:5.1f} s  health {r.a_health:4.1f}/{r.b_health:4.1f}  {r.decisions:4d} decisions  {lat}  {r.wall_seconds:.1f} s wall"
+                    f"seed {seed:4d}  {who:>4} by {r.reason:<10} {r.seconds:5.1f} s  health {r.a_health:4.1f}/{r.b_health:4.1f}  {r.decisions:4d} decisions  {lat}  {r.wall_seconds:.1f} s wall",
+                    flush=True,
                 )
                 if args.verbose:
-                    print(f"           A events {r.a_events}\n           B events {r.b_events}")
+                    print(f"           A events {r.a_events}\n           B events {r.b_events}", flush=True)
     finally:
         await asyncio.gather(da.close(), db.close())
     args.out.mkdir(parents=True, exist_ok=True)
     out = args.out / f"{args.mode}-{_slug(da.name)}-vs-{_slug(db.name)}-{args.tier}hz-{args.seed}.json"
     out.write_text(json.dumps(results, indent=1))
     tally = Counter(r["winner"] for r in results)
-    print(f"\nA={da.name} {tally['a']}  B={db.name} {tally['b']}  draws {tally[None]}   written to {out}")
+    print(f"\nA={da.name} {tally['a']}  B={db.name} {tally['b']}  draws {tally[None]}   written to {out}", flush=True)
     return 0
 
 
