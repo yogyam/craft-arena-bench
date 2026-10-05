@@ -19,6 +19,8 @@ class Tier:
 
 
 TIERS: dict[int, Tier] = {
+    # For models behind a remote API, often with a tunnel in the path: a hosted model from a laptop measured ~800 ms.
+    1: Tier(hz=1, period_ticks=20, budget_ms=900, open_in_season_1=True),
     2: Tier(hz=2, period_ticks=10, budget_ms=400, open_in_season_1=True),
     5: Tier(hz=5, period_ticks=4, budget_ms=150, open_in_season_1=True),
     # Built and measured, but not open until an entrant asks for it and the runner is shown to hold the clock.

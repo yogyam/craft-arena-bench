@@ -238,7 +238,7 @@ Each stage ends with something runnable and a short written check. Estimates ass
 
 1. Name (§3).
 2. Minecraft/Paper version for season 1 (default: latest Paper stable at stage 0).
-3. N matches per pair (default 20) and the three tiers (default 2/5/20 Hz) — to be confirmed after stage 2 measurements. Measured 5 Oct 2026 (docs/SETUP.md): N = 20 stands; pairs per run are bounded by a time budget rather than a fixed 15 (a Block UHC pair can take an hour if every match hits the cap).
+3. N matches per pair (default 20) and the three tiers (default 2/5/20 Hz) — to be confirmed after stage 2 measurements. Decided 5 Oct 2026: a 1 Hz tier (budget 900 ms) joins season 1 for models behind remote APIs, after Claude Haiku 4.5 measured ~570 ms from a laptop and ~800 ms through a tunnel. Measured 5 Oct 2026 (docs/SETUP.md): N = 20 stands; pairs per run are bounded by a time budget rather than a fixed 15 (a Block UHC pair can take an hour if every match hits the cap).
 4. Whether the 20 Hz tier is in season 1 at all. Decided 4 Oct 2026: the clock is built, the tier is not opened until an entrant asks and stage 2 shows the runner holds it.
 5. Whether to run a public human-playable server (default: no; it costs money and moderation).
 6. What the MCJev author said (stage 0, step 1), and whether DJev enters. Status 4 Oct 2026: told, positive. Yogya does not expect DJev to enter, so the 20 Hz tier has no known candidate entrant and the headline-entrant idea in stage 6 step 21 is dropped unless that changes.

@@ -6,9 +6,13 @@ Three steps: host an endpoint, try it against the harness, open a pull request. 
 
 ## 1. Host an endpoint
 
-Your endpoint speaks [the interface](INTERFACE.md): `GET /health` answers with the interface version, `POST /decide` receives the fight state and answers with one action id, within the tier's budget (400 ms at 2 Hz, 150 ms at 5 Hz, measured from the scoring service). It must be reachable over `https://` from the internet.
+Your endpoint speaks [the interface](INTERFACE.md): `GET /health` answers with the interface version, `POST /decide` receives the fight state and answers with one action id, within the tier's budget (900 ms at 1 Hz, 400 ms at 2 Hz, 150 ms at 5 Hz, measured from the scoring service, so network time counts). It must be reachable over `https://` from the internet.
 
 The quickest way is to copy one of the [adapters](ADAPTERS.md): `adapters/openai_compatible.py` puts any chat model behind an endpoint; `adapters/ollama.py` does the same for a local model. For a laptop, put a tunnel in front (Cloudflare quick tunnel, ngrok, Tailscale Funnel).
+
+Which tier fits is a matter of measurement. From the first dry runs: a 3B model through Ollama on a laptop answers in about 115 ms, fine for 2 Hz; a tunnel adds about 225 ms per round trip; Claude Haiku 4.5 through the official API takes about 570 ms from a laptop, so with a tunnel it is a 1 Hz entrant. Run `craft-arena-bench play` against your public URL and read the latency and late columns before choosing.
+
+Free quick tunnels (localhost.run, Cloudflare quick tunnels) get a new hostname every time they reconnect, and the scoring service calls the address in your manifest. For anything beyond a dry run use a stable hostname: a named Cloudflare tunnel, an ngrok domain, Tailscale Funnel, or a small cloud machine. A laptop that sleeps takes its endpoint with it; a pair in progress then fails and is replayed next run, and a bot whose endpoint is down at the start of a run is skipped.
 
 Your URL is public. It appears in your manifest and in the scoring logs. If you need to keep strangers off your endpoint, put a long random token in the path (`https://host/8f3c…/`) and change it when you like by updating your submission. Queries, fragments and credentials in the URL are refused.
 
@@ -29,7 +33,7 @@ Write the manifest:
 
 ```bash
 craft-arena-bench new-submission --name "My Bot" --author "your name or handle" --github your-github-login \
-  --endpoint https://your-endpoint --tiers 2 5 --modes sumo block_uhc \
+  --endpoint https://your-endpoint --tiers 1 2 --modes sumo block_uhc \
   --description "qwen2.5:3b through Ollama on a laptop, prompt in my repo" --homepage https://github.com/you/your-bot
 ```
 

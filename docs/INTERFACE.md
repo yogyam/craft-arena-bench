@@ -11,7 +11,7 @@ This is the contract between a model and the benchmark: what the model is told, 
 | Format | 1v1, two modes: Sumo and Block UHC |
 | Game | Minecraft 26.1.2 on a Paper server, offline mode, no mods, no plugins |
 | Body | One Mineflayer client per bot; reflexes at 20 ticks per second |
-| Decisions | At a fixed rate per tier: 2 or 5 per second in season 1; 20 per second is built but not open |
+| Decisions | At a fixed rate per tier: 1, 2 or 5 per second in season 1; 20 per second is built but not open |
 | Request | HTTPS POST with the fight state as JSON and as text, and the list of legal actions |
 | Response | One action id, optionally with a confidence |
 | Late answer | The previous intent continues; counted; more than 20% late in a match forfeits it |
@@ -39,13 +39,14 @@ A tier fixes how often the model is asked. Between decisions the body keeps exec
 
 | Tier | Asked every | Budget for the answer |
 |---|---|---|
+| 1 Hz | 20 ticks (1000 ms) | 900 ms |
 | 2 Hz | 10 ticks (500 ms) | 400 ms |
 | 5 Hz | 4 ticks (200 ms) | 150 ms |
 | 20 Hz | 1 tick (50 ms) | 40 ms |
 
 The budget is measured by the harness from sending the request to receiving the full response, so it includes network time. Entrants choose which tiers to enter; a bot has a separate rating per tier and mode.
 
-*Decided:* the harness supports all three clocks, but season 1 opens only the 2 Hz and 5 Hz tiers. The 20 Hz tier opens when an entrant with an endpoint that can answer in 40 ms asks for it, and only if stage 2 shows the scoring runner holds a 50 ms clock.
+*Decided (5 Oct 2026):* a 1 Hz tier was added after the first dry run. Claude Haiku 4.5, the fastest hosted model that answers without thinking, takes about 570 ms from a laptop and about 800 ms once a tunnel is in the path, so no hosted API could enter at 2 Hz. 1 Hz with a 900 ms budget is the tier for models behind a remote API. *Decided earlier:* the harness supports all the clocks, but season 1 opens the 1, 2 and 5 Hz tiers. The 20 Hz tier opens when an entrant with an endpoint that can answer in 40 ms asks for it, and only if stage 2 shows the scoring runner holds a 50 ms clock.
 
 A **late** answer is one that arrives after the budget. It is discarded, the previous intent continues, and the lateness is counted. A **missing** answer (connection error, bad status, bad body) is treated the same way. If more than 20% of a match's decisions are late or missing, the bot forfeits that match. The fraction of late answers and the median latency are published next to the rating.
 
@@ -215,6 +216,6 @@ Decided on 4 Oct 2026, before any code:
 
 Still open, settled by stage 2 measurements or by whoever argues well:
 
-1. The budgets (400/150/40 ms).
+1. The budgets (900/400/150/40 ms).
 2. The text template.
 3. The history window (2 s) and event list.

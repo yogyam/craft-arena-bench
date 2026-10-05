@@ -53,7 +53,12 @@ def main(argv: list[str] | None = None) -> int:
     verify.add_argument("folders", nargs="+")
     verify.add_argument("--submissions", default="submissions")
     verify.add_argument("--github-login", default=None, help="Who opened the pull request; enables the login and limit checks")
-    verify.add_argument("--exempt", action="append", default=None, help="A maintainer login, exempt from the limits; repeat for several (default: yogyam)")
+    verify.add_argument(
+        "--exempt",
+        action="append",
+        default=None,
+        help="A maintainer login, exempt from the limits; repeat for several (default: yogyam)",
+    )
     verify.add_argument("--allow-local", action="store_true", help="Accept http://127.0.0.1 endpoints (dry runs only)")
     verify.add_argument("--no-health", action="store_true", help="Skip calling the endpoint")
     verify.set_defaults(func=lambda a: asyncio.run(_verify(a)))
@@ -207,7 +212,9 @@ async def _verify(args) -> int:
 
     try:
         if args.github_login:
-            manifests = check_pull_request(args.folders, args.github_login, args.submissions, exempt=tuple(args.exempt or ["yogyam"]))
+            manifests = check_pull_request(
+                args.folders, args.github_login, args.submissions, exempt=tuple(args.exempt or ["yogyam"])
+            )
         else:
             manifests = [load_manifest(f) for f in args.folders]
     except SubmissionError as e:

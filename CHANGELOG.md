@@ -5,6 +5,7 @@ Dates are when the change reached `main`. Versions of the interface and mode set
 ## Unreleased
 
 ### Service (5 Oct 2026)
+- A 1 Hz tier (900 ms budget) for models behind remote APIs; season 1 opens 1, 2 and 5 Hz.
 - Repository public at https://github.com/yogyam/craft-arena-bench; leaderboard at https://yogyam.github.io/craft-arena-bench/.
 - Scoring service: manifests and pull request checks, pairings per board, Bradley-Terry with bootstrap intervals, result validation, static site, replay viewer, workflows.
 - The scoring run plays Sumo pairs first and stops before a pair whose worst case would not fit its time budget.

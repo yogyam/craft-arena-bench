@@ -151,10 +151,14 @@ def test_points_bootstrap_and_opponents():
 
 
 def test_boards_and_seeds():
-    assert boards() == [("sumo", 2), ("sumo", 5), ("block_uhc", 2), ("block_uhc", 5)]
+    assert boards() == [("sumo", 1), ("sumo", 2), ("sumo", 5), ("block_uhc", 1), ("block_uhc", 2), ("block_uhc", 5)]
     s = pair_seeds("sumo", 5)
     assert len(s) == MATCHES_PER_PAIR and len(set(s)) == MATCHES_PER_PAIR and s == pair_seeds("sumo", 5)
-    assert not set(s) & set(pair_seeds("sumo", 2)) and not set(s) & set(pair_seeds("block_uhc", 5))
+    assert (
+        not set(s) & set(pair_seeds("sumo", 2))
+        and not set(s) & set(pair_seeds("block_uhc", 5))
+        and not set(s) & set(pair_seeds("sumo", 1))
+    )
     assert all(x // 100_000 == SEASON for x in s)
     assert pair_name("zeta", "alpha") == "alpha__zeta"
 
