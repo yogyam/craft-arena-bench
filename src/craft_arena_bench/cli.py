@@ -74,6 +74,12 @@ def main(argv: list[str] | None = None) -> int:
     )
     score.add_argument("--allow-local", action="store_true")
     score.add_argument("--start-server", action="store_true", help="Download and start the Paper server first, stop it after")
+    score.add_argument(
+        "--time-budget-minutes",
+        type=float,
+        default=None,
+        help="Do not start a pair whose worst case would not finish within this budget",
+    )
     score.set_defaults(func=lambda a: asyncio.run(_score(a)))
 
     pp = sub.add_parser("play-pair", help="Used by score: one pair in one process")
@@ -234,13 +240,14 @@ async def _score(args) -> int:
     from .service.scoring import score
 
     matches = args.matches or MATCHES_PER_PAIR
+    budget = args.time_budget_minutes * 60 if args.time_budget_minutes else None
     if args.start_server:
         from .server import PaperServer
 
         with PaperServer():
-            played = await score(args.submissions, args.duels, args.output, args.max_pairs, args.allow_local, matches)
+            played = await score(args.submissions, args.duels, args.output, args.max_pairs, args.allow_local, matches, budget)
     else:
-        played = await score(args.submissions, args.duels, args.output, args.max_pairs, args.allow_local, matches)
+        played = await score(args.submissions, args.duels, args.output, args.max_pairs, args.allow_local, matches, budget)
     _echo(f"{len(played)} pairs played")
     return 0
 

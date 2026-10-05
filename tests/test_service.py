@@ -192,3 +192,11 @@ def test_pairs_to_play(tmp_path):
     doc["a_manifest_sha256"] = "0" * 64
     json.dump(doc, open(p.path(duels), "w"))
     assert p in pairs_to_play(manifests, subs, duels)
+
+
+def test_pair_timeout_scales_with_the_cap():
+    from craft_arena_bench.service.scoring import pair_timeout_seconds
+
+    assert pair_timeout_seconds("sumo") == 20 * 75 + 120
+    assert pair_timeout_seconds("block_uhc") == 20 * 195 + 120
+    assert pair_timeout_seconds("block_uhc", 4) < pair_timeout_seconds("block_uhc")

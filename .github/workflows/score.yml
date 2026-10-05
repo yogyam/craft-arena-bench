@@ -1,5 +1,9 @@
 # Plays the pairs the service owes. Runs when a submission is merged, weekly, and by hand.
 #
+# Timing (measured 5 Oct 2026): a Sumo pair of 20 matches takes about 3 minutes, a Block UHC pair 8 minutes at the
+# observed mix and 61 minutes if every match runs to the 180 s cap. The time budget below stops the run before a pair
+# that could not finish; whole pairs already written are published.
+#
 # The scoring job starts a Paper server on the runner (the jar is downloaded from PaperMC and its checksum checked),
 # then plays up to 15 outstanding pairs, each in its own process with a time limit. Nothing of an entrant's runs
 # here: the harness only calls their endpoint. The results go through a second job that checks every file against
@@ -22,7 +26,7 @@ concurrency:
 jobs:
   score:
     runs-on: ubuntu-latest
-    timeout-minutes: 330
+    timeout-minutes: 340
     permissions:
       contents: read
     steps:
@@ -49,7 +53,7 @@ jobs:
 
       # Starts the server, plays the pairs, stops the server. A pair whose endpoint is down is skipped, not forfeited.
       - name: Play outstanding pairs
-        run: craft-arena-bench score --submissions submissions --duels duels --output new_results --max-pairs 15 --start-server
+        run: craft-arena-bench score --submissions submissions --duels duels --output new_results --max-pairs 15 --start-server --time-budget-minutes 300
 
       - uses: actions/upload-artifact@043fb46d1a93c77aae656e7c1c64a875d1fc6a0a   # v7.0.1
         if: always()

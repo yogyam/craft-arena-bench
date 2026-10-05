@@ -101,7 +101,17 @@ The decision clock never waits for an answer: the request goes out as a task, th
 | One pair at N = 20 | 8 min at that mix, 21 min worst case |
 | A 6 h runner job (if the runner matches the Mac) | 17 pairs worst case, 45 at that mix |
 
-The `ubuntu-latest` measurement waits for the GitHub repository (a throwaway workflow). Until then assume the runner is 2 to 3 times slower than the Mac for the server and plan 15 pairs per run as Boost Arena does.
+## Throughput on `ubuntu-latest` (measured 5 Oct 2026, `.github/workflows/measure.yml`)
+
+| | |
+|---|---|
+| Install (Python with hashes, Node, Java 25, `npm ci`) | 19 s |
+| Download the Paper jar and start the server | 34 s (download 2 s, boot about 30 s) |
+| Sumo, house vs random endpoint, 6 matches at 5 Hz | 52 s in all; 3 to 6 s of play, 8 s wall per match |
+| Block UHC, same, 6 matches | 5 min 8 s in all; 9 to 180 s of play, 25 s median wall per match |
+| Overhead per match | 3.5 s, the same as the Mac |
+
+Match wall time is game time: the server runs in real time whatever the hardware, so the runner is as fast as the Mac. What varies is how long the bots take to finish each other. At N = 20 a Sumo pair is about 3 minutes, a Block UHC pair about 8 minutes at the observed mix and 61 minutes if every match reaches the cap. The scoring run therefore plays Sumo pairs first and stops starting pairs when the next one's worst case would not fit the time budget (`score --time-budget-minutes 300` on a 340-minute job).
 
 ## The stage 0 check
 

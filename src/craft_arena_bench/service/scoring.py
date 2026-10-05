@@ -16,6 +16,7 @@ import platform
 import subprocess
 import sys
 import tempfile
+import time
 from pathlib import Path
 
 from .. import INTERFACE_VERSION, MINECRAFT_VERSION, MODE_SET_VERSION, PAPER_BUILD, __version__
@@ -235,16 +236,31 @@ async def score(
     max_pairs: int,
     allow_local: bool = False,
     matches: int = MATCHES_PER_PAIR,
+    time_budget_s: float | None = None,
 ) -> list[Pair]:
-    """Health-checks every entrant, then plays up to `max_pairs` outstanding pairs, each in its own process."""
+    """Health-checks every entrant, then plays up to `max_pairs` outstanding pairs, each in its own process.
+
+    With a time budget, a pair is only started if its worst case (every match at the cap) still fits, so a run on a
+    job with a hard limit ends with whole pairs written rather than a timeout that loses everything. Sumo pairs are
+    played before Block UHC pairs because they are shorter."""
     manifests = load_all(submissions_folder)
     healthy, why = await healthy_bots(manifests, allow_local)
     for slug, reason in sorted(why.items()):
         print(f"{slug}: skipped this run, {reason}", flush=True)
     pending = pairs_to_play(manifests, submissions_folder, duels_folder, only=healthy)
-    print(f"{len(pending)} pairs outstanding, playing up to {max_pairs}", flush=True)
+    pending.sort(key=lambda p: (make_arena(p.mode).cap_seconds, p.mode, p.hz, p.a, p.b))
+    budget_note = f" within {time_budget_s / 60:.0f} min" if time_budget_s else ""
+    print(f"{len(pending)} pairs outstanding, playing up to {max_pairs}{budget_note}", flush=True)
     played = []
+    started = time.monotonic()
     for pair in pending[:max_pairs]:
+        worst = pair_timeout_seconds(pair.mode, matches)
+        if time_budget_s is not None and time.monotonic() - started + worst > time_budget_s:
+            print(
+                f"stopping: {pair.name} on {board_name(pair.mode, pair.hz)} could take {worst / 60:.0f} min, more than the time left",
+                flush=True,
+            )
+            break
         print(f"playing {pair.a} v {pair.b} on {board_name(pair.mode, pair.hz)} ({matches} matches)", flush=True)
         if run_pair_in_subprocess(pair, submissions_folder, output_folder, allow_local, matches):
             played.append(pair)
