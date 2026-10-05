@@ -6,6 +6,7 @@ authors:
   - family-names: Mehrotra
     given-names: Yogya
 repository-code: "https://github.com/yogyam/craft-arena-bench"
+url: "https://yogyam.github.io/craft-arena-bench/"
 license: MIT
 version: 0.0.1
 date-released: "2026-10-04"

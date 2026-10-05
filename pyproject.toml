@@ -30,6 +30,7 @@ dependencies = [
 ]
 
 [project.urls]
+Leaderboard = "https://yogyam.github.io/craft-arena-bench/"
 Repository = "https://github.com/yogyam/craft-arena-bench"
 Issues = "https://github.com/yogyam/craft-arena-bench/issues"
 Changelog = "https://github.com/yogyam/craft-arena-bench/blob/main/CHANGELOG.md"

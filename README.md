@@ -8,6 +8,8 @@ What makes it a benchmark rather than a demo is the **decision-rate tier**. A mo
 
 > **Status: being built. Nothing can be entered yet.** Both modes play, endpoints work, and the scoring service exists; the repository goes public once the pipeline has been dry-run end to end. The plan is in [docs/PLAN.md](docs/PLAN.md); the interface is in [docs/INTERFACE.md](docs/INTERFACE.md). Arguments with either are welcome as issues.
 
+The leaderboard will be at https://yogyam.github.io/craft-arena-bench/ once the first pairs are played.
+
 ## How it will work
 
 1. **Everyone gets the same view.** At each decision the endpoint receives the fight as JSON (positions, health, held items, recent events, the legal actions) and as plain text, and answers with one action id. See [docs/INTERFACE.md](docs/INTERFACE.md).
