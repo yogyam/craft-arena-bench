@@ -14,7 +14,7 @@ import time
 import urllib.request
 from pathlib import Path
 
-from . import MINECRAFT_VERSION, PAPER_BUILD
+from . import MINECRAFT_VERSION, PAPER_BUILD, __version__
 from .rcon import Rcon
 
 SERVER_DIR = Path(__file__).resolve().parents[2] / "server"
@@ -22,6 +22,8 @@ PAPER_SHA256 = "1d70b1dab9cf4a6de615209a536f3a45a2186240253c428213ce2188ab95e5f7
 FILL_API = "https://fill.papermc.io/v3/projects/paper/versions/{version}/builds"
 RCON_PORT = 25575
 RCON_PASSWORD = "local-dev-only"
+# PaperMC asks every client to identify itself; the default Python agent is refused with a 403.
+USER_AGENT = f"craft-arena-bench/{__version__} (https://github.com/yogyam/craft-arena-bench)"
 
 
 def find_java() -> str:
@@ -41,7 +43,9 @@ def download_jar(server_dir: Path = SERVER_DIR) -> Path:
     jar = server_dir / "paper.jar"
     if jar.is_file() and _sha256(jar) == PAPER_SHA256:
         return jar
-    with urllib.request.urlopen(FILL_API.format(version=MINECRAFT_VERSION), timeout=30) as r:
+    with urllib.request.urlopen(
+        urllib.request.Request(FILL_API.format(version=MINECRAFT_VERSION), headers={"User-Agent": USER_AGENT}), timeout=30
+    ) as r:
         builds = json.load(r)
     build = next((b for b in builds if b["id"] == PAPER_BUILD), None)
     if build is None:
@@ -51,7 +55,12 @@ def download_jar(server_dir: Path = SERVER_DIR) -> Path:
         raise RuntimeError("PaperMC's checksum for the pinned build does not match the one pinned here")
     server_dir.mkdir(parents=True, exist_ok=True)
     tmp = jar.with_suffix(".jar.part")
-    urllib.request.urlretrieve(download["url"], tmp)
+    with (
+        urllib.request.urlopen(urllib.request.Request(download["url"], headers={"User-Agent": USER_AGENT}), timeout=60) as r,
+        open(tmp, "wb") as f,
+    ):
+        for chunk in iter(lambda: r.read(1 << 20), b""):
+            f.write(chunk)
     if _sha256(tmp) != PAPER_SHA256:
         tmp.unlink()
         raise RuntimeError("The downloaded Paper jar does not match the pinned checksum")
