@@ -46,6 +46,7 @@ def main(argv: list[str] | None = None) -> int:
     new.add_argument("--description", default="")
     new.add_argument("--homepage", default="")
     new.add_argument("--submissions", default="my_submission")
+    new.add_argument("--allow-local", action="store_true", help="Dry runs only: accept an http://127.0.0.1 endpoint")
     new.set_defaults(func=_new_submission)
 
     verify = sub.add_parser("verify-submission", help="Check submission folders as the pull request check does")
@@ -60,6 +61,7 @@ def main(argv: list[str] | None = None) -> int:
     pairings = sub.add_parser("pairings", help="List the pairs that still need playing")
     pairings.add_argument("--submissions", default="submissions")
     pairings.add_argument("--duels", default="duels")
+    pairings.add_argument("--allow-local", action="store_true", help="Dry runs only")
     pairings.set_defaults(func=_pairings)
 
     score = sub.add_parser("score", help="Play outstanding pairs against the local server, each in its own process")

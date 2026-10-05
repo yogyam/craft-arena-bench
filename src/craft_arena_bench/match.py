@@ -128,8 +128,9 @@ class MatchRunner:
             uhc = self.arena
         await asyncio.gather(a.configure(**config), b.configure(**config))
 
-        # Let the teleport land, then hold both bots frozen for the countdown.
-        for _ in range(SETTLE_TICKS + COUNTDOWN_TICKS):
+        # Let the teleport land, then hold both bots frozen for the countdown. The first states after a reset can lag.
+        await a.next_state(timeout=10.0)
+        for _ in range(SETTLE_TICKS + COUNTDOWN_TICKS - 1):
             await a.next_state()
         await asyncio.gather(a.freeze(False), b.freeze(False))
 
