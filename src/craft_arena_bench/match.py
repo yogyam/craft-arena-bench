@@ -27,7 +27,7 @@ COUNTDOWN_TICKS = 3 * TICKS_PER_SECOND
 SETTLE_TICKS = 10
 BOT_NAMES = ("BotA", "BotB")
 FORFEIT_LATE_FRACTION = 0.20
-MIN_DECISIONS_FOR_FORFEIT = 10  # a 3-second match should not be forfeited on two late answers
+MIN_DECISIONS_FOR_FORFEIT = 30  # judged from the 30th decision on: a short match is never forfeited on a handful of late answers
 BODY_EVENTS_IN_HISTORY = (
     "shot_arrow",
     "placed_water",
@@ -128,6 +128,8 @@ class MatchRunner:
             uhc = self.arena
         await asyncio.gather(a.configure(**config), b.configure(**config))
 
+        # Endpoints open their connections now, during the settle, so decision 1 is not slowed by a handshake.
+        await asyncio.gather(decider_a.warm_up(), decider_b.warm_up())
         # Let the teleport land, then hold both bots frozen for the countdown. The first states after a reset can lag.
         await a.next_state(timeout=10.0)
         for _ in range(SETTLE_TICKS + COUNTDOWN_TICKS - 1):

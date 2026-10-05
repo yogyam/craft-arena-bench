@@ -6,6 +6,7 @@ A late or missing answer is not an error for the match: the previous intent cont
 from __future__ import annotations
 
 import asyncio
+import contextlib
 import json
 import statistics
 import time
@@ -88,6 +89,9 @@ class Decider:
     async def decide(self, request: dict, budget_ms: int) -> Decision:
         raise NotImplementedError
 
+    async def warm_up(self) -> None:
+        """Called just before a match starts. An endpoint opens its connection here, so decision 1 is not paid for with a TLS handshake."""
+
     async def close(self) -> None:
         pass
 
@@ -117,8 +121,18 @@ class EndpointDecider(Decider):
         self.stats = LatencyStats()
         # No redirects, no cookies, nothing but fight state. The connect timeout is generous; the budget is enforced by wait_for.
         self.client = httpx.AsyncClient(
-            follow_redirects=False, timeout=httpx.Timeout(10.0), headers={"user-agent": f"craft-arena-bench/{INTERFACE_VERSION}"}
+            follow_redirects=False,
+            timeout=httpx.Timeout(10.0),
+            headers={"user-agent": f"craft-arena-bench/{INTERFACE_VERSION}"},
+            limits=httpx.Limits(
+                max_keepalive_connections=4, keepalive_expiry=300.0
+            ),  # one connection lives across a match and the next
         )
+
+    async def warm_up(self) -> None:
+        # Through a tunnel a cold connection costs a few hundred milliseconds: more than a 2 Hz budget. Pay it here, not on decision 1.
+        with contextlib.suppress(TimeoutError, httpx.HTTPError):  # the decisions will record whatever is wrong
+            await asyncio.wait_for(self.client.get(f"{self.url}/health"), timeout=5.0)
 
     async def health(self, timeout_s: float = 5.0) -> dict:
         r = await self.client.get(f"{self.url}/health", timeout=timeout_s)

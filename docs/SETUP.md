@@ -89,7 +89,7 @@ craft-arena-bench play --a house --b http://127.0.0.1:9002 --tier 5 --matches 2 
 craft-arena-bench play --a house --b http://127.0.0.1:9002 --tier 2 --matches 2     # same endpoint, 400 ms budget: 0% late
 ```
 
-The decision clock never waits for an answer: the request goes out as a task, the body keeps executing the last intent, and an answer that arrives inside the budget becomes the new intent. The forfeit rule (more than 20% late or missing, after at least 10 decisions) is in `match.py`.
+The decision clock never waits for an answer: the request goes out as a task, the body keeps executing the last intent, and an answer that arrives inside the budget becomes the new intent. The forfeit rule (more than 20% late or missing, judged from the 30th decision on) is in `match.py`; the endpoint connection is warmed with a `/health` call before every match.
 
 ## Throughput on this Mac (49 matches, 4 Oct 2026)
 
