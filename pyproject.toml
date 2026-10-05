@@ -46,6 +46,9 @@ version = { attr = "craft_arena_bench.__version__" }
 [tool.setuptools.packages.find]
 where = ["src"]
 
+[tool.setuptools.package-data]
+craft_arena_bench = ["service/*.html", "service/*.js"]
+
 [tool.pytest.ini_options]
 testpaths = ["tests"]
 

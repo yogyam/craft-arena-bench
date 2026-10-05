@@ -14,7 +14,7 @@ Things we would like to hear about:
 - A way to make the scoring job connect to anything other than the entrants' declared endpoints and PaperMC's download service.
 - Anything on the website that runs script from another origin or shows content an entrant did not write.
 
-## What is in place (planned; this file is updated as each piece lands)
+## What is in place
 
 - No entrant code runs on the scorer. The only thing an entrant controls is the JSON their endpoint returns, which is parsed with a strict schema and a size limit; anything else counts as a missing answer.
 - Endpoint URLs must be `https://`. The harness follows no redirects, sends no credentials of its own, and only ever sends fight state.

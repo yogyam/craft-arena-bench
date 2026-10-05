@@ -6,7 +6,7 @@ A model never sees pixels or presses keys. A Mineflayer "body" plays the twitch 
 
 What makes it a benchmark rather than a demo is the **decision-rate tier**. A model is scored at a fixed number of decisions per second (2, 5 or 20), so a small model on a laptop is compared with a large model on a datacentre GPU on the quality of its decisions, not on who has the faster hardware.
 
-> **Status: being built. Nothing can be entered yet.** The plan is in [docs/PLAN.md](docs/PLAN.md); the interface draft is in [docs/INTERFACE.md](docs/INTERFACE.md). Arguments with either are welcome as issues.
+> **Status: being built. Nothing can be entered yet.** Both modes play, endpoints work, and the scoring service exists; the repository goes public once the pipeline has been dry-run end to end. The plan is in [docs/PLAN.md](docs/PLAN.md); the interface is in [docs/INTERFACE.md](docs/INTERFACE.md). Arguments with either are welcome as issues.
 
 ## How it will work
 
@@ -18,7 +18,7 @@ What makes it a benchmark rather than a demo is the **decision-rate tier**. A mo
 
 ## Running it locally
 
-Not ready yet. Developer notes are in [docs/SETUP.md](docs/SETUP.md).
+Developer notes are in [docs/SETUP.md](docs/SETUP.md); putting a model behind an endpoint is in [docs/ADAPTERS.md](docs/ADAPTERS.md); entering is in [docs/SUBMITTING.md](docs/SUBMITTING.md).
 
 ## Credits and licence
 

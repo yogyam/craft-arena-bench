@@ -1,0 +1,139 @@
+# Plays the pairs the service owes. Runs when a submission is merged, weekly, and by hand.
+#
+# The scoring job starts a Paper server on the runner (the jar is downloaded from PaperMC and its checksum checked),
+# then plays up to 15 outstanding pairs, each in its own process with a time limit. Nothing of an entrant's runs
+# here: the harness only calls their endpoint. The results go through a second job that checks every file against
+# the repository before committing it and rebuilding the website. Actions are pinned to commits.
+name: Score pairs
+
+on:
+  push:
+    branches: [main]
+    paths:
+      - "submissions/**"
+  workflow_dispatch:
+  schedule:
+    - cron: "17 3 * * 1"   # Weekly
+
+concurrency:
+  group: score
+  cancel-in-progress: false
+
+jobs:
+  score:
+    runs-on: ubuntu-latest
+    timeout-minutes: 330
+    permissions:
+      contents: read
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1   # v7.0.1
+
+      - uses: actions/setup-python@5fda3b95a4ea91299a34e894583c3862153e4b97   # v7.0.0
+        with:
+          python-version: "3.12"
+
+      - uses: actions/setup-node@820762786026740c76f36085b0efc47a31fe5020   # v7.0.0
+        with:
+          node-version: "22"
+
+      - uses: actions/setup-java@de7274f081f381c8f8158605e0321c36c376e2e6   # v6.0.1
+        with:
+          distribution: temurin
+          java-version: "25"
+
+      - name: Install
+        run: |
+          pip install --quiet --require-hashes -r requirements.lock
+          pip install --quiet --no-deps .
+          npm ci --prefix body
+
+      # Starts the server, plays the pairs, stops the server. A pair whose endpoint is down is skipped, not forfeited.
+      - name: Play outstanding pairs
+        run: craft-arena-bench score --submissions submissions --duels duels --output new_results --max-pairs 15 --start-server
+
+      - uses: actions/upload-artifact@043fb46d1a93c77aae656e7c1c64a875d1fc6a0a   # v7.0.1
+        if: always()
+        with:
+          name: new-results
+          path: new_results
+          if-no-files-found: ignore
+          retention-days: 7
+
+      - uses: actions/upload-artifact@043fb46d1a93c77aae656e7c1c64a875d1fc6a0a   # v7.0.1
+        if: always()
+        with:
+          name: server-log
+          path: server/server.log
+          if-no-files-found: ignore
+          retention-days: 7
+
+  publish:
+    needs: score
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+    permissions:
+      contents: write
+      pages: write
+      id-token: write
+    concurrency:
+      group: pages
+      cancel-in-progress: false
+    environment:
+      name: github-pages
+      url: ${{ steps.deploy.outputs.page_url }}
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1   # v7.0.1
+        with:
+          ref: main
+
+      - uses: actions/setup-python@5fda3b95a4ea91299a34e894583c3862153e4b97   # v7.0.0
+        with:
+          python-version: "3.12"
+
+      - name: Install
+        run: |
+          pip install --quiet --require-hashes -r requirements.lock
+          pip install --quiet --no-deps .
+
+      - uses: actions/download-artifact@3e5f45b2cfb9172054b4087a40e8e0b5a5461e7c   # v8.0.1
+        with:
+          name: new-results
+          path: new_results
+        continue-on-error: true
+
+      # Every file is checked against the repository: a pair must be for the manifests on main, on a board both
+      # bots entered, with this season's seeds. If anything fails, nothing is published.
+      - name: Check and add the new results and replays
+        run: |
+          files=$(find new_results -type f \( -name '*.json' -o -name '*.replays.json.gz' \) 2>/dev/null || true)
+          if [ -z "$files" ]; then
+            echo "No new results"
+            exit 0
+          fi
+          craft-arena-bench validate-results --submissions submissions $files
+          (cd new_results && find duels replays -type f -exec install -D {} ../{} \;)
+
+      - name: Commit
+        run: |
+          git config user.name "craft-arena-bench scoring"
+          git config user.email "scoring@users.noreply.github.com"
+          git add duels replays
+          if git diff --cached --quiet; then
+            echo "Nothing to commit"
+          else
+            git commit -m "Add results"
+            git pull --rebase origin main
+            git push origin HEAD:main
+          fi
+
+      - name: Build the website
+        run: craft-arena-bench build-site --submissions submissions --duels duels --replays replays --output site
+
+      - uses: actions/configure-pages@45bfe0192ca1faeb007ade9deae92b16b8254a0d   # v6.0.0
+
+      - uses: actions/upload-pages-artifact@fc324d3547104276b827a68afc52ff2a11cc49c9   # v5.0.0
+        with:
+          path: site
+
+      - id: deploy
+        uses: actions/deploy-pages@368f82528645a54fb793d4d04e342629a3f51346   # v5.0.1

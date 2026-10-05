@@ -4,7 +4,7 @@ Thanks for taking an interest. Two kinds of contribution come in through pull re
 
 ## Entering a bot
 
-That is a submission, not a code change: see `docs/SUBMITTING.md` (not written yet). A submission pull request changes only `submissions/<slug>/submission.json` and is merged once its check passes.
+That is a submission, not a code change: see [docs/SUBMITTING.md](docs/SUBMITTING.md). A submission pull request changes only `submissions/<slug>/submission.json` and is merged once its check passes.
 
 ## Changing the project
 

@@ -1,0 +1,13 @@
+{
+  "name": "House bot",
+  "slug": "house-bot",
+  "author": "CraftArenaBench",
+  "github": "yogyam",
+  "endpoint": "local:house",
+  "tiers": [2, 5],
+  "modes": ["sumo", "block_uhc"],
+  "interface_version": 1,
+  "submitted": "2026-10-04",
+  "description": "The scripted reference bot, one per mode: charges and sidesteps in Sumo; sword, bow at range, water when burning, lava when losing in Block UHC. Deterministic given the seed. The anchor for ratings across seasons.",
+  "house": true
+}

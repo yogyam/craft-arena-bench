@@ -1,0 +1,31 @@
+<!doctype html>
+<html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1">
+<meta http-equiv="Content-Security-Policy" content="__CSP__">
+<title>CraftArenaBench replay</title>
+<style>
+:root { color-scheme: light dark; --page:#f9f9f7; --surface:#fcfcfb; --ink:#0b0b0b; --ink-2:#52514e; --border:rgba(11,11,11,.10); --accent:#2a78d6; --a:#2a78d6; --b:#d6632a; }
+@media (prefers-color-scheme: dark) { :root { --page:#0d0d0d; --surface:#1a1a19; --ink:#fff; --ink-2:#c3c2b7; --border:rgba(255,255,255,.12); --accent:#3987e5; --a:#3987e5; --b:#e5783f; } }
+* { box-sizing:border-box; } body { margin:0; padding:0 16px 40px; background:var(--page); color:var(--ink); font:15px/1.5 system-ui,-apple-system,"Segoe UI",sans-serif; }
+main { max-width:960px; margin:0 auto; } a { color:var(--accent); }
+header { padding:24px 0 12px; display:flex; flex-wrap:wrap; gap:8px 24px; align-items:baseline; justify-content:space-between; }
+h1 { margin:0; font-size:22px; } .sub { color:var(--ink-2); }
+canvas { display:block; width:100%; height:auto; background:var(--surface); border:1px solid var(--border); border-radius:12px; }
+.controls { display:flex; flex-wrap:wrap; gap:10px; align-items:center; margin:10px 0; }
+button, select { font:inherit; padding:6px 12px; border:1px solid var(--border); border-radius:8px; background:var(--surface); color:var(--ink); }
+input[type=range] { flex:1; min-width:160px; }
+.legend { display:flex; gap:18px; color:var(--ink-2); font-size:13px; } .legend i { display:inline-block; width:10px; height:10px; border-radius:50%; margin-right:6px; vertical-align:middle; }
+.status { color:var(--ink-2); font-size:13px; min-height:1.5em; }
+</style></head>
+<body><main>
+<header><div><h1 id="title">Replay</h1><div class="sub" id="sub"></div></div><a href="index.html">← Leaderboard</a></header>
+<canvas id="c" width="960" height="640"></canvas>
+<div class="controls">
+  <button id="play">Play</button>
+  <input id="scrub" type="range" min="0" max="0" value="0">
+  <span id="time" class="status">0.0 s</span>
+  <select id="speed"><option value="0.5">0.5×</option><option value="1" selected>1×</option><option value="2">2×</option><option value="4">4×</option></select>
+  <select id="match"></select>
+</div>
+<div class="legend"><span><i style="background:var(--a)"></i><span id="la">A</span></span><span><i style="background:var(--b)"></i><span id="lb">B</span></span><span>Health bars above each bot; the label is the intent in force.</span></div>
+<p class="status" id="status">Loading…</p>
+</main><script src="replay.js"></script></body></html>
