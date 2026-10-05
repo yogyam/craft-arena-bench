@@ -9,7 +9,7 @@ from pathlib import Path
 
 import websockets
 
-BODY_DIR = Path(__file__).resolve().parents[2] / "body"
+from .paths import repo_root
 
 
 class BodyError(RuntimeError):
@@ -51,7 +51,7 @@ class Body:
             str(self.mc_port),
             "--mode",
             self.mode,
-            cwd=BODY_DIR,
+            cwd=repo_root() / "body",
             stdout=self._log,
             stderr=self._log,
         )

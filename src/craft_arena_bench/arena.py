@@ -9,9 +9,13 @@ import time
 from dataclasses import dataclass
 from pathlib import Path
 
+from .paths import repo_root
 from .rcon import Rcon
 
-ARENAS_DIR = Path(__file__).resolve().parents[2] / "arenas"
+
+def arenas_dir() -> Path:
+    return repo_root() / "arenas"
+
 
 # Game rules for a match, in 26.1's snake_case names. The camelCase names no longer work.
 GAMERULES = {
@@ -59,7 +63,7 @@ class Platform:
 
 
 def load_arena(mode: str) -> dict:
-    path = ARENAS_DIR / f"{mode}.json"
+    path = arenas_dir() / f"{mode}.json"
     return json.loads(path.read_text())
 
 

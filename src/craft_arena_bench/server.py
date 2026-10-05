@@ -15,9 +15,9 @@ import urllib.request
 from pathlib import Path
 
 from . import MINECRAFT_VERSION, PAPER_BUILD, __version__
+from .paths import repo_root
 from .rcon import Rcon
 
-SERVER_DIR = Path(__file__).resolve().parents[2] / "server"
 PAPER_SHA256 = "1d70b1dab9cf4a6de615209a536f3a45a2186240253c428213ce2188ab95e5f7"  # paper-26.1.2-74.jar
 FILL_API = "https://fill.papermc.io/v3/projects/paper/versions/{version}/builds"
 RCON_PORT = 25575
@@ -38,7 +38,8 @@ def find_java() -> str:
     raise FileNotFoundError("No java found; install Java 25 (brew install openjdk@25) or set JAVA_HOME")
 
 
-def download_jar(server_dir: Path = SERVER_DIR) -> Path:
+def download_jar(server_dir: Path | None = None) -> Path:
+    server_dir = server_dir or repo_root() / "server"
     """Downloads the pinned Paper build if it is not already there with the right checksum."""
     jar = server_dir / "paper.jar"
     if jar.is_file() and _sha256(jar) == PAPER_SHA256:
@@ -79,8 +80,8 @@ def _sha256(path: Path) -> str:
 class PaperServer:
     """Runs the server as a child process. `with PaperServer() as s:` starts it and stops it afterwards."""
 
-    def __init__(self, server_dir: Path = SERVER_DIR, heap: str = "2G", log_name: str = "server.log"):
-        self.server_dir = Path(server_dir)
+    def __init__(self, server_dir: Path | None = None, heap: str = "2G", log_name: str = "server.log"):
+        self.server_dir = Path(server_dir) if server_dir else repo_root() / "server"
         self.heap = heap
         self.log_path = self.server_dir / log_name
         self.proc: subprocess.Popen | None = None

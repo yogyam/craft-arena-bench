@@ -22,6 +22,7 @@ from .. import INTERFACE_VERSION, MINECRAFT_VERSION, MODE_SET_VERSION, PAPER_BUI
 from ..arena import make_arena
 from ..endpoint import Decider, EndpointDecider, LocalDecider
 from ..match import MatchRunner
+from ..paths import repo_root
 from ..policies import make_policy
 from ..tiers import tier
 from . import MATCHES_PER_PAIR, REPLAYS_PER_PAIR, SEASON
@@ -37,7 +38,7 @@ def library_versions() -> dict:
         except importlib.metadata.PackageNotFoundError:
             versions[name] = "unknown"
     try:
-        body = json.loads((Path(__file__).resolve().parents[3] / "body" / "package-lock.json").read_text())
+        body = json.loads((repo_root() / "body" / "package-lock.json").read_text())
         versions["mineflayer"] = body["packages"]["node_modules/mineflayer"]["version"]
     except (OSError, KeyError, ValueError):
         versions["mineflayer"] = "unknown"
