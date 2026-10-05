@@ -7,6 +7,7 @@ An entrant hosts one HTTPS endpoint that speaks [the interface](INTERFACE.md): `
 | `adapters/local_server.py` | Serves an in-process policy (`random`, `house`, `circler`) over HTTP, optionally with a fixed delay | Testing the harness; imitating a slow model with `--delay-ms` |
 | `adapters/openai_compatible.py` | Asks a chat model behind any OpenAI-compatible API to pick an action from the `text` rendering | Any hosted model: OpenAI, Anthropic via a proxy, vLLM, llama.cpp server |
 | `adapters/ollama.py` | `openai_compatible.py` with a local Ollama's defaults | A local open-weight model on your laptop |
+| `adapters/claude.py` | Asks a Claude model through the official Anthropic SDK (`pip install -e ".[claude]"`) | Claude Haiku 4.5; the other Claude models think before answering and are too slow for the budgets |
 
 All three are stdlib plus `httpx`; run them from a clone with the package installed (see [SETUP.md](SETUP.md)).
 
@@ -22,6 +23,16 @@ craft-arena-bench play --a house --b http://127.0.0.1:9010 --tier 2 --matches 3
 ```
 
 Measured on an M5 Pro MacBook with qwen2.5:3b: about 115 ms per decision, 0% late at 2 Hz (budget 400 ms). A model that "thinks" before answering (Qwen3, DeepSeek-R1 distils) will not fit a 400 ms budget; pick a plain instruct model or turn thinking off.
+
+## A Claude model
+
+```bash
+pip install -e ".[claude]"
+export ANTHROPIC_API_KEY=...            # or `ant auth login`
+python adapters/claude.py --model claude-haiku-4-5 --port 9020 --verbose
+```
+
+Claude Haiku 4.5 is the one Claude model that answers without thinking first, which is what a 400 ms budget needs. Expect round trips of a few hundred milliseconds from a laptop, so some late answers at 2 Hz. The adapter never reads a key file; credentials come from the environment.
 
 ## What the model sees
 

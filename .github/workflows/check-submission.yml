@@ -61,4 +61,4 @@ jobs:
             echo "No submission changed"
             exit 0
           fi
-          craft-arena-bench verify-submission --submissions submissions --github-login "$PR_LOGIN" --exempt yogyam "${folders[@]}"
+          craft-arena-bench verify-submission "${folders[@]}" --submissions submissions --github-login "$PR_LOGIN" --exempt yogyam

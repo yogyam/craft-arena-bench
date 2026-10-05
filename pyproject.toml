@@ -40,6 +40,8 @@ craft-arena-bench = "craft_arena_bench.cli:main"
 
 [project.optional-dependencies]
 dev = ["pytest", "ruff"]
+# Only for adapters/claude.py
+claude = ["anthropic"]
 
 [tool.setuptools.dynamic]
 version = { attr = "craft_arena_bench.__version__" }
