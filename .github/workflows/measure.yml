@@ -1,0 +1,78 @@
+# Throwaway measurement, run by hand: how fast does a free runner play matches? Starts the server on the runner,
+# serves the random policy as a local endpoint, and plays a few matches in each mode against the house bot.
+# Nothing is published. The numbers decide the matches per pair and pairs per run (docs/PLAN.md, stage 2 step 13).
+name: Measure runner throughput
+
+on:
+  workflow_dispatch:
+    inputs:
+      matches:
+        description: Matches per mode
+        default: "6"
+
+permissions:
+  contents: read
+
+jobs:
+  measure:
+    runs-on: ubuntu-latest
+    timeout-minutes: 60
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1   # v7.0.1
+
+      - uses: actions/setup-python@5fda3b95a4ea91299a34e894583c3862153e4b97   # v7.0.0
+        with:
+          python-version: "3.12"
+
+      - uses: actions/setup-node@820762786026740c76f36085b0efc47a31fe5020   # v7.0.0
+        with:
+          node-version: "22"
+
+      - uses: actions/setup-java@de7274f081f381c8f8158605e0321c36c376e2e6   # v6.0.1
+        with:
+          distribution: temurin
+          java-version: "25"
+
+      - name: Install
+        run: |
+          pip install --quiet --require-hashes -r requirements.lock
+          pip install --quiet --no-deps .
+          npm ci --prefix body
+
+      - name: Start the server
+        run: |
+          time craft-arena-bench server download
+          craft-arena-bench server start
+          craft-arena-bench server status
+
+      - name: Serve the random policy as a local endpoint
+        run: |
+          nohup python adapters/local_server.py --policy random --port 9001 --quiet > endpoint.log 2>&1 &
+          sleep 1
+
+      - name: Play Sumo
+        env:
+          MATCHES: ${{ inputs.matches }}
+        run: time craft-arena-bench play --mode sumo --tier 5 --a house --b http://127.0.0.1:9001 --matches "$MATCHES" --seed 0 --out runs
+
+      - name: Play Block UHC
+        env:
+          MATCHES: ${{ inputs.matches }}
+        run: time craft-arena-bench play --mode block_uhc --tier 5 --a house --b http://127.0.0.1:9001 --matches "$MATCHES" --seed 0 --out runs
+
+      - name: Summarise
+        run: python dev/summarise_runs.py runs
+
+      - name: Stop the server
+        if: always()
+        run: craft-arena-bench server stop || true
+
+      - uses: actions/upload-artifact@043fb46d1a93c77aae656e7c1c64a875d1fc6a0a   # v7.0.1
+        if: always()
+        with:
+          name: measure-logs
+          path: |
+            runs/*.json
+            server/server.log
+            endpoint.log
+          retention-days: 7
