@@ -15,6 +15,6 @@
   ],
   "interface_version": 1,
   "submitted": "2026-10-04",
-  "description": "The scripted reference bot, version 2 (5 Oct 2026), one per mode. Sumo: constant sprint pressure with rim awareness. Block UHC: sword in melee, bow only at range, lava trap for a charger, water when burning. Deterministic given the seed. The anchor across seasons.",
+  "description": "The scripted reference bot, version 2.1 (6 Oct 2026), one per mode. Sumo: constant sprint pressure, sidesteps an incoming charge at the rim. Block UHC: sword in melee, bow only at range, lava trap for a charger, water when burning. Deterministic given the seed. The anchor across seasons.",
   "house": true
 }

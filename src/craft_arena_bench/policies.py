@@ -25,10 +25,12 @@ class RandomPolicy:
 
 
 class HouseSumo:
-    """The scripted Sumo house bot, version 2: constant sprint pressure, with rim awareness.
+    """The scripted Sumo house bot, version 2.1: constant sprint pressure.
 
-    Pushing wins Sumo slowly (a circling opponent is pushed a little on every hit), so the default is `rush`. The
-    exceptions are about the rim: never trade with our back to it, and sidestep a charge towards the centre.
+    Pushing wins Sumo slowly (a circling opponent is pushed a little on every hit), and whoever stops sprinting loses
+    the push battle, so the bot rushes whenever the opponent is in reach, wherever it stands. The one exception: a
+    charge that has not arrived yet, with the rim at our back, is sidestepped towards the centre so the sprint hit
+    misses. Version 2 strafed in reach at the rim and was pushed off by a rusher 12 times in 20.
     """
 
     name = "house-sumo"
@@ -37,17 +39,9 @@ class HouseSumo:
         me, opp, arena = request["self"], request["opponent"], request["arena"]
         dist = opp["distance"] if opp["distance"] is not None else 99.0
         my_edge, opp_edge = arena["my_edge_distance"], arena["opponent_edge_distance"]
-        inside = my_edge >= opp_edge + 0.5  # we are closer to the centre than they are
-        closing = _closing_speed(me, opp)
-        near_rim = my_edge < 3.0
-        # A charge is coming and the rim is behind us: step aside, towards the centre.
-        if near_rim and not inside and closing > 0.15 and dist < 4.0:
+        inside = my_edge >= opp_edge + 0.5
+        if my_edge < 3.0 and not inside and 3.5 < dist < 5.0 and _closing_speed(me, opp) > 0.15:
             return _strafe_towards_centre(me, opp, arena)
-        # In reach with our back to the rim and them inside: circle in before trading.
-        if near_rim and not inside and dist <= 3.5:
-            return _strafe_towards_centre(me, opp, arena)
-        if dist < 6.0 and request["decision"] % 9 == 0:
-            return "feint"
         return "rush"
 
 
