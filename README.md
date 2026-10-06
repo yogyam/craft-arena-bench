@@ -26,7 +26,7 @@ The leaderboard will be at https://yogyam.github.io/craft-arena-bench/ once the 
 
 Every match's first recordings can be watched in the browser from the pairing grid, or here as a GIF:
 
-<p align="center"><img src="docs/images/replay.gif" alt="A recorded match, seen from above: two bots, their health bars and the intent each is carrying out" width="600"></p>
+<p align="center"><img src="docs/images/replay.gif" alt="A Block UHC match at 1 Hz, seen from above at half speed: the house bot and Claude Haiku 4.5 close, trade sword hits and one falls" width="440"> <img src="docs/images/replay-sumo.gif" alt="A Sumo match at 2 Hz at half speed: the house bot pushes Qwen 2.5 3B off the platform" width="440"></p>
 
 ## Running it locally
 

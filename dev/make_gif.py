@@ -97,11 +97,34 @@ def main() -> int:
     p.add_argument("--speed", type=float, default=1.0, help="Playback speed")
     p.add_argument("--start", type=float, default=0.0, help="Seconds of play to skip at the start")
     p.add_argument("--end", type=float, default=None, help="Seconds of play to stop at")
+    p.add_argument("--names", default=None, help="Labels for A and B, comma-separated (default: the recorded names)")
     args = p.parse_args()
     doc = json.load(gzip.open(args.replays_file, "rt"))
+    if "replays" not in doc:
+        # A single match as `craft-arena-bench play` writes it: wrap it the way the service's pair files do.
+        import sys
+
+        sys.path.insert(0, "src")
+        from craft_arena_bench.arena import make_arena
+
+        arena = make_arena(doc["meta"]["mode"])
+        bounds = arena.platform if doc["meta"]["mode"] == "sumo" else arena.bounds
+        doc = {
+            "mode": doc["meta"]["mode"],
+            "tier_hz": doc["meta"]["tier_hz"],
+            "arena": {
+                "min": list(bounds.min),
+                "max": list(bounds.max),
+                "kind": "platform" if doc["meta"]["mode"] == "sumo" else "walls",
+            },
+            "replays": [doc],
+        }
     replay = doc["replays"][args.match]
     frames = [f for f in replay["frames"] if f[0] >= args.start * 20 and (args.end is None or f[0] <= args.end * 20)]
     replay = dict(replay, frames=frames)
+    if args.names:
+        a_name, b_name = (n.strip() for n in args.names.split(",", 1))
+        replay["meta"] = dict(replay["meta"], a=a_name, b=b_name)
     images = render(doc, replay, args.width, args.every, args.speed, hold_frames=int(10 / args.every))
     duration = int(1000 * args.every / 20 / args.speed)
     Path(args.out).parent.mkdir(parents=True, exist_ok=True)
