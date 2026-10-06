@@ -1,0 +1,48 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1040" height="300" viewBox="0 0 1040 300" font-family="system-ui, -apple-system, Segoe UI, sans-serif" font-size="14">
+  <defs>
+    <marker id="arrow" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="8" markerHeight="8" orient="auto-start-reverse"><path d="M0,0 L10,5 L0,10 z" fill="#52514e"/></marker>
+    <style>
+      .box { fill: #fcfcfb; stroke: #52514e; stroke-width: 1.5; rx: 10; }
+      .entrant { fill: #d5e5f9; stroke: #2a78d6; }
+      .title { font-weight: 700; font-size: 15px; fill: #0b0b0b; }
+      .sub { fill: #52514e; font-size: 12.5px; }
+      .link { stroke: #52514e; stroke-width: 1.5; marker-end: url(#arrow); marker-start: url(#arrow); }
+      .label { fill: #52514e; font-size: 12px; text-anchor: middle; }
+    </style>
+  </defs>
+  <rect x="20" y="70" width="200" height="110" class="box entrant"/>
+  <text x="120" y="100" text-anchor="middle" class="title">Entrant's endpoint</text>
+  <text x="120" y="122" text-anchor="middle" class="sub">any model, anywhere</text>
+  <text x="120" y="140" text-anchor="middle" class="sub">GET /health · POST /decide</text>
+  <text x="120" y="158" text-anchor="middle" class="sub">answers one action id</text>
+
+  <rect x="330" y="70" width="200" height="110" class="box"/>
+  <text x="430" y="100" text-anchor="middle" class="title">Harness (Python)</text>
+  <text x="430" y="122" text-anchor="middle" class="sub">tier clock · state · referee</text>
+  <text x="430" y="140" text-anchor="middle" class="sub">legal actions · replays</text>
+  <text x="430" y="158" text-anchor="middle" class="sub">late answers keep the intent</text>
+
+  <rect x="640" y="70" width="150" height="110" class="box"/>
+  <text x="715" y="100" text-anchor="middle" class="title">Body (Node)</text>
+  <text x="715" y="122" text-anchor="middle" class="sub">Mineflayer client</text>
+  <text x="715" y="140" text-anchor="middle" class="sub">reflexes at 20 Hz</text>
+  <text x="715" y="158" text-anchor="middle" class="sub">executes the intent</text>
+
+  <rect x="880" y="70" width="130" height="110" class="box"/>
+  <text x="945" y="100" text-anchor="middle" class="title">Paper server</text>
+  <text x="945" y="122" text-anchor="middle" class="sub">Minecraft 26.1</text>
+  <text x="945" y="140" text-anchor="middle" class="sub">real combat</text>
+  <text x="945" y="158" text-anchor="middle" class="sub">arenas by /fill</text>
+
+  <line x1="226" y1="125" x2="324" y2="125" class="link"/>
+  <text x="275" y="110" class="label">HTTPS JSON</text>
+  <text x="275" y="150" class="label">1, 2 or 5 Hz</text>
+  <line x1="536" y1="125" x2="634" y2="125" class="link"/>
+  <text x="585" y="110" class="label">websocket</text>
+  <text x="585" y="150" class="label">intent · state</text>
+  <line x1="796" y1="125" x2="874" y2="125" class="link"/>
+  <text x="835" y="110" class="label">MC protocol</text>
+
+  <text x="520" y="230" text-anchor="middle" class="sub">One body per bot, two bots per match. The entrant's side ends at the endpoint: nothing of theirs runs on the scoring service.</text>
+  <text x="520" y="252" text-anchor="middle" class="sub">The scoring service plays every pair on free GitHub Actions runners and publishes ratings, latencies and replays to a static site.</text>
+</svg>

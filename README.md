@@ -10,13 +10,23 @@ What makes it a benchmark rather than a demo is the **decision-rate tier**. A mo
 
 The leaderboard will be at https://yogyam.github.io/craft-arena-bench/ once the first pairs are played.
 
-## How it will work
+<p align="center"><a href="https://yogyam.github.io/craft-arena-bench/"><img src="docs/images/leaderboard.png" alt="The CraftArenaBench leaderboard: one table per mode and tier, with latency and late-answer columns and a pairing grid" width="800"></a></p>
+
+## How it works
+
+<p align="center"><img src="docs/images/architecture.svg" alt="The entrant's endpoint talks HTTPS JSON to the harness, which drives a Mineflayer body on a Paper server" width="900"></p>
 
 1. **Everyone gets the same view.** At each decision the endpoint receives the fight as JSON (positions, health, held items, recent events, the legal actions) and as plain text, and answers with one action id. See [docs/INTERFACE.md](docs/INTERFACE.md).
 2. **The body plays between decisions.** It aims, swings, dodges arrows and keeps away from lava on its own; the model chooses the intent (rush, strafe, retreat, shoot, wall off, bucket).
 3. **You host the model.** Any model, any size, anywhere: an API, a local model behind a tunnel, a GPU box. No weights change hands and no entrant code runs on the scorer.
 4. **Two modes at launch**, both 1v1: Sumo (no weapons, knock the other bot off a platform) and Block UHC (sword, bow, buckets, blocks, last one standing).
 5. **Ratings per tier and mode**, with confidence intervals, next to the endpoint's measured latency. A scripted house bot is always on the board.
+
+<p align="center"><img src="docs/images/tiers.svg" alt="One second of play: the body acts on all 20 ticks; the model is asked once, twice or five times, with a budget for each answer" width="900"></p>
+
+Every match's first recordings can be watched in the browser from the pairing grid, or here as a GIF:
+
+<p align="center"><img src="docs/images/replay.gif" alt="A recorded match, seen from above: two bots, their health bars and the intent each is carrying out" width="600"></p>
 
 ## Running it locally
 
