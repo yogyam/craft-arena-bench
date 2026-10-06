@@ -5,6 +5,8 @@ Dates are when the change reached `main`. Versions of the interface and mode set
 ## Unreleased
 
 ### Service (5 Oct 2026)
+- First results published: two dry-run entrants (Qwen 2.5 3B via Ollama at 2 Hz, Claude Haiku 4.5 at 1 Hz) against the house bot on all four boards, 80 matches.
+- Endpoint connections are warmed before each match; forfeits are judged from the 30th decision.
 - A 1 Hz tier (900 ms budget) for models behind remote APIs; season 1 opens 1, 2 and 5 Hz.
 - Repository public at https://github.com/yogyam/craft-arena-bench; leaderboard at https://yogyam.github.io/craft-arena-bench/.
 - Scoring service: manifests and pull request checks, pairings per board, Bradley-Terry with bootstrap intervals, result validation, static site, replay viewer, workflows.
