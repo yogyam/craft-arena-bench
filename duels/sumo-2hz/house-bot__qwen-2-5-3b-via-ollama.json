@@ -3,7 +3,7 @@
  "b": "qwen-2-5-3b-via-ollama",
  "mode": "sumo",
  "tier_hz": 2,
- "a_manifest_sha256": "32327d18a9c007876ad2c86f6c457a905ca691a1c618d9eb8decbc670127430c",
+ "a_manifest_sha256": "dac800489d98a013d374b3bd5f85ced2218c5d0acf0aaa78054565df436b52ef",
  "b_manifest_sha256": "a8b3300b179cb967b614006fe44f7f3a5d2f1df1bab778d1d77b81161c9b143c",
  "season": 1,
  "interface_version": 1,
@@ -31,7 +31,7 @@
   100218,
   100219
  ],
- "played_at": "2026-10-06T02:24:26Z",
+ "played_at": "2026-10-06T03:11:18Z",
  "benchmark_version": "0.0.1",
  "server": {
   "minecraft": "26.1.2",
@@ -45,20 +45,20 @@
   "numpy": "2.5.3",
   "mineflayer": "4.39.0"
  },
- "a_points": 10.0,
- "b_points": 10.0,
- "a_wins": 0,
+ "a_points": 19.5,
+ "b_points": 0.5,
+ "a_wins": 19,
  "b_wins": 0,
- "draws": 20,
+ "draws": 1,
  "a_latency": {
   "median_ms": 0.0,
   "late_fraction": 0.0,
-  "asked": 2400
+  "asked": 672
  },
  "b_latency": {
-  "median_ms": 141.3,
-  "late_fraction": 0.0037,
-  "asked": 2400
+  "median_ms": 201.6,
+  "late_fraction": 0.3229,
+  "asked": 672
  },
  "matches": [
   {
@@ -83,8 +83,8 @@
     "applied": 118,
     "late_or_missing": 1,
     "late_fraction": 0.0083,
-    "median_ms": 143.6,
-    "p90_ms": 213.6
+    "median_ms": 189.9,
+    "p90_ms": 274.8
    },
    "a_events": {},
    "b_events": {}
@@ -92,27 +92,27 @@
   {
    "seed": 100201,
    "a_on_spawn": "B",
-   "winner": null,
-   "reason": "cap",
-   "seconds": 60.0,
-   "decisions": 120,
+   "winner": "a",
+   "reason": "forfeit",
+   "seconds": 33.9,
+   "decisions": 67,
    "a_health": 20,
    "b_health": 20,
    "a_stats": {
-    "asked": 120,
-    "applied": 119,
+    "asked": 67,
+    "applied": 67,
     "late_or_missing": 0,
     "late_fraction": 0.0,
     "median_ms": 0.0,
     "p90_ms": 0.0
    },
    "b_stats": {
-    "asked": 120,
-    "applied": 117,
-    "late_or_missing": 2,
-    "late_fraction": 0.0167,
-    "median_ms": 143.2,
-    "p90_ms": 213.1
+    "asked": 67,
+    "applied": 53,
+    "late_or_missing": 14,
+    "late_fraction": 0.209,
+    "median_ms": 193.1,
+    "p90_ms": 337.3
    },
    "a_events": {},
    "b_events": {}
@@ -120,27 +120,27 @@
   {
    "seed": 100202,
    "a_on_spawn": "A",
-   "winner": null,
-   "reason": "cap",
-   "seconds": 60.0,
-   "decisions": 120,
+   "winner": "a",
+   "reason": "forfeit",
+   "seconds": 16.95,
+   "decisions": 33,
    "a_health": 20,
    "b_health": 20,
    "a_stats": {
-    "asked": 120,
-    "applied": 119,
+    "asked": 33,
+    "applied": 33,
     "late_or_missing": 0,
     "late_fraction": 0.0,
     "median_ms": 0.0,
     "p90_ms": 0.0
    },
    "b_stats": {
-    "asked": 120,
-    "applied": 119,
-    "late_or_missing": 0,
-    "late_fraction": 0.0,
-    "median_ms": 144.2,
-    "p90_ms": 198.4
+    "asked": 33,
+    "applied": 26,
+    "late_or_missing": 7,
+    "late_fraction": 0.2121,
+    "median_ms": 193.5,
+    "p90_ms": 400.5
    },
    "a_events": {},
    "b_events": {}
@@ -148,27 +148,27 @@
   {
    "seed": 100203,
    "a_on_spawn": "B",
-   "winner": null,
-   "reason": "cap",
-   "seconds": 60.0,
-   "decisions": 120,
+   "winner": "a",
+   "reason": "forfeit",
+   "seconds": 15.0,
+   "decisions": 30,
    "a_health": 20,
    "b_health": 20,
    "a_stats": {
-    "asked": 120,
-    "applied": 119,
+    "asked": 30,
+    "applied": 29,
     "late_or_missing": 0,
     "late_fraction": 0.0,
     "median_ms": 0.0,
     "p90_ms": 0.0
    },
    "b_stats": {
-    "asked": 120,
-    "applied": 119,
-    "late_or_missing": 0,
-    "late_fraction": 0.0,
-    "median_ms": 146.1,
-    "p90_ms": 206.6
+    "asked": 30,
+    "applied": 13,
+    "late_or_missing": 16,
+    "late_fraction": 0.5333,
+    "median_ms": 196.8,
+    "p90_ms": 400.9
    },
    "a_events": {},
    "b_events": {}
@@ -176,27 +176,27 @@
   {
    "seed": 100204,
    "a_on_spawn": "A",
-   "winner": null,
-   "reason": "cap",
-   "seconds": 60.0,
-   "decisions": 120,
+   "winner": "a",
+   "reason": "forfeit",
+   "seconds": 15.0,
+   "decisions": 30,
    "a_health": 20,
    "b_health": 20,
    "a_stats": {
-    "asked": 120,
-    "applied": 119,
+    "asked": 30,
+    "applied": 29,
     "late_or_missing": 0,
     "late_fraction": 0.0,
     "median_ms": 0.0,
     "p90_ms": 0.0
    },
    "b_stats": {
-    "asked": 120,
-    "applied": 116,
-    "late_or_missing": 3,
-    "late_fraction": 0.025,
-    "median_ms": 144.1,
-    "p90_ms": 208.3
+    "asked": 30,
+    "applied": 16,
+    "late_or_missing": 13,
+    "late_fraction": 0.4333,
+    "median_ms": 199.1,
+    "p90_ms": 401.0
    },
    "a_events": {},
    "b_events": {}
@@ -204,27 +204,27 @@
   {
    "seed": 100205,
    "a_on_spawn": "B",
-   "winner": null,
-   "reason": "cap",
-   "seconds": 60.0,
-   "decisions": 120,
+   "winner": "a",
+   "reason": "forfeit",
+   "seconds": 18.4,
+   "decisions": 36,
    "a_health": 20,
    "b_health": 20,
    "a_stats": {
-    "asked": 120,
-    "applied": 119,
+    "asked": 36,
+    "applied": 36,
     "late_or_missing": 0,
     "late_fraction": 0.0,
     "median_ms": 0.0,
     "p90_ms": 0.0
    },
    "b_stats": {
-    "asked": 120,
-    "applied": 119,
-    "late_or_missing": 0,
-    "late_fraction": 0.0,
-    "median_ms": 143.0,
-    "p90_ms": 209.0
+    "asked": 36,
+    "applied": 28,
+    "late_or_missing": 8,
+    "late_fraction": 0.2222,
+    "median_ms": 200.0,
+    "p90_ms": 401.1
    },
    "a_events": {},
    "b_events": {}
@@ -232,27 +232,27 @@
   {
    "seed": 100206,
    "a_on_spawn": "A",
-   "winner": null,
-   "reason": "cap",
-   "seconds": 60.0,
-   "decisions": 120,
+   "winner": "a",
+   "reason": "forfeit",
+   "seconds": 15.0,
+   "decisions": 30,
    "a_health": 20,
    "b_health": 20,
    "a_stats": {
-    "asked": 120,
-    "applied": 119,
+    "asked": 30,
+    "applied": 29,
     "late_or_missing": 0,
     "late_fraction": 0.0,
     "median_ms": 0.0,
     "p90_ms": 0.0
    },
    "b_stats": {
-    "asked": 120,
-    "applied": 119,
-    "late_or_missing": 0,
-    "late_fraction": 0.0,
-    "median_ms": 142.3,
-    "p90_ms": 207.7
+    "asked": 30,
+    "applied": 19,
+    "late_or_missing": 10,
+    "late_fraction": 0.3333,
+    "median_ms": 204.1,
+    "p90_ms": 401.1
    },
    "a_events": {},
    "b_events": {}
@@ -260,27 +260,27 @@
   {
    "seed": 100207,
    "a_on_spawn": "B",
-   "winner": null,
-   "reason": "cap",
-   "seconds": 60.0,
-   "decisions": 120,
+   "winner": "a",
+   "reason": "fall",
+   "seconds": 44.2,
+   "decisions": 88,
    "a_health": 20,
    "b_health": 20,
    "a_stats": {
-    "asked": 120,
-    "applied": 119,
+    "asked": 88,
+    "applied": 88,
     "late_or_missing": 0,
     "late_fraction": 0.0,
     "median_ms": 0.0,
     "p90_ms": 0.0
    },
    "b_stats": {
-    "asked": 120,
-    "applied": 119,
-    "late_or_missing": 0,
-    "late_fraction": 0.0,
-    "median_ms": 141.8,
-    "p90_ms": 204.4
+    "asked": 88,
+    "applied": 84,
+    "late_or_missing": 4,
+    "late_fraction": 0.0455,
+    "median_ms": 199.5,
+    "p90_ms": 401.0
    },
    "a_events": {},
    "b_events": {}
@@ -288,27 +288,27 @@
   {
    "seed": 100208,
    "a_on_spawn": "A",
-   "winner": null,
-   "reason": "cap",
-   "seconds": 60.0,
-   "decisions": 120,
+   "winner": "a",
+   "reason": "forfeit",
+   "seconds": 59.45,
+   "decisions": 118,
    "a_health": 20,
    "b_health": 20,
    "a_stats": {
-    "asked": 120,
-    "applied": 119,
+    "asked": 118,
+    "applied": 118,
     "late_or_missing": 0,
     "late_fraction": 0.0,
     "median_ms": 0.0,
     "p90_ms": 0.0
    },
    "b_stats": {
-    "asked": 120,
-    "applied": 119,
-    "late_or_missing": 0,
-    "late_fraction": 0.0,
-    "median_ms": 141.3,
-    "p90_ms": 202.3
+    "asked": 118,
+    "applied": 94,
+    "late_or_missing": 24,
+    "late_fraction": 0.2034,
+    "median_ms": 200.2,
+    "p90_ms": 401.0
    },
    "a_events": {},
    "b_events": {}
@@ -316,27 +316,27 @@
   {
    "seed": 100209,
    "a_on_spawn": "B",
-   "winner": null,
-   "reason": "cap",
-   "seconds": 60.0,
-   "decisions": 120,
+   "winner": "a",
+   "reason": "fall",
+   "seconds": 6.4,
+   "decisions": 12,
    "a_health": 20,
    "b_health": 20,
    "a_stats": {
-    "asked": 120,
-    "applied": 119,
+    "asked": 12,
+    "applied": 12,
     "late_or_missing": 0,
     "late_fraction": 0.0,
     "median_ms": 0.0,
     "p90_ms": 0.0
    },
    "b_stats": {
-    "asked": 120,
-    "applied": 119,
-    "late_or_missing": 0,
-    "late_fraction": 0.0,
-    "median_ms": 141.3,
-    "p90_ms": 202.3
+    "asked": 12,
+    "applied": 0,
+    "late_or_missing": 12,
+    "late_fraction": 1.0,
+    "median_ms": 201.1,
+    "p90_ms": 401.1
    },
    "a_events": {},
    "b_events": {}
@@ -344,27 +344,27 @@
   {
    "seed": 100210,
    "a_on_spawn": "A",
-   "winner": null,
-   "reason": "cap",
-   "seconds": 60.0,
-   "decisions": 120,
+   "winner": "a",
+   "reason": "fall",
+   "seconds": 6.4,
+   "decisions": 12,
    "a_health": 20,
    "b_health": 20,
    "a_stats": {
-    "asked": 120,
-    "applied": 119,
+    "asked": 12,
+    "applied": 12,
     "late_or_missing": 0,
     "late_fraction": 0.0,
     "median_ms": 0.0,
     "p90_ms": 0.0
    },
    "b_stats": {
-    "asked": 120,
-    "applied": 119,
-    "late_or_missing": 0,
-    "late_fraction": 0.0,
-    "median_ms": 141.2,
-    "p90_ms": 202.3
+    "asked": 12,
+    "applied": 0,
+    "late_or_missing": 12,
+    "late_fraction": 1.0,
+    "median_ms": 201.6,
+    "p90_ms": 401.1
    },
    "a_events": {},
    "b_events": {}
@@ -372,27 +372,27 @@
   {
    "seed": 100211,
    "a_on_spawn": "B",
-   "winner": null,
-   "reason": "cap",
-   "seconds": 60.0,
-   "decisions": 120,
+   "winner": "a",
+   "reason": "fall",
+   "seconds": 4.4,
+   "decisions": 8,
    "a_health": 20,
    "b_health": 20,
    "a_stats": {
-    "asked": 120,
-    "applied": 119,
+    "asked": 8,
+    "applied": 8,
     "late_or_missing": 0,
     "late_fraction": 0.0,
     "median_ms": 0.0,
     "p90_ms": 0.0
    },
    "b_stats": {
-    "asked": 120,
-    "applied": 119,
-    "late_or_missing": 0,
-    "late_fraction": 0.0,
-    "median_ms": 140.8,
-    "p90_ms": 200.4
+    "asked": 8,
+    "applied": 0,
+    "late_or_missing": 8,
+    "late_fraction": 1.0,
+    "median_ms": 201.6,
+    "p90_ms": 401.1
    },
    "a_events": {},
    "b_events": {}
@@ -400,27 +400,27 @@
   {
    "seed": 100212,
    "a_on_spawn": "A",
-   "winner": null,
-   "reason": "cap",
-   "seconds": 60.0,
-   "decisions": 120,
+   "winner": "a",
+   "reason": "fall",
+   "seconds": 6.4,
+   "decisions": 12,
    "a_health": 20,
    "b_health": 20,
    "a_stats": {
-    "asked": 120,
-    "applied": 119,
+    "asked": 12,
+    "applied": 12,
     "late_or_missing": 0,
     "late_fraction": 0.0,
     "median_ms": 0.0,
     "p90_ms": 0.0
    },
    "b_stats": {
-    "asked": 120,
-    "applied": 119,
-    "late_or_missing": 0,
-    "late_fraction": 0.0,
-    "median_ms": 141.1,
-    "p90_ms": 199.7
+    "asked": 12,
+    "applied": 0,
+    "late_or_missing": 12,
+    "late_fraction": 1.0,
+    "median_ms": 201.6,
+    "p90_ms": 401.1
    },
    "a_events": {},
    "b_events": {}
@@ -428,27 +428,27 @@
   {
    "seed": 100213,
    "a_on_spawn": "B",
-   "winner": null,
-   "reason": "cap",
-   "seconds": 60.0,
-   "decisions": 120,
+   "winner": "a",
+   "reason": "fall",
+   "seconds": 6.35,
+   "decisions": 12,
    "a_health": 20,
    "b_health": 20,
    "a_stats": {
-    "asked": 120,
-    "applied": 119,
+    "asked": 12,
+    "applied": 12,
     "late_or_missing": 0,
     "late_fraction": 0.0,
     "median_ms": 0.0,
     "p90_ms": 0.0
    },
    "b_stats": {
-    "asked": 120,
-    "applied": 119,
-    "late_or_missing": 0,
-    "late_fraction": 0.0,
-    "median_ms": 140.9,
-    "p90_ms": 198.4
+    "asked": 12,
+    "applied": 0,
+    "late_or_missing": 12,
+    "late_fraction": 1.0,
+    "median_ms": 201.6,
+    "p90_ms": 401.1
    },
    "a_events": {},
    "b_events": {}
@@ -456,27 +456,27 @@
   {
    "seed": 100214,
    "a_on_spawn": "A",
-   "winner": null,
-   "reason": "cap",
-   "seconds": 60.0,
-   "decisions": 120,
+   "winner": "a",
+   "reason": "fall",
+   "seconds": 6.35,
+   "decisions": 12,
    "a_health": 20,
    "b_health": 20,
    "a_stats": {
-    "asked": 120,
-    "applied": 119,
+    "asked": 12,
+    "applied": 12,
     "late_or_missing": 0,
     "late_fraction": 0.0,
     "median_ms": 0.0,
     "p90_ms": 0.0
    },
    "b_stats": {
-    "asked": 120,
-    "applied": 116,
-    "late_or_missing": 3,
-    "late_fraction": 0.025,
-    "median_ms": 140.8,
-    "p90_ms": 198.8
+    "asked": 12,
+    "applied": 0,
+    "late_or_missing": 12,
+    "late_fraction": 1.0,
+    "median_ms": 201.6,
+    "p90_ms": 401.1
    },
    "a_events": {},
    "b_events": {}
@@ -484,27 +484,27 @@
   {
    "seed": 100215,
    "a_on_spawn": "B",
-   "winner": null,
-   "reason": "cap",
-   "seconds": 60.0,
-   "decisions": 120,
+   "winner": "a",
+   "reason": "fall",
+   "seconds": 6.3,
+   "decisions": 12,
    "a_health": 20,
    "b_health": 20,
    "a_stats": {
-    "asked": 120,
-    "applied": 119,
+    "asked": 12,
+    "applied": 12,
     "late_or_missing": 0,
     "late_fraction": 0.0,
     "median_ms": 0.0,
     "p90_ms": 0.0
    },
    "b_stats": {
-    "asked": 120,
-    "applied": 119,
-    "late_or_missing": 0,
-    "late_fraction": 0.0,
-    "median_ms": 140.8,
-    "p90_ms": 198.9
+    "asked": 12,
+    "applied": 0,
+    "late_or_missing": 12,
+    "late_fraction": 1.0,
+    "median_ms": 201.6,
+    "p90_ms": 401.1
    },
    "a_events": {},
    "b_events": {}
@@ -512,27 +512,27 @@
   {
    "seed": 100216,
    "a_on_spawn": "A",
-   "winner": null,
-   "reason": "cap",
-   "seconds": 60.0,
-   "decisions": 120,
+   "winner": "a",
+   "reason": "fall",
+   "seconds": 4.45,
+   "decisions": 8,
    "a_health": 20,
    "b_health": 20,
    "a_stats": {
-    "asked": 120,
-    "applied": 119,
+    "asked": 8,
+    "applied": 8,
     "late_or_missing": 0,
     "late_fraction": 0.0,
     "median_ms": 0.0,
     "p90_ms": 0.0
    },
    "b_stats": {
-    "asked": 120,
-    "applied": 119,
-    "late_or_missing": 0,
-    "late_fraction": 0.0,
-    "median_ms": 140.8,
-    "p90_ms": 198.4
+    "asked": 8,
+    "applied": 0,
+    "late_or_missing": 8,
+    "late_fraction": 1.0,
+    "median_ms": 201.6,
+    "p90_ms": 401.1
    },
    "a_events": {},
    "b_events": {}
@@ -540,27 +540,27 @@
   {
    "seed": 100217,
    "a_on_spawn": "B",
-   "winner": null,
-   "reason": "cap",
-   "seconds": 60.0,
-   "decisions": 120,
+   "winner": "a",
+   "reason": "fall",
+   "seconds": 6.35,
+   "decisions": 12,
    "a_health": 20,
    "b_health": 20,
    "a_stats": {
-    "asked": 120,
-    "applied": 119,
+    "asked": 12,
+    "applied": 12,
     "late_or_missing": 0,
     "late_fraction": 0.0,
     "median_ms": 0.0,
     "p90_ms": 0.0
    },
    "b_stats": {
-    "asked": 120,
-    "applied": 119,
-    "late_or_missing": 0,
-    "late_fraction": 0.0,
-    "median_ms": 140.4,
-    "p90_ms": 197.2
+    "asked": 12,
+    "applied": 0,
+    "late_or_missing": 12,
+    "late_fraction": 1.0,
+    "median_ms": 201.6,
+    "p90_ms": 401.1
    },
    "a_events": {},
    "b_events": {}
@@ -568,27 +568,27 @@
   {
    "seed": 100218,
    "a_on_spawn": "A",
-   "winner": null,
-   "reason": "cap",
-   "seconds": 60.0,
-   "decisions": 120,
+   "winner": "a",
+   "reason": "fall",
+   "seconds": 6.4,
+   "decisions": 12,
    "a_health": 20,
    "b_health": 20,
    "a_stats": {
-    "asked": 120,
-    "applied": 119,
+    "asked": 12,
+    "applied": 12,
     "late_or_missing": 0,
     "late_fraction": 0.0,
     "median_ms": 0.0,
     "p90_ms": 0.0
    },
    "b_stats": {
-    "asked": 120,
-    "applied": 119,
-    "late_or_missing": 0,
-    "late_fraction": 0.0,
-    "median_ms": 140.6,
-    "p90_ms": 196.4
+    "asked": 12,
+    "applied": 0,
+    "late_or_missing": 12,
+    "late_fraction": 1.0,
+    "median_ms": 201.6,
+    "p90_ms": 401.1
    },
    "a_events": {},
    "b_events": {}
@@ -596,27 +596,27 @@
   {
    "seed": 100219,
    "a_on_spawn": "B",
-   "winner": null,
-   "reason": "cap",
-   "seconds": 60.0,
-   "decisions": 120,
+   "winner": "a",
+   "reason": "fall",
+   "seconds": 4.45,
+   "decisions": 8,
    "a_health": 20,
    "b_health": 20,
    "a_stats": {
-    "asked": 120,
-    "applied": 119,
+    "asked": 8,
+    "applied": 8,
     "late_or_missing": 0,
     "late_fraction": 0.0,
     "median_ms": 0.0,
     "p90_ms": 0.0
    },
    "b_stats": {
-    "asked": 120,
-    "applied": 119,
-    "late_or_missing": 0,
-    "late_fraction": 0.0,
-    "median_ms": 140.5,
-    "p90_ms": 197.2
+    "asked": 8,
+    "applied": 0,
+    "late_or_missing": 8,
+    "late_fraction": 1.0,
+    "median_ms": 201.6,
+    "p90_ms": 401.1
    },
    "a_events": {},
    "b_events": {}
