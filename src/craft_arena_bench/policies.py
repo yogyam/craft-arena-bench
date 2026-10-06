@@ -25,25 +25,40 @@ class RandomPolicy:
 
 
 class HouseSumo:
-    """The scripted Sumo house bot: charge when close, sidestep when the opponent charges, stay off the edge."""
+    """The scripted Sumo house bot, version 2: constant sprint pressure, with rim awareness.
+
+    Pushing wins Sumo slowly (a circling opponent is pushed a little on every hit), so the default is `rush`. The
+    exceptions are about the rim: never trade with our back to it, and sidestep a charge towards the centre.
+    """
 
     name = "house-sumo"
 
     def decide(self, request: dict) -> str:
         me, opp, arena = request["self"], request["opponent"], request["arena"]
         dist = opp["distance"] if opp["distance"] is not None else 99.0
-        # Near the edge with the opponent in reach: step sideways rather than trade knockback.
-        if arena["my_edge_distance"] < 1.5 and dist < 3.5:
-            return "strafe_left" if (request["decision"] // 2) % 2 == 0 else "strafe_right"
-        # The opponent is coming at us fast: sidestep so their sprint hit misses.
+        my_edge, opp_edge = arena["my_edge_distance"], arena["opponent_edge_distance"]
+        inside = my_edge >= opp_edge + 0.5  # we are closer to the centre than they are
         closing = _closing_speed(me, opp)
-        if closing > 0.15 and dist < 4.0:
-            return "strafe_right" if request["decision"] % 2 == 0 else "strafe_left"
-        if dist <= 3.0:
-            return "rush"
-        if dist < 6.0:
-            return "feint" if request["decision"] % 5 == 0 else "rush"
+        near_rim = my_edge < 3.0
+        # A charge is coming and the rim is behind us: step aside, towards the centre.
+        if near_rim and not inside and closing > 0.15 and dist < 4.0:
+            return _strafe_towards_centre(me, opp, arena)
+        # In reach with our back to the rim and them inside: circle in before trading.
+        if near_rim and not inside and dist <= 3.5:
+            return _strafe_towards_centre(me, opp, arena)
+        if dist < 6.0 and request["decision"] % 9 == 0:
+            return "feint"
         return "rush"
+
+
+def _strafe_towards_centre(me: dict, opp: dict, arena: dict) -> str:
+    """The body faces the opponent, so a strafe moves us sideways; pick the side that brings us nearer the centre."""
+    fx, fz = opp["pos"][0] - me["pos"][0], opp["pos"][2] - me["pos"][2]
+    norm = (fx * fx + fz * fz) ** 0.5 or 1.0
+    fx, fz = fx / norm, fz / norm
+    left = (fz, -fx)  # facing +z (yaw 0) puts our left hand towards +x
+    to_centre = (arena["center"][0] - me["pos"][0], arena["center"][2] - me["pos"][2])
+    return "strafe_left" if left[0] * to_centre[0] + left[1] * to_centre[1] >= 0 else "strafe_right"
 
 
 def _closing_speed(me: dict, opp: dict) -> float:
@@ -64,7 +79,11 @@ class Circler:
 
 
 class HouseUhc:
-    """The scripted Block UHC house bot: water when burning, bow at range, lava when losing up close, wall when hurt, otherwise sword."""
+    """The scripted Block UHC house bot, version 2.
+
+    Lessons from the first entrants: never draw the bow while a sprinting opponent is closing, never strafe in melee
+    (sprint hits win trades), pour lava only as a trap in a charging opponent's path, and get out of our own fire.
+    """
 
     name = "house-uhc"
 
@@ -73,18 +92,34 @@ class HouseUhc:
         me, opp, arena = request["self"], request["opponent"], request["arena"]
         dist = opp["distance"] if opp["distance"] is not None else 99.0
         hazards = arena.get("hazards_near") or []
-        if "bucket_water" in legal and hazards and hazards[0]["kind"] in ("lava", "fire") and hazards[0]["distance"] <= 1.5:
+        hazard = hazards[0] if hazards else None
+        closing = _closing_speed(me, opp)
+        behind = me["health"] < opp["health"]
+        # Burning, or standing next to lava: water first, whatever else is going on.
+        if "bucket_water" in legal and hazard and hazard["kind"] in ("lava", "fire") and hazard["distance"] <= 1.0:
             return "bucket_water"
-        if "bucket_lava" in legal and me["health"] + 4 < opp["health"]:
+        # Fire or lava close by and the fight is not on top of us: step away from it before anything else.
+        if hazard and hazard["kind"] in ("lava", "fire") and hazard["distance"] <= 2.0 and dist > 3.0:
+            return "retreat" if hazard["direction"] == "ahead" else "rush"
+        # A trap for a charger: lava in their path at 2.5 to 4 blocks, while they are still coming. The first charge
+        # of the match is the one to trap, whatever the health; later ones only when we are behind.
+        if (
+            "bucket_lava" in legal
+            and 2.5 <= dist <= 4.0
+            and closing > 0.1
+            and (behind or me["health"] >= 19 or me["health"] <= 12)
+        ):
             return "bucket_lava"
-        if "place_wall" in legal and me["health"] <= 8 and dist > 5 and opp.get("charging_bow"):
-            return "place_wall"
-        if "shoot_bow" in legal and dist >= 9 and not request["sudden_death"]:
-            return "shoot_bow"
-        if dist <= 3.0:
+        # In reach: sprint hits, nothing fancy.
+        if dist <= 3.5:
             return "rush"
-        if dist < 6 and request["decision"] % 3 == 0:
-            return "strafe_left" if (request["decision"] // 3) % 2 == 0 else "strafe_right"
+        # Mid range with an opponent drawing on us while we are hurt: wall off.
+        if "place_wall" in legal and me["health"] <= 8 and opp.get("charging_bow") and dist > 5:
+            return "place_wall"
+        # Shoot only when they are far and not coming, and never in the first seconds: at decision 1 nobody has a velocity yet,
+        # and a bow draw takes a second during which we neither move nor swing.
+        if "shoot_bow" in legal and dist >= 10 and closing <= 0.1 and request["decision"] > 3 and not request["sudden_death"]:
+            return "shoot_bow"
         return "rush"
 
 

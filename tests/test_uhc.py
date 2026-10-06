@@ -102,14 +102,31 @@ def test_referee_death_cap_and_health_tiebreak():
 
 def test_house_uhc_is_legal_and_sensible():
     house = HouseUhc()
-    assert house.decide(_req(_snap([100.5, -60, 100.5], distance=12.0), _snap([112.5, -60, 100.5]))) == "shoot_bow"
+    assert house.decide(_req(_snap([100.5, -60, 100.5], distance=12.0), _snap([112.5, -60, 100.5]), decision=5)) == "shoot_bow"
+    assert (
+        house.decide(_req(_snap([100.5, -60, 100.5], distance=12.0), _snap([112.5, -60, 100.5]), decision=1)) == "rush"
+    )  # no bow at the start
     burning = _req(
         _snap([100.5, -60, 100.5], distance=12.0, hazard={"kind": "lava", "distance": 1.0, "direction": "ahead"}),
         _snap([112.5, -60, 100.5]),
     )
     assert house.decide(burning) == "bucket_water"
-    losing_close = _req(_snap([100.5, -60, 100.5], health=6.0, distance=3.0), _snap([103.5, -60, 100.5], health=18.0))
-    assert house.decide(losing_close) == "bucket_lava"
+    standing = _req(_snap([100.5, -60, 100.5], health=6.0, distance=3.0), _snap([103.5, -60, 100.5], health=18.0))
+    assert house.decide(standing) == "rush"  # nobody is charging: no trap, just fight
+    charger = _snap([103.5, -60, 100.5], health=18.0)
+    charger["self"]["velocity"] = [-0.28, 0.0, 0.0]
+    assert house.decide(_req(_snap([100.5, -60, 100.5], health=6.0, distance=3.0), charger)) == "bucket_lava"
+    assert (
+        house.decide(_req(_snap([100.5, -60, 100.5], health=20.0, distance=3.0), charger)) == "bucket_lava"
+    )  # the first charge is trapped too
+    ahead_charger = _snap([103.5, -60, 100.5], health=10.0)
+    ahead_charger["self"]["velocity"] = [-0.28, 0.0, 0.0]
+    assert (
+        house.decide(_req(_snap([100.5, -60, 100.5], health=15.0, distance=3.0), ahead_charger)) == "rush"
+    )  # ahead, not the first charge: fight
+    far_charger = _snap([112.5, -60, 100.5])
+    far_charger["self"]["velocity"] = [-0.28, 0.0, 0.0]
+    assert house.decide(_req(_snap([100.5, -60, 100.5], distance=12.0), far_charger)) == "rush"  # no bow draw while they close
     assert house.decide(_req(_snap([100.5, -60, 100.5], distance=2.0), _snap([102.5, -60, 100.5]))) == "rush"
     for d in range(1, 30):
         r = _req(_snap([100.5, -60, 100.5], distance=5.0), _snap([105.5, -60, 100.5]), decision=d)

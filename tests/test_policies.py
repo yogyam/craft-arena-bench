@@ -61,10 +61,17 @@ def test_random_is_legal_and_seeded():
 def test_house_bot_charges_sidesteps_and_respects_the_edge():
     house = HouseSumo()
     assert house.decide(_req([0.5, -49, 0.5], [8.5, -49, 0.5])) == "rush"
-    # Opponent sprinting straight at us from 3 blocks: sidestep.
-    assert house.decide(_req([0.5, -49, 0.5], [3.5, -49, 0.5], opp_vel=(-0.28, 0, 0))).startswith("strafe_")
-    # On the edge with the opponent close: sidestep rather than trade.
-    assert house.decide(_req([-8.6, -49, 0.5], [-6.0, -49, 0.5])).startswith("strafe_")  # 0.4 from the -x edge at -9
+    # A charge while we are the inner bot: take the trade.
+    assert house.decide(_req([0.5, -49, 0.5], [3.5, -49, 0.5], opp_vel=(-0.28, 0, 0))) == "rush"
+    # A charge while our back is to the rim: sidestep towards the centre.
+    side = house.decide(_req([-7.5, -49, 0.5], [-4.5, -49, 0.5], opp_vel=(-0.28, 0, 0)))
+    assert side.startswith("strafe_")
+    # Mid-platform and not inside: still rush; pressure wins Sumo.
+    assert house.decide(_req([-3.0, -49, 0.5], [-1.0, -49, 0.5], opp_vel=(-0.28, 0, 0))) == "rush"
+    # On the rim with the opponent inside and in reach: circle in rather than push.
+    assert house.decide(_req([-8.6, -49, 0.5], [-6.0, -49, 0.5])).startswith("strafe_")
+    # In reach with the opponent nearer the rim than us: push.
+    assert house.decide(_req([-5.0, -49, 0.5], [-7.8, -49, 0.5])) == "rush"  # 0.4 from the -x edge at -9
     for d in range(1, 40):
         assert house.decide(_req([0.5, -49, 0.5], [3.0, -49, 0.5], decision=d)) in SUMO_ACTIONS
 
