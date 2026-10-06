@@ -1,0 +1,808 @@
+{
+ "a": "house-bot",
+ "b": "qwen-2-5-3b-via-ollama",
+ "mode": "block_uhc",
+ "tier_hz": 2,
+ "a_manifest_sha256": "68484a057e879354475c4255488fc0ecaf740cc929eb88eed29151e7b73f961c",
+ "b_manifest_sha256": "a8b3300b179cb967b614006fe44f7f3a5d2f1df1bab778d1d77b81161c9b143c",
+ "season": 1,
+ "interface_version": 1,
+ "mode_set_version": 1,
+ "matches_per_pair": 20,
+ "seeds": [
+  110200,
+  110201,
+  110202,
+  110203,
+  110204,
+  110205,
+  110206,
+  110207,
+  110208,
+  110209,
+  110210,
+  110211,
+  110212,
+  110213,
+  110214,
+  110215,
+  110216,
+  110217,
+  110218,
+  110219
+ ],
+ "played_at": "2026-10-06T00:03:11Z",
+ "benchmark_version": "0.0.1",
+ "server": {
+  "minecraft": "26.1.2",
+  "paper_build": 74
+ },
+ "libraries": {
+  "python": "3.12.14",
+  "platform": "linux",
+  "httpx": "0.28.1",
+  "websockets": "17.2",
+  "numpy": "2.5.3",
+  "mineflayer": "4.39.0"
+ },
+ "a_points": 13.5,
+ "b_points": 6.5,
+ "a_wins": 13,
+ "b_wins": 6,
+ "draws": 1,
+ "a_latency": {
+  "median_ms": 0.0,
+  "late_fraction": 0.0,
+  "asked": 746
+ },
+ "b_latency": {
+  "median_ms": 197.4,
+  "late_fraction": 0.0697,
+  "asked": 746
+ },
+ "matches": [
+  {
+   "seed": 110200,
+   "a_on_spawn": "A",
+   "winner": "a",
+   "reason": "death",
+   "seconds": 8.05,
+   "decisions": 16,
+   "a_health": 6.86,
+   "b_health": 0.0,
+   "a_stats": {
+    "asked": 16,
+    "applied": 16,
+    "late_or_missing": 0,
+    "late_fraction": 0.0,
+    "median_ms": 0.0,
+    "p90_ms": 0.0
+   },
+   "b_stats": {
+    "asked": 16,
+    "applied": 14,
+    "late_or_missing": 1,
+    "late_fraction": 0.0625,
+    "median_ms": 186.0,
+    "p90_ms": 368.0
+   },
+   "a_events": {
+    "dealt_damage:melee": 2,
+    "dealt_damage:other": 1,
+    "shot_arrow": 4,
+    "took_damage:melee": 2
+   },
+   "b_events": {
+    "dealt_damage:melee": 2,
+    "opponent_shot": 4,
+    "took_damage:melee": 2,
+    "took_damage:other": 1
+   }
+  },
+  {
+   "seed": 110201,
+   "a_on_spawn": "B",
+   "winner": "a",
+   "reason": "forfeit",
+   "seconds": 15.0,
+   "decisions": 30,
+   "a_health": 20,
+   "b_health": 20,
+   "a_stats": {
+    "asked": 30,
+    "applied": 29,
+    "late_or_missing": 0,
+    "late_fraction": 0.0,
+    "median_ms": 0.0,
+    "p90_ms": 0.0
+   },
+   "b_stats": {
+    "asked": 30,
+    "applied": 7,
+    "late_or_missing": 22,
+    "late_fraction": 0.7333,
+    "median_ms": 400.5,
+    "p90_ms": 401.3
+   },
+   "a_events": {
+    "opponent_shot": 9,
+    "shot_arrow": 12
+   },
+   "b_events": {
+    "opponent_shot": 12,
+    "shot_arrow": 9
+   }
+  },
+  {
+   "seed": 110202,
+   "a_on_spawn": "A",
+   "winner": "a",
+   "reason": "death",
+   "seconds": 19.95,
+   "decisions": 39,
+   "a_health": 11.161,
+   "b_health": 0.0,
+   "a_stats": {
+    "asked": 39,
+    "applied": 39,
+    "late_or_missing": 0,
+    "late_fraction": 0.0,
+    "median_ms": 0.0,
+    "p90_ms": 0.0
+   },
+   "b_stats": {
+    "asked": 39,
+    "applied": 39,
+    "late_or_missing": 0,
+    "late_fraction": 0.0,
+    "median_ms": 202.1,
+    "p90_ms": 401.0
+   },
+   "a_events": {
+    "dealt_damage:melee": 3,
+    "opponent_shot": 8,
+    "shot_arrow": 14,
+    "took_damage:melee": 2
+   },
+   "b_events": {
+    "dealt_damage:melee": 2,
+    "dodged_arrow": 4,
+    "opponent_shot": 14,
+    "shot_arrow": 8,
+    "took_damage:melee": 3
+   }
+  },
+  {
+   "seed": 110203,
+   "a_on_spawn": "B",
+   "winner": "b",
+   "reason": "death",
+   "seconds": 7.9,
+   "decisions": 15,
+   "a_health": 0.0,
+   "b_health": 6,
+   "a_stats": {
+    "asked": 15,
+    "applied": 15,
+    "late_or_missing": 0,
+    "late_fraction": 0.0,
+    "median_ms": 0.0,
+    "p90_ms": 0.0
+   },
+   "b_stats": {
+    "asked": 15,
+    "applied": 14,
+    "late_or_missing": 1,
+    "late_fraction": 0.0667,
+    "median_ms": 204.2,
+    "p90_ms": 401.0
+   },
+   "a_events": {
+    "dealt_damage:melee": 2,
+    "shot_arrow": 4,
+    "took_damage:melee": 2,
+    "took_damage:other": 1
+   },
+   "b_events": {
+    "dealt_damage:melee": 2,
+    "dealt_damage:other": 1,
+    "opponent_shot": 4,
+    "took_damage:melee": 2
+   }
+  },
+  {
+   "seed": 110204,
+   "a_on_spawn": "A",
+   "winner": "b",
+   "reason": "death",
+   "seconds": 10.4,
+   "decisions": 20,
+   "a_health": 0.0,
+   "b_health": 2.011,
+   "a_stats": {
+    "asked": 20,
+    "applied": 20,
+    "late_or_missing": 0,
+    "late_fraction": 0.0,
+    "median_ms": 0.0,
+    "p90_ms": 0.0
+   },
+   "b_stats": {
+    "asked": 20,
+    "applied": 17,
+    "late_or_missing": 3,
+    "late_fraction": 0.15,
+    "median_ms": 203.6,
+    "p90_ms": 400.9
+   },
+   "a_events": {
+    "dealt_damage:melee": 3,
+    "opponent_shot": 3,
+    "shot_arrow": 6,
+    "took_damage:melee": 3
+   },
+   "b_events": {
+    "dealt_damage:melee": 3,
+    "dodged_arrow": 1,
+    "opponent_shot": 6,
+    "shot_arrow": 3,
+    "took_damage:melee": 3
+   }
+  },
+  {
+   "seed": 110205,
+   "a_on_spawn": "B",
+   "winner": "a",
+   "reason": "death",
+   "seconds": 24.0,
+   "decisions": 48,
+   "a_health": 6,
+   "b_health": 0.0,
+   "a_stats": {
+    "asked": 48,
+    "applied": 47,
+    "late_or_missing": 0,
+    "late_fraction": 0.0,
+    "median_ms": 0.0,
+    "p90_ms": 0.0
+   },
+   "b_stats": {
+    "asked": 48,
+    "applied": 47,
+    "late_or_missing": 0,
+    "late_fraction": 0.0,
+    "median_ms": 199.0,
+    "p90_ms": 400.8
+   },
+   "a_events": {
+    "action_failed": 6,
+    "dealt_damage:melee": 3,
+    "shot_arrow": 17,
+    "took_damage:melee": 1,
+    "took_damage:other": 1
+   },
+   "b_events": {
+    "dealt_damage:melee": 1,
+    "dealt_damage:other": 1,
+    "opponent_shot": 17,
+    "took_damage:melee": 3
+   }
+  },
+  {
+   "seed": 110206,
+   "a_on_spawn": "A",
+   "winner": "a",
+   "reason": "death",
+   "seconds": 11.45,
+   "decisions": 22,
+   "a_health": 10.516,
+   "b_health": 0.0,
+   "a_stats": {
+    "asked": 22,
+    "applied": 22,
+    "late_or_missing": 0,
+    "late_fraction": 0.0,
+    "median_ms": 0.0,
+    "p90_ms": 0.0
+   },
+   "b_stats": {
+    "asked": 22,
+    "applied": 22,
+    "late_or_missing": 0,
+    "late_fraction": 0.0,
+    "median_ms": 197.8,
+    "p90_ms": 400.8
+   },
+   "a_events": {
+    "dealt_damage:melee": 1,
+    "dealt_damage:other": 2,
+    "dodged_arrow": 1,
+    "opponent_shot": 4,
+    "shot_arrow": 7,
+    "took_damage:melee": 2
+   },
+   "b_events": {
+    "dealt_damage:melee": 2,
+    "dodged_arrow": 3,
+    "opponent_shot": 7,
+    "shot_arrow": 4,
+    "took_damage:melee": 1,
+    "took_damage:other": 2
+   }
+  },
+  {
+   "seed": 110207,
+   "a_on_spawn": "B",
+   "winner": "a",
+   "reason": "death",
+   "seconds": 8.1,
+   "decisions": 16,
+   "a_health": 6.86,
+   "b_health": 0.0,
+   "a_stats": {
+    "asked": 16,
+    "applied": 16,
+    "late_or_missing": 0,
+    "late_fraction": 0.0,
+    "median_ms": 0.0,
+    "p90_ms": 0.0
+   },
+   "b_stats": {
+    "asked": 16,
+    "applied": 16,
+    "late_or_missing": 0,
+    "late_fraction": 0.0,
+    "median_ms": 196.3,
+    "p90_ms": 400.7
+   },
+   "a_events": {
+    "dealt_damage:melee": 3,
+    "shot_arrow": 4,
+    "took_damage:other": 2
+   },
+   "b_events": {
+    "dealt_damage:other": 2,
+    "dodged_arrow": 1,
+    "opponent_shot": 4,
+    "took_damage:melee": 3
+   }
+  },
+  {
+   "seed": 110208,
+   "a_on_spawn": "A",
+   "winner": "b",
+   "reason": "death",
+   "seconds": 3.7,
+   "decisions": 7,
+   "a_health": 0.0,
+   "b_health": 6,
+   "a_stats": {
+    "asked": 7,
+    "applied": 7,
+    "late_or_missing": 0,
+    "late_fraction": 0.0,
+    "median_ms": 0.0,
+    "p90_ms": 0.0
+   },
+   "b_stats": {
+    "asked": 7,
+    "applied": 7,
+    "late_or_missing": 0,
+    "late_fraction": 0.0,
+    "median_ms": 194.6,
+    "p90_ms": 400.7
+   },
+   "a_events": {
+    "dealt_damage:other": 2,
+    "took_damage:melee": 3
+   },
+   "b_events": {
+    "dealt_damage:melee": 3,
+    "took_damage:other": 2
+   }
+  },
+  {
+   "seed": 110209,
+   "a_on_spawn": "B",
+   "winner": "a",
+   "reason": "forfeit",
+   "seconds": 15.0,
+   "decisions": 30,
+   "a_health": 20,
+   "b_health": 20,
+   "a_stats": {
+    "asked": 30,
+    "applied": 29,
+    "late_or_missing": 0,
+    "late_fraction": 0.0,
+    "median_ms": 0.0,
+    "p90_ms": 0.0
+   },
+   "b_stats": {
+    "asked": 30,
+    "applied": 14,
+    "late_or_missing": 15,
+    "late_fraction": 0.5,
+    "median_ms": 199.0,
+    "p90_ms": 400.9
+   },
+   "a_events": {},
+   "b_events": {}
+  },
+  {
+   "seed": 110210,
+   "a_on_spawn": "A",
+   "winner": "a",
+   "reason": "death",
+   "seconds": 9.6,
+   "decisions": 19,
+   "a_health": 7.649,
+   "b_health": 0.0,
+   "a_stats": {
+    "asked": 19,
+    "applied": 19,
+    "late_or_missing": 0,
+    "late_fraction": 0.0,
+    "median_ms": 0.0,
+    "p90_ms": 0.0
+   },
+   "b_stats": {
+    "asked": 19,
+    "applied": 13,
+    "late_or_missing": 5,
+    "late_fraction": 0.2632,
+    "median_ms": 197.8,
+    "p90_ms": 400.9
+   },
+   "a_events": {
+    "dealt_damage:melee": 4,
+    "placed_lava": 1,
+    "shot_arrow": 5,
+    "took_damage:melee": 2
+   },
+   "b_events": {
+    "dealt_damage:melee": 2,
+    "opponent_shot": 5,
+    "took_damage:melee": 4
+   }
+  },
+  {
+   "seed": 110211,
+   "a_on_spawn": "B",
+   "winner": "a",
+   "reason": "death",
+   "seconds": 6.7,
+   "decisions": 13,
+   "a_health": 1.365,
+   "b_health": 0.0,
+   "a_stats": {
+    "asked": 13,
+    "applied": 13,
+    "late_or_missing": 0,
+    "late_fraction": 0.0,
+    "median_ms": 0.0,
+    "p90_ms": 0.0
+   },
+   "b_stats": {
+    "asked": 13,
+    "applied": 13,
+    "late_or_missing": 0,
+    "late_fraction": 0.0,
+    "median_ms": 197.7,
+    "p90_ms": 400.9
+   },
+   "a_events": {
+    "dealt_damage:melee": 3,
+    "shot_arrow": 3,
+    "took_damage:melee": 3
+   },
+   "b_events": {
+    "dealt_damage:melee": 3,
+    "dodged_arrow": 1,
+    "opponent_shot": 3,
+    "took_damage:melee": 3
+   }
+  },
+  {
+   "seed": 110212,
+   "a_on_spawn": "A",
+   "winner": "b",
+   "reason": "death",
+   "seconds": 4.1,
+   "decisions": 8,
+   "a_health": 0.0,
+   "b_health": 6,
+   "a_stats": {
+    "asked": 8,
+    "applied": 8,
+    "late_or_missing": 0,
+    "late_fraction": 0.0,
+    "median_ms": 0.0,
+    "p90_ms": 0.0
+   },
+   "b_stats": {
+    "asked": 8,
+    "applied": 8,
+    "late_or_missing": 0,
+    "late_fraction": 0.0,
+    "median_ms": 196.8,
+    "p90_ms": 400.9
+   },
+   "a_events": {
+    "dealt_damage:melee": 1,
+    "dealt_damage:other": 1,
+    "took_damage:melee": 3
+   },
+   "b_events": {
+    "dealt_damage:melee": 3,
+    "took_damage:melee": 1,
+    "took_damage:other": 1
+   }
+  },
+  {
+   "seed": 110213,
+   "a_on_spawn": "B",
+   "winner": "a",
+   "reason": "death",
+   "seconds": 7.3,
+   "decisions": 14,
+   "a_health": 1.365,
+   "b_health": 0.0,
+   "a_stats": {
+    "asked": 14,
+    "applied": 14,
+    "late_or_missing": 0,
+    "late_fraction": 0.0,
+    "median_ms": 0.0,
+    "p90_ms": 0.0
+   },
+   "b_stats": {
+    "asked": 14,
+    "applied": 14,
+    "late_or_missing": 0,
+    "late_fraction": 0.0,
+    "median_ms": 197.4,
+    "p90_ms": 400.8
+   },
+   "a_events": {
+    "dealt_damage:melee": 3,
+    "shot_arrow": 3,
+    "took_damage:melee": 1,
+    "took_damage:other": 2
+   },
+   "b_events": {
+    "dealt_damage:melee": 1,
+    "dealt_damage:other": 2,
+    "opponent_shot": 3,
+    "took_damage:melee": 3
+   }
+  },
+  {
+   "seed": 110214,
+   "a_on_spawn": "A",
+   "winner": null,
+   "reason": "cap",
+   "seconds": 180.0,
+   "decisions": 360,
+   "a_health": 20,
+   "b_health": 20,
+   "a_stats": {
+    "asked": 360,
+    "applied": 359,
+    "late_or_missing": 0,
+    "late_fraction": 0.0,
+    "median_ms": 0.0,
+    "p90_ms": 0.0
+   },
+   "b_stats": {
+    "asked": 360,
+    "applied": 354,
+    "late_or_missing": 5,
+    "late_fraction": 0.0139,
+    "median_ms": 171.5,
+    "p90_ms": 321.2
+   },
+   "a_events": {
+    "dodged_arrow": 1,
+    "shot_arrow": 2,
+    "sudden_death_started": 1
+   },
+   "b_events": {
+    "opponent_shot": 2,
+    "sudden_death_started": 1
+   }
+  },
+  {
+   "seed": 110215,
+   "a_on_spawn": "B",
+   "winner": "b",
+   "reason": "death",
+   "seconds": 7.65,
+   "decisions": 15,
+   "a_health": 0.0,
+   "b_health": 6,
+   "a_stats": {
+    "asked": 15,
+    "applied": 15,
+    "late_or_missing": 0,
+    "late_fraction": 0.0,
+    "median_ms": 0.0,
+    "p90_ms": 0.0
+   },
+   "b_stats": {
+    "asked": 15,
+    "applied": 14,
+    "late_or_missing": 0,
+    "late_fraction": 0.0,
+    "median_ms": 172.0,
+    "p90_ms": 313.9
+   },
+   "a_events": {
+    "dealt_damage:melee": 2,
+    "dodged_arrow": 1,
+    "shot_arrow": 5,
+    "took_damage:melee": 1,
+    "took_damage:other": 2
+   },
+   "b_events": {
+    "dealt_damage:melee": 1,
+    "dealt_damage:other": 2,
+    "opponent_shot": 5,
+    "took_damage:melee": 2
+   }
+  },
+  {
+   "seed": 110216,
+   "a_on_spawn": "A",
+   "winner": "a",
+   "reason": "death",
+   "seconds": 12.55,
+   "decisions": 25,
+   "a_health": 10.516,
+   "b_health": 0.0,
+   "a_stats": {
+    "asked": 25,
+    "applied": 25,
+    "late_or_missing": 0,
+    "late_fraction": 0.0,
+    "median_ms": 0.0,
+    "p90_ms": 0.0
+   },
+   "b_stats": {
+    "asked": 25,
+    "applied": 24,
+    "late_or_missing": 0,
+    "late_fraction": 0.0,
+    "median_ms": 173.1,
+    "p90_ms": 312.1
+   },
+   "a_events": {
+    "dealt_damage:melee": 3,
+    "opponent_shot": 3,
+    "shot_arrow": 8,
+    "took_damage:melee": 2
+   },
+   "b_events": {
+    "dealt_damage:melee": 2,
+    "dodged_arrow": 9,
+    "opponent_shot": 8,
+    "shot_arrow": 3,
+    "took_damage:melee": 3
+   }
+  },
+  {
+   "seed": 110217,
+   "a_on_spawn": "B",
+   "winner": "a",
+   "reason": "death",
+   "seconds": 6.3,
+   "decisions": 12,
+   "a_health": 6,
+   "b_health": 0.0,
+   "a_stats": {
+    "asked": 12,
+    "applied": 12,
+    "late_or_missing": 0,
+    "late_fraction": 0.0,
+    "median_ms": 0.0,
+    "p90_ms": 0.0
+   },
+   "b_stats": {
+    "asked": 12,
+    "applied": 12,
+    "late_or_missing": 0,
+    "late_fraction": 0.0,
+    "median_ms": 174.6,
+    "p90_ms": 307.2
+   },
+   "a_events": {
+    "dealt_damage:melee": 3,
+    "dodged_arrow": 3,
+    "took_damage:melee": 1,
+    "took_damage:other": 1
+   },
+   "b_events": {
+    "dealt_damage:melee": 1,
+    "dealt_damage:other": 1,
+    "took_damage:melee": 3
+   }
+  },
+  {
+   "seed": 110218,
+   "a_on_spawn": "A",
+   "winner": "b",
+   "reason": "death",
+   "seconds": 8.0,
+   "decisions": 16,
+   "a_health": 0.0,
+   "b_health": 6,
+   "a_stats": {
+    "asked": 16,
+    "applied": 15,
+    "late_or_missing": 0,
+    "late_fraction": 0.0,
+    "median_ms": 0.0,
+    "p90_ms": 0.0
+   },
+   "b_stats": {
+    "asked": 16,
+    "applied": 15,
+    "late_or_missing": 0,
+    "late_fraction": 0.0,
+    "median_ms": 174.7,
+    "p90_ms": 307.0
+   },
+   "a_events": {
+    "dealt_damage:other": 2,
+    "dodged_arrow": 1,
+    "shot_arrow": 4,
+    "took_damage:melee": 3
+   },
+   "b_events": {
+    "dealt_damage:melee": 3,
+    "dodged_arrow": 1,
+    "opponent_shot": 4,
+    "took_damage:other": 2
+   }
+  },
+  {
+   "seed": 110219,
+   "a_on_spawn": "B",
+   "winner": "a",
+   "reason": "death",
+   "seconds": 10.5,
+   "decisions": 21,
+   "a_health": 0.374,
+   "b_health": 0.0,
+   "a_stats": {
+    "asked": 21,
+    "applied": 20,
+    "late_or_missing": 0,
+    "late_fraction": 0.0,
+    "median_ms": 0.0,
+    "p90_ms": 0.0
+   },
+   "b_stats": {
+    "asked": 21,
+    "applied": 20,
+    "late_or_missing": 0,
+    "late_fraction": 0.0,
+    "median_ms": 173.5,
+    "p90_ms": 297.8
+   },
+   "a_events": {
+    "dealt_damage:melee": 3,
+    "opponent_shot": 3,
+    "shot_arrow": 6,
+    "took_damage:other": 3
+   },
+   "b_events": {
+    "dealt_damage:other": 3,
+    "dodged_arrow": 1,
+    "opponent_shot": 6,
+    "shot_arrow": 3,
+    "took_damage:melee": 3
+   }
+  }
+ ]
+}

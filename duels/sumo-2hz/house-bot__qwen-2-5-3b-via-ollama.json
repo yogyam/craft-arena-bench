@@ -1,0 +1,625 @@
+{
+ "a": "house-bot",
+ "b": "qwen-2-5-3b-via-ollama",
+ "mode": "sumo",
+ "tier_hz": 2,
+ "a_manifest_sha256": "68484a057e879354475c4255488fc0ecaf740cc929eb88eed29151e7b73f961c",
+ "b_manifest_sha256": "a8b3300b179cb967b614006fe44f7f3a5d2f1df1bab778d1d77b81161c9b143c",
+ "season": 1,
+ "interface_version": 1,
+ "mode_set_version": 1,
+ "matches_per_pair": 20,
+ "seeds": [
+  100200,
+  100201,
+  100202,
+  100203,
+  100204,
+  100205,
+  100206,
+  100207,
+  100208,
+  100209,
+  100210,
+  100211,
+  100212,
+  100213,
+  100214,
+  100215,
+  100216,
+  100217,
+  100218,
+  100219
+ ],
+ "played_at": "2026-10-05T23:48:41Z",
+ "benchmark_version": "0.0.1",
+ "server": {
+  "minecraft": "26.1.2",
+  "paper_build": 74
+ },
+ "libraries": {
+  "python": "3.12.14",
+  "platform": "linux",
+  "httpx": "0.28.1",
+  "websockets": "17.2",
+  "numpy": "2.5.3",
+  "mineflayer": "4.39.0"
+ },
+ "a_points": 11.0,
+ "b_points": 9.0,
+ "a_wins": 2,
+ "b_wins": 0,
+ "draws": 18,
+ "a_latency": {
+  "median_ms": 0.0,
+  "late_fraction": 0.0,
+  "asked": 2281
+ },
+ "b_latency": {
+  "median_ms": 148.6,
+  "late_fraction": 0.0066,
+  "asked": 2281
+ },
+ "matches": [
+  {
+   "seed": 100200,
+   "a_on_spawn": "A",
+   "winner": "a",
+   "reason": "fall",
+   "seconds": 4.35,
+   "decisions": 8,
+   "a_health": 20,
+   "b_health": 20,
+   "a_stats": {
+    "asked": 8,
+    "applied": 8,
+    "late_or_missing": 0,
+    "late_fraction": 0.0,
+    "median_ms": 0.0,
+    "p90_ms": 0.0
+   },
+   "b_stats": {
+    "asked": 8,
+    "applied": 6,
+    "late_or_missing": 2,
+    "late_fraction": 0.25,
+    "median_ms": 163.9,
+    "p90_ms": 401.2
+   },
+   "a_events": {},
+   "b_events": {}
+  },
+  {
+   "seed": 100201,
+   "a_on_spawn": "B",
+   "winner": null,
+   "reason": "cap",
+   "seconds": 60.0,
+   "decisions": 120,
+   "a_health": 20,
+   "b_health": 20,
+   "a_stats": {
+    "asked": 120,
+    "applied": 119,
+    "late_or_missing": 0,
+    "late_fraction": 0.0,
+    "median_ms": 0.0,
+    "p90_ms": 0.0
+   },
+   "b_stats": {
+    "asked": 120,
+    "applied": 119,
+    "late_or_missing": 0,
+    "late_fraction": 0.0,
+    "median_ms": 153.7,
+    "p90_ms": 216.8
+   },
+   "a_events": {},
+   "b_events": {}
+  },
+  {
+   "seed": 100202,
+   "a_on_spawn": "A",
+   "winner": null,
+   "reason": "cap",
+   "seconds": 60.0,
+   "decisions": 120,
+   "a_health": 20,
+   "b_health": 20,
+   "a_stats": {
+    "asked": 120,
+    "applied": 119,
+    "late_or_missing": 0,
+    "late_fraction": 0.0,
+    "median_ms": 0.0,
+    "p90_ms": 0.0
+   },
+   "b_stats": {
+    "asked": 120,
+    "applied": 108,
+    "late_or_missing": 11,
+    "late_fraction": 0.0917,
+    "median_ms": 157.3,
+    "p90_ms": 251.6
+   },
+   "a_events": {},
+   "b_events": {}
+  },
+  {
+   "seed": 100203,
+   "a_on_spawn": "B",
+   "winner": null,
+   "reason": "cap",
+   "seconds": 60.0,
+   "decisions": 120,
+   "a_health": 20,
+   "b_health": 20,
+   "a_stats": {
+    "asked": 120,
+    "applied": 119,
+    "late_or_missing": 0,
+    "late_fraction": 0.0,
+    "median_ms": 0.0,
+    "p90_ms": 0.0
+   },
+   "b_stats": {
+    "asked": 120,
+    "applied": 119,
+    "late_or_missing": 0,
+    "late_fraction": 0.0,
+    "median_ms": 149.6,
+    "p90_ms": 239.4
+   },
+   "a_events": {},
+   "b_events": {}
+  },
+  {
+   "seed": 100204,
+   "a_on_spawn": "A",
+   "winner": "a",
+   "reason": "fall",
+   "seconds": 56.75,
+   "decisions": 113,
+   "a_health": 20,
+   "b_health": 20,
+   "a_stats": {
+    "asked": 113,
+    "applied": 113,
+    "late_or_missing": 0,
+    "late_fraction": 0.0,
+    "median_ms": 0.0,
+    "p90_ms": 0.0
+   },
+   "b_stats": {
+    "asked": 113,
+    "applied": 113,
+    "late_or_missing": 0,
+    "late_fraction": 0.0,
+    "median_ms": 149.7,
+    "p90_ms": 228.1
+   },
+   "a_events": {},
+   "b_events": {}
+  },
+  {
+   "seed": 100205,
+   "a_on_spawn": "B",
+   "winner": null,
+   "reason": "cap",
+   "seconds": 60.0,
+   "decisions": 120,
+   "a_health": 20,
+   "b_health": 20,
+   "a_stats": {
+    "asked": 120,
+    "applied": 119,
+    "late_or_missing": 0,
+    "late_fraction": 0.0,
+    "median_ms": 0.0,
+    "p90_ms": 0.0
+   },
+   "b_stats": {
+    "asked": 120,
+    "applied": 119,
+    "late_or_missing": 0,
+    "late_fraction": 0.0,
+    "median_ms": 148.8,
+    "p90_ms": 220.6
+   },
+   "a_events": {},
+   "b_events": {}
+  },
+  {
+   "seed": 100206,
+   "a_on_spawn": "A",
+   "winner": null,
+   "reason": "cap",
+   "seconds": 60.0,
+   "decisions": 120,
+   "a_health": 20,
+   "b_health": 20,
+   "a_stats": {
+    "asked": 120,
+    "applied": 119,
+    "late_or_missing": 0,
+    "late_fraction": 0.0,
+    "median_ms": 0.0,
+    "p90_ms": 0.0
+   },
+   "b_stats": {
+    "asked": 120,
+    "applied": 119,
+    "late_or_missing": 0,
+    "late_fraction": 0.0,
+    "median_ms": 148.8,
+    "p90_ms": 212.1
+   },
+   "a_events": {},
+   "b_events": {}
+  },
+  {
+   "seed": 100207,
+   "a_on_spawn": "B",
+   "winner": null,
+   "reason": "cap",
+   "seconds": 60.0,
+   "decisions": 120,
+   "a_health": 20,
+   "b_health": 20,
+   "a_stats": {
+    "asked": 120,
+    "applied": 119,
+    "late_or_missing": 0,
+    "late_fraction": 0.0,
+    "median_ms": 0.0,
+    "p90_ms": 0.0
+   },
+   "b_stats": {
+    "asked": 120,
+    "applied": 119,
+    "late_or_missing": 0,
+    "late_fraction": 0.0,
+    "median_ms": 148.6,
+    "p90_ms": 211.0
+   },
+   "a_events": {},
+   "b_events": {}
+  },
+  {
+   "seed": 100208,
+   "a_on_spawn": "A",
+   "winner": null,
+   "reason": "cap",
+   "seconds": 60.0,
+   "decisions": 120,
+   "a_health": 20,
+   "b_health": 20,
+   "a_stats": {
+    "asked": 120,
+    "applied": 119,
+    "late_or_missing": 0,
+    "late_fraction": 0.0,
+    "median_ms": 0.0,
+    "p90_ms": 0.0
+   },
+   "b_stats": {
+    "asked": 120,
+    "applied": 118,
+    "late_or_missing": 1,
+    "late_fraction": 0.0083,
+    "median_ms": 148.6,
+    "p90_ms": 210.3
+   },
+   "a_events": {},
+   "b_events": {}
+  },
+  {
+   "seed": 100209,
+   "a_on_spawn": "B",
+   "winner": null,
+   "reason": "cap",
+   "seconds": 60.0,
+   "decisions": 120,
+   "a_health": 20,
+   "b_health": 20,
+   "a_stats": {
+    "asked": 120,
+    "applied": 119,
+    "late_or_missing": 0,
+    "late_fraction": 0.0,
+    "median_ms": 0.0,
+    "p90_ms": 0.0
+   },
+   "b_stats": {
+    "asked": 120,
+    "applied": 119,
+    "late_or_missing": 0,
+    "late_fraction": 0.0,
+    "median_ms": 148.5,
+    "p90_ms": 210.2
+   },
+   "a_events": {},
+   "b_events": {}
+  },
+  {
+   "seed": 100210,
+   "a_on_spawn": "A",
+   "winner": null,
+   "reason": "cap",
+   "seconds": 60.0,
+   "decisions": 120,
+   "a_health": 20,
+   "b_health": 20,
+   "a_stats": {
+    "asked": 120,
+    "applied": 119,
+    "late_or_missing": 0,
+    "late_fraction": 0.0,
+    "median_ms": 0.0,
+    "p90_ms": 0.0
+   },
+   "b_stats": {
+    "asked": 120,
+    "applied": 119,
+    "late_or_missing": 0,
+    "late_fraction": 0.0,
+    "median_ms": 148.3,
+    "p90_ms": 209.8
+   },
+   "a_events": {},
+   "b_events": {}
+  },
+  {
+   "seed": 100211,
+   "a_on_spawn": "B",
+   "winner": null,
+   "reason": "cap",
+   "seconds": 60.0,
+   "decisions": 120,
+   "a_health": 20,
+   "b_health": 20,
+   "a_stats": {
+    "asked": 120,
+    "applied": 119,
+    "late_or_missing": 0,
+    "late_fraction": 0.0,
+    "median_ms": 0.0,
+    "p90_ms": 0.0
+   },
+   "b_stats": {
+    "asked": 120,
+    "applied": 119,
+    "late_or_missing": 0,
+    "late_fraction": 0.0,
+    "median_ms": 148.4,
+    "p90_ms": 210.2
+   },
+   "a_events": {},
+   "b_events": {}
+  },
+  {
+   "seed": 100212,
+   "a_on_spawn": "A",
+   "winner": null,
+   "reason": "cap",
+   "seconds": 60.0,
+   "decisions": 120,
+   "a_health": 20,
+   "b_health": 20,
+   "a_stats": {
+    "asked": 120,
+    "applied": 119,
+    "late_or_missing": 0,
+    "late_fraction": 0.0,
+    "median_ms": 0.0,
+    "p90_ms": 0.0
+   },
+   "b_stats": {
+    "asked": 120,
+    "applied": 119,
+    "late_or_missing": 0,
+    "late_fraction": 0.0,
+    "median_ms": 148.2,
+    "p90_ms": 209.0
+   },
+   "a_events": {},
+   "b_events": {}
+  },
+  {
+   "seed": 100213,
+   "a_on_spawn": "B",
+   "winner": null,
+   "reason": "cap",
+   "seconds": 60.0,
+   "decisions": 120,
+   "a_health": 20,
+   "b_health": 20,
+   "a_stats": {
+    "asked": 120,
+    "applied": 119,
+    "late_or_missing": 0,
+    "late_fraction": 0.0,
+    "median_ms": 0.0,
+    "p90_ms": 0.0
+   },
+   "b_stats": {
+    "asked": 120,
+    "applied": 119,
+    "late_or_missing": 0,
+    "late_fraction": 0.0,
+    "median_ms": 148.1,
+    "p90_ms": 209.1
+   },
+   "a_events": {},
+   "b_events": {}
+  },
+  {
+   "seed": 100214,
+   "a_on_spawn": "A",
+   "winner": null,
+   "reason": "cap",
+   "seconds": 60.0,
+   "decisions": 120,
+   "a_health": 20,
+   "b_health": 20,
+   "a_stats": {
+    "asked": 120,
+    "applied": 119,
+    "late_or_missing": 0,
+    "late_fraction": 0.0,
+    "median_ms": 0.0,
+    "p90_ms": 0.0
+   },
+   "b_stats": {
+    "asked": 120,
+    "applied": 118,
+    "late_or_missing": 1,
+    "late_fraction": 0.0083,
+    "median_ms": 148.2,
+    "p90_ms": 210.3
+   },
+   "a_events": {},
+   "b_events": {}
+  },
+  {
+   "seed": 100215,
+   "a_on_spawn": "B",
+   "winner": null,
+   "reason": "cap",
+   "seconds": 60.0,
+   "decisions": 120,
+   "a_health": 20,
+   "b_health": 20,
+   "a_stats": {
+    "asked": 120,
+    "applied": 119,
+    "late_or_missing": 0,
+    "late_fraction": 0.0,
+    "median_ms": 0.0,
+    "p90_ms": 0.0
+   },
+   "b_stats": {
+    "asked": 120,
+    "applied": 119,
+    "late_or_missing": 0,
+    "late_fraction": 0.0,
+    "median_ms": 148.5,
+    "p90_ms": 210.5
+   },
+   "a_events": {},
+   "b_events": {}
+  },
+  {
+   "seed": 100216,
+   "a_on_spawn": "A",
+   "winner": null,
+   "reason": "cap",
+   "seconds": 60.0,
+   "decisions": 120,
+   "a_health": 20,
+   "b_health": 20,
+   "a_stats": {
+    "asked": 120,
+    "applied": 119,
+    "late_or_missing": 0,
+    "late_fraction": 0.0,
+    "median_ms": 0.0,
+    "p90_ms": 0.0
+   },
+   "b_stats": {
+    "asked": 120,
+    "applied": 119,
+    "late_or_missing": 0,
+    "late_fraction": 0.0,
+    "median_ms": 148.8,
+    "p90_ms": 210.2
+   },
+   "a_events": {},
+   "b_events": {}
+  },
+  {
+   "seed": 100217,
+   "a_on_spawn": "B",
+   "winner": null,
+   "reason": "cap",
+   "seconds": 60.0,
+   "decisions": 120,
+   "a_health": 20,
+   "b_health": 20,
+   "a_stats": {
+    "asked": 120,
+    "applied": 119,
+    "late_or_missing": 0,
+    "late_fraction": 0.0,
+    "median_ms": 0.0,
+    "p90_ms": 0.0
+   },
+   "b_stats": {
+    "asked": 120,
+    "applied": 119,
+    "late_or_missing": 0,
+    "late_fraction": 0.0,
+    "median_ms": 148.7,
+    "p90_ms": 209.8
+   },
+   "a_events": {},
+   "b_events": {}
+  },
+  {
+   "seed": 100218,
+   "a_on_spawn": "A",
+   "winner": null,
+   "reason": "cap",
+   "seconds": 60.0,
+   "decisions": 120,
+   "a_health": 20,
+   "b_health": 20,
+   "a_stats": {
+    "asked": 120,
+    "applied": 119,
+    "late_or_missing": 0,
+    "late_fraction": 0.0,
+    "median_ms": 0.0,
+    "p90_ms": 0.0
+   },
+   "b_stats": {
+    "asked": 120,
+    "applied": 119,
+    "late_or_missing": 0,
+    "late_fraction": 0.0,
+    "median_ms": 148.6,
+    "p90_ms": 209.1
+   },
+   "a_events": {},
+   "b_events": {}
+  },
+  {
+   "seed": 100219,
+   "a_on_spawn": "B",
+   "winner": null,
+   "reason": "cap",
+   "seconds": 60.0,
+   "decisions": 120,
+   "a_health": 20,
+   "b_health": 20,
+   "a_stats": {
+    "asked": 120,
+    "applied": 119,
+    "late_or_missing": 0,
+    "late_fraction": 0.0,
+    "median_ms": 0.0,
+    "p90_ms": 0.0
+   },
+   "b_stats": {
+    "asked": 120,
+    "applied": 119,
+    "late_or_missing": 0,
+    "late_fraction": 0.0,
+    "median_ms": 148.3,
+    "p90_ms": 209.8
+   },
+   "a_events": {},
+   "b_events": {}
+  }
+ ]
+}
