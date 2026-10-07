@@ -62,6 +62,12 @@ systemctl daemon-reload
 systemctl enable --now paper velocity
 
 echo "== firewall: 22 and 25565 only"
+# Oracle's Ubuntu images ship iptables rules that reject everything but SSH and re-apply them at boot. Clear them so ufw is the one firewall.
+if [ -f /etc/iptables/rules.v4 ]; then
+  iptables -F INPUT 2>/dev/null || true
+  systemctl disable --now netfilter-persistent >/dev/null 2>&1 || true
+  mv /etc/iptables/rules.v4 /etc/iptables/rules.v4.oracle-default 2>/dev/null || true
+fi
 ufw --force reset >/dev/null
 ufw default deny incoming >/dev/null
 ufw default allow outgoing >/dev/null
