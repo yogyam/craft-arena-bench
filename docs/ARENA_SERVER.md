@@ -2,7 +2,7 @@
 
 A second Minecraft server, always on, with a public address, where people join to watch the bots fight each other and to fight the bots themselves. It is separate from the scoring server: ratings come only from the scoring runs on GitHub's machines, so nothing that happens on the public server can change a rating.
 
-Status: planned, not built. Decisions still open are marked *decision*.
+Status: being built (from 6 Oct 2026). The decisions are recorded at the end.
 
 ## What people get
 
@@ -32,7 +32,7 @@ The server is a public Minecraft server, which means it will be visited by grief
 | Someone logs in with a bot's name and gets teleported, armed or counted as the bot | Humans must come through Velocity, which verifies names with Mojang. The backend is reachable only from localhost. The harness addresses bots by UUID, never by name, in every command (`tp`, `give`, `effect`). Offline UUIDs differ from Mojang UUIDs, so a Mojang account that happens to be called `BotA` is a different player. |
 | Someone connects straight to the backend, skipping the login | The backend binds to 127.0.0.1 and the machine's firewall exposes only 25565 (Velocity) and SSH. |
 | Griefing: breaking blocks, placing lava, pushing bots | Everyone joins in spectator mode. Only a queued challenger is put in survival, only inside the arena, only for the match, and is put back in spectator after. Spectators cannot touch anything. |
-| Chat abuse | *Decision below.* Default: chat off at launch; talk happens on Discord. Online mode means Mojang's chat reporting works if chat is on. |
+| Chat abuse | Chat is off at launch; talk happens on Discord. Online mode means Mojang's chat reporting works if chat is turned on later. |
 | Login floods and connection spam | Velocity's built-in login rate limit; `max-players` around 20; a low view distance; a whitelist file kept ready as the emergency switch. TCPShield's free tier can front the proxy if floods become a problem. |
 | Running up an entrant's bill: a human challenges an entrant's model a thousand times | Entrants opt in to challenges in their manifest (`exhibition: true`). One challenge per player at a time, a cooldown per player, and a cap per entrant per hour. The house bot has no such cost. |
 | An entrant's endpoint learns who is playing | The request carries no usernames and no account data: the same fight state as the scoring runs. |
@@ -42,7 +42,7 @@ The server is a public Minecraft server, which means it will be visited by grief
 
 ## Hosting
 
-*Decision below.* The candidates:
+Oracle Cloud's always-free ARM machine, decided; the candidates were:
 
 | Option | Cost | What to know |
 |---|---|---|
@@ -67,8 +67,8 @@ Estimate: one to two weeks part-time. Steps 1 to 3 are infrastructure and can be
 
 Recorded here as they are made.
 
-1. Hosting: *open*.
-2. Chat on the server: *open*.
-3. Who humans can challenge: *open*.
-4. When to build it relative to the benchmark launch: *open*.
+1. Hosting: Oracle Cloud's always-free ARM machine (decided 6 Oct 2026). Hetzner at about 4 euros a month is the fallback if sign-up fails or the machine misbehaves.
+2. Chat: off at launch (decided 6 Oct 2026). Talk happens on Discord; chat can be turned on later.
+3. Challenges: the house bot plus entrants who opt in with `exhibition: true`, rate-limited per player and capped per entrant per hour (decided 6 Oct 2026).
+4. Timing: built now, before the benchmark launch (decided 6 Oct 2026). The launch announcement then leads with a server people can join.
 5. Open join with a player cap and a whitelist as the emergency switch, rather than applications: default, unless the first weeks say otherwise.
