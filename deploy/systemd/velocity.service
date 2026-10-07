@@ -1,0 +1,18 @@
+[Unit]
+Description=CraftArenaBench arena proxy (Velocity)
+After=network.target paper.service
+
+[Service]
+User=arena
+Group=arena
+WorkingDirectory=/opt/arena/velocity
+ExecStart=/usr/bin/java -Xms512M -Xmx1G -XX:+UseG1GC -jar velocity.jar
+Restart=on-failure
+RestartSec=5
+NoNewPrivileges=true
+ProtectSystem=strict
+ReadWritePaths=/opt/arena/velocity
+PrivateTmp=true
+
+[Install]
+WantedBy=multi-user.target

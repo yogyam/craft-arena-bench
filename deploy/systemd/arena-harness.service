@@ -1,0 +1,21 @@
+[Unit]
+Description=CraftArenaBench arena harness (exhibition and challenge matches)
+After=paper.service
+
+[Service]
+User=arena
+Group=arena
+WorkingDirectory=/opt/arena/craft-arena-bench
+Environment=CAB_RCON_PASSWORD_FILE=/opt/arena/secrets/rcon_password
+Environment=CAB_RCON_PORT=25575
+Environment=CAB_MC_PORT=25566
+ExecStart=/opt/arena/craft-arena-bench/.venv/bin/craft-arena-bench arena --results /opt/arena/results/results.json
+Restart=on-failure
+RestartSec=15
+NoNewPrivileges=true
+ProtectSystem=strict
+ReadWritePaths=/opt/arena/craft-arena-bench /opt/arena/results
+PrivateTmp=true
+
+[Install]
+WantedBy=multi-user.target

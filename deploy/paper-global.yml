@@ -1,0 +1,6 @@
+# Paper: accept players only through Velocity, with the shared forwarding secret. Paper fills in the rest on first start.
+proxies:
+  velocity:
+    enabled: true
+    online-mode: true
+    secret: '__FORWARDING_SECRET__'

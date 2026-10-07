@@ -1,0 +1,18 @@
+[Unit]
+Description=CraftArenaBench arena backend (Paper)
+After=network.target
+
+[Service]
+User=arena
+Group=arena
+WorkingDirectory=/opt/arena/paper
+ExecStart=/usr/bin/java -Xms4G -Xmx6G -XX:+UseG1GC -jar paper.jar --nogui
+Restart=on-failure
+RestartSec=10
+NoNewPrivileges=true
+ProtectSystem=strict
+ReadWritePaths=/opt/arena/paper
+PrivateTmp=true
+
+[Install]
+WantedBy=multi-user.target

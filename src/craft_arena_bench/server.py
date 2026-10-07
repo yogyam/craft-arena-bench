@@ -20,8 +20,19 @@ from .rcon import Rcon
 
 PAPER_SHA256 = "1d70b1dab9cf4a6de615209a536f3a45a2186240253c428213ce2188ab95e5f7"  # paper-26.1.2-74.jar
 FILL_API = "https://fill.papermc.io/v3/projects/paper/versions/{version}/builds"
-RCON_PORT = 25575
-RCON_PASSWORD = "local-dev-only"
+RCON_PORT = int(os.environ.get("CAB_RCON_PORT", "25575"))
+MC_PORT = int(os.environ.get("CAB_MC_PORT", "25565"))
+
+
+def rcon_password() -> str:
+    """The laptop default, or the arena machine's generated secret from a file named in CAB_RCON_PASSWORD_FILE."""
+    path = os.environ.get("CAB_RCON_PASSWORD_FILE")
+    if path:
+        return Path(path).read_text().strip()
+    return os.environ.get("CAB_RCON_PASSWORD", "local-dev-only")
+
+
+RCON_PASSWORD = rcon_password()
 # PaperMC asks every client to identify itself; the default Python agent is refused with a 403.
 USER_AGENT = f"craft-arena-bench/{__version__} (https://github.com/yogyam/craft-arena-bench)"
 

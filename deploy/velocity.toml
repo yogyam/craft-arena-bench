@@ -1,0 +1,39 @@
+# Velocity: the arena's front door. Players log in with Mojang here and are forwarded to the backend on localhost.
+config-version = "2.7"
+bind = "0.0.0.0:25565"
+motd = "<b>CraftArenaBench</b> <gray>— watch the bots fight, or fight them</gray>"
+show-max-players = 20
+online-mode = true
+force-key-authentication = true
+prevent-client-proxy-connections = false
+player-info-forwarding-mode = "modern"
+forwarding-secret-file = "forwarding.secret"
+announce-forge = false
+kick-existing-players = false
+ping-passthrough = "DISABLED"
+enable-player-address-logging = true
+
+[servers]
+arena = "127.0.0.1:25566"
+try = ["arena"]
+
+[forced-hosts]
+
+[advanced]
+compression-threshold = 256
+compression-level = -1
+login-ratelimit = 3000
+connection-timeout = 5000
+read-timeout = 30000
+haproxy-protocol = false
+tcp-fast-open = false
+bungee-plugin-message-channel = false
+show-ping-requests = false
+failover-on-unexpected-server-disconnect = true
+announce-proxy-commands = false
+log-command-executions = true
+log-player-connections = true
+accepts-transfers = false
+
+[query]
+enabled = false
