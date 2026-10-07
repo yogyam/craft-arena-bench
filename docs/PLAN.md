@@ -221,6 +221,9 @@ Each stage ends with something runnable and a short written check. Estimates ass
 22. Announce: Mindcraft Discord (hobbyists with local models), Hao AI Lab / UCSD circles, the Jev community (awesome-jev lists, TypeSafe's Discord if any), X with the GIF. Casual tone; the Boost Arena announcement drafts in `/Users/yogyamehrotra/Desktop/RocketLeague/outreach/announcement.md` are a style reference.
 23. Watch for: endpoints going down mid-run, latency disputes, action-list requests, cheating via endpoint behaviour. Fix, then plan season 2.
 
+### Stage 7: the public arena server (planned 6 Oct 2026)
+A second, always-on server where people watch exhibition matches and fight the bots. Design, threat model and steps in `docs/ARENA_SERVER.md`; decisions pending there.
+
 ### Later (not now)
 - 2v2 mode; a survive-N-nights solo task and a parkour task (Mindcraft-style scaffolding); a vision track via Craftless screenshots; a human-playable server where people fight the top bots (what MCJev does; needs a real server host and moderation, not free).
 
