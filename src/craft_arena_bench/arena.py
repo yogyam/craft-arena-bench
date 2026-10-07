@@ -114,10 +114,12 @@ class SumoArena:
         for rule, value in GAMERULES.items():
             rcon.command(f"gamerule {rule} {value}")
 
-    def place_bots(self, rcon: Rcon, names: tuple[str, str], seed: int) -> tuple[Spawn, Spawn]:
-        """Full health and hunger, empty inventory, then teleport. The server remembers players, so reset explicitly."""
+    def place_bots(self, rcon: Rcon, targets: tuple[str, str], seed: int) -> tuple[Spawn, Spawn]:
+        """Full health and hunger, empty inventory, then teleport. The server remembers players, so reset explicitly.
+
+        `targets` are the bots' UUIDs: a command that named a player could be hijacked by a human with that name on a public server."""
         spawns = self.spawns(seed)
-        for name, spawn in zip(names, spawns, strict=True):
+        for name, spawn in zip(targets, spawns, strict=True):
             rcon.command(f"gamemode survival {name}")
             rcon.command(f"clear {name}")
             rcon.command(f"effect clear {name}")
@@ -198,9 +200,9 @@ class BlockUhcArena:
         for rule, value in GAMERULES.items():
             rcon.command(f"gamerule {rule} {value}")
 
-    def place_bots(self, rcon: Rcon, names: tuple[str, str], seed: int) -> tuple[Spawn, Spawn]:
+    def place_bots(self, rcon: Rcon, targets: tuple[str, str], seed: int) -> tuple[Spawn, Spawn]:
         spawns = self.spawns(seed)
-        for name, spawn in zip(names, spawns, strict=True):
+        for name, spawn in zip(targets, spawns, strict=True):
             x, y, z = spawn.pos
             rcon.command(f"gamemode survival {name}")
             rcon.command(f"clear {name}")
@@ -209,7 +211,7 @@ class BlockUhcArena:
             # A bot may still be burning from the last match: a moment in water puts it out.
             rcon.command(f"execute at {name} run setblock ~ ~ ~ water")
         time.sleep(0.15)
-        for name in names:
+        for name in targets:
             rcon.command(f"execute at {name} run setblock ~ ~ ~ air")
             rcon.command(f"effect give {name} minecraft:instant_health 1 5 true")
             rcon.command(f"effect give {name} minecraft:saturation 1 5 true")

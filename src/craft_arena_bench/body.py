@@ -29,6 +29,7 @@ class Body:
         self.spawned = asyncio.Event()
         self.errors: list[str] = []
         self.deaths = 0  # death messages seen; immediate respawn can hide a death from the health stream
+        self.uuid: str | None = None  # the bot's UUID; every server command targets it by this, never by name
         self._reader: asyncio.Task | None = None
 
     async def start(self, timeout: float = 20.0) -> None:
@@ -84,6 +85,7 @@ class Body:
                             self.states.get_nowait()
                         self.states.put_nowait(msg)
                     elif kind == "spawned":
+                        self.uuid = msg.get("uuid")
                         self.spawned.set()
                     elif kind == "death":
                         self.deaths += 1

@@ -53,7 +53,7 @@ function connect () {
       const e = bot.entities[p.entityId]
       if (e && Math.abs(p.velocity.x) < 20) e.velocity.set(p.velocity.x, p.velocity.y, p.velocity.z)
     })
-    bridge.send({ type: 'spawned', username: a.username })
+    bridge.send({ type: 'spawned', username: a.username, uuid: bot.player?.uuid ?? bot._client.uuid })
   })
   bot.on('death', () => bridge.send({ type: 'death', tick }))
   bot.on('health', () => bridge.send({ type: 'health', tick, health: bot.health, food: bot.food }))

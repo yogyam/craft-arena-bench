@@ -117,7 +117,8 @@ class MatchRunner:
         sides = (_Side(a, decider_a), _Side(b, decider_b))
         await asyncio.gather(a.reset(), b.reset())
         self.arena.build(self.rcon, seed)
-        self.arena.place_bots(self.rcon, BOT_NAMES, seed)
+        targets = (a.uuid or a.username, b.uuid or b.username)  # UUIDs: a public server may hold a human with a bot's name
+        self.arena.place_bots(self.rcon, targets, seed)
         if isinstance(self.arena, SumoArena):
             bounds, floor_y, config = self.arena.platform, None, {"platform": self.arena.platform.to_message()}
             referee = SumoReferee(self.arena.fall_y, self.arena.cap_seconds)
@@ -164,7 +165,7 @@ class MatchRunner:
             sudden_death = uhc is not None and referee.sudden_death(tick)
             if sudden_death and not sudden_death_announced:
                 sudden_death_announced = True
-                for name, side in zip(BOT_NAMES, sides, strict=True):
+                for name, side in zip(targets, sides, strict=True):
                     # Sudden death: Strength II for both, so a sword hit does 13 instead of 7 and two hits kill.
                     # (Mirroring damage with /damage was tried; the command is refused inside the 10-tick invulnerability window.)
                     for effect in uhc.spec["sudden_death_effects"]:
