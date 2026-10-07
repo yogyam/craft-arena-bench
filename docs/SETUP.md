@@ -67,6 +67,10 @@ Game rule names changed to snake_case in 26.1 and some were renamed outright; th
 
 The full list comes from the server itself: an op'd Mineflayer bot's `tabComplete('/gamerule ')` returns all 116 names (`body/dev/gamerule_probe.mjs`).
 
+## Pointing the harness at another server
+
+By default the harness talks to a server on this machine with the committed development RCON password. On the arena machine (docs/ARENA_SERVER.md) the systemd unit sets `CAB_RCON_PORT`, `CAB_MC_PORT` and `CAB_RCON_PASSWORD_FILE` (a file holding the generated secret); `CAB_RCON_PASSWORD` is also read. Nothing else changes.
+
 ## Playing matches
 
 With the server running:
