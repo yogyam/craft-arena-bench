@@ -56,8 +56,15 @@ sed "s/__FORWARDING_SECRET__/$FORWARDING_SECRET/" "$(dirname "$0")/paper-global.
 chown -R arena:arena "$ROOT"
 chmod 600 "$ROOT/paper/server.properties" "$ROOT/paper/config/paper-global.yml"
 
-echo "== services"
-cp "$(dirname "$0")"/systemd/*.service /etc/systemd/system/
+echo "== services (heaps sized from memory)"
+MEM_MB=$(awk '/MemTotal/ {print int($2/1024)}' /proc/meminfo)
+if [ "$MEM_MB" -ge 12000 ]; then PAPER_XMX=6G; PAPER_XMS=4G; VELOCITY_XMX=1G
+elif [ "$MEM_MB" -ge 3500 ]; then PAPER_XMX=2200M; PAPER_XMS=1G; VELOCITY_XMX=384M
+else PAPER_XMX=1100M; PAPER_XMS=512M; VELOCITY_XMX=192M; fi
+echo "memory ${MEM_MB} MB: paper -Xmx$PAPER_XMX, velocity -Xmx$VELOCITY_XMX"
+for unit in "$(dirname "$0")"/systemd/*.service; do
+  sed -e "s/__PAPER_XMS__/$PAPER_XMS/; s/__PAPER_XMX__/$PAPER_XMX/; s/__VELOCITY_XMX__/$VELOCITY_XMX/" "$unit" > "/etc/systemd/system/$(basename "$unit")"
+done
 systemctl daemon-reload
 systemctl enable --now paper velocity
 

@@ -20,7 +20,7 @@ cd deploy/aws && tofu init
 tofu apply -var ssh_cidr=$(curl -s https://api.ipify.org)/32
 ```
 
-Cost: a t4g.medium is about 25 dollars a month after any new-account credits; Hetzner's equivalent is about 4 euros. The state file stays on the machine that ran `tofu apply`; it is ignored by git.
+Cost: a t4g.small is about 18 dollars a month all-in (instance, disk, public address), a t4g.medium about 31; Hetzner's equivalent is about 4 euros. `budget.tf` adds a monthly spending line (default 30 dollars) with alerts at 80% and 100% and an automatic stop of the instance when actual spend crosses it. AWS evaluates budgets a few times a day, so the stop can lag by hours; restarting afterwards is deliberate (`aws ec2 start-instances`). The IAM user that applies this needs `AmazonEC2FullAccess`, `AWSBudgetsActionsWithAWSResourceControlAccess`, and, for the first apply only, enough IAM access to create the budget's stop role. The state file stays on the machine that ran `tofu apply`; it is ignored by git.
 
 ## Steps
 

@@ -4,7 +4,7 @@
 #
 #   cd deploy/aws
 #   tofu init
-#   tofu apply -var ssh_cidr=$(curl -s https://api.ipify.org)/32
+#   tofu apply -var ssh_cidr=$(curl -s https://api.ipify.org)/32 -var alert_email=you@example.org
 #
 # Credentials come from the AWS CLI's configuration (aws configure); nothing is stored here.
 
@@ -29,9 +29,9 @@ variable "region" {
 }
 
 variable "instance_type" {
-  description = "Graviton instance. t4g.medium (2 vCPU, 4 GB) is the sensible minimum for Paper + Velocity + the harness"
+  description = "Graviton instance. t4g.small (2 vCPU, 2 GB) fits a $30 monthly line; t4g.medium (4 GB) is roomier at about $31 all-in"
   type        = string
-  default     = "t4g.medium"
+  default     = "t4g.small"
 }
 
 variable "ssh_cidr" {
