@@ -10,6 +10,18 @@ For the maintainer. One Ubuntu 24.04 machine (Oracle Cloud always-free ARM, 4 co
 
 Pinned: Paper 26.1.2 build 74, Velocity 4.2.0 build 30 velocity-4.2.0-30.jar 35a5596a5468a035d8a32c8de5ebb0dc6b8d8f0cc3ff5169d514aca762af8aa8 https://fill-data.papermc.io/v1/objects/35a5596a5468a035d8a32c8de5ebb0dc6b8d8f0cc3ff5169d514aca762af8aa8/velocity-4.2.0-30.jar, Temurin 25. The jars are downloaded on the machine with their checksums checked; nothing is committed.
 
+## On AWS instead, with OpenTofu or Terraform
+
+`deploy/aws/main.tf` creates the same machine on AWS: a Graviton instance with Ubuntu 24.04, a fixed public address, a security group that admits SSH from one address and Minecraft from anywhere, and a first boot that clones this repository and runs `deploy/bootstrap.sh`. The machine holds no cloud credentials.
+
+```bash
+aws configure                         # once, with an access key for a user that may manage EC2
+cd deploy/aws && tofu init
+tofu apply -var ssh_cidr=$(curl -s https://api.ipify.org)/32
+```
+
+Cost: a t4g.medium is about 25 dollars a month after any new-account credits; Hetzner's equivalent is about 4 euros. The state file stays on the machine that ran `tofu apply`; it is ignored by git.
+
 ## Steps
 
 1. Create the machine (Ubuntu 24.04, arm64). In Oracle's console open ingress for TCP 25565 from 0.0.0.0/0 on the subnet's security list; SSH is open by default. Nothing else.
