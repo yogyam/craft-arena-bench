@@ -10,6 +10,16 @@ For the maintainer. One Ubuntu 24.04 machine (Oracle Cloud always-free ARM, 4 co
 
 Pinned: Paper 26.1.2 build 74, Velocity 4.2.0 build 30 velocity-4.2.0-30.jar 35a5596a5468a035d8a32c8de5ebb0dc6b8d8f0cc3ff5169d514aca762af8aa8 https://fill-data.papermc.io/v1/objects/35a5596a5468a035d8a32c8de5ebb0dc6b8d8f0cc3ff5169d514aca762af8aa8/velocity-4.2.0-30.jar, Temurin 25. The jars are downloaded on the machine with their checksums checked; nothing is committed.
 
+## On Hetzner, with OpenTofu or Terraform
+
+`deploy/hetzner/main.tf` creates the machine on Hetzner Cloud: a CAX11 ARM server (about 4 euros a month) with Ubuntu 24.04, a firewall admitting SSH from one address and Minecraft from anywhere, and the same first-boot bootstrap. The server's user is `root` on Hetzner images.
+
+```bash
+export HCLOUD_TOKEN=...               # Hetzner Cloud console, Security, API tokens, read and write
+cd deploy/hetzner && tofu init
+tofu apply -var ssh_cidr=$(curl -s https://api.ipify.org)/32
+```
+
 ## On AWS instead, with OpenTofu or Terraform
 
 `deploy/aws/main.tf` creates the same machine on AWS: a Graviton instance with Ubuntu 24.04, a fixed public address, a security group that admits SSH from one address and Minecraft from anywhere, and a first boot that clones this repository and runs `deploy/bootstrap.sh`. The machine holds no cloud credentials.
