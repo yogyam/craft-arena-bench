@@ -27,7 +27,7 @@ CraftArenaBench exists so people can compare decision models fairly on the same 
 ## Endpoints
 
 1. **Answer from what you are sent.** The request carries the fight state and nothing else. An endpoint must not try to work out which opponent it faces, which seed is in play, or whether it faces the house bot, and must not behave differently between matches on that basis. Match ids are random and are not reused.
-2. **Decide within the tier's budget.** A late or missing answer is not an error: the previous intent continues and the lateness is recorded. More than one in five late answers in a match forfeits the match. Latency is published next to the rating.
+2. **Decide within the tier's budget.** A late or missing answer is not an error: the previous intent continues and the lateness is recorded. More than one in five late answers in a match forfeits the match. Latency is published next to the rating. If an endpoint is late on more than half of all decisions across a pair's matches, it was effectively down and the pair is not published at all; it is played again next run, like a pair whose endpoint failed the health check.
 3. **Be deterministic enough to be rated.** Randomness in the model is fine. Changing the model between matches of the same run is not; update the submission instead.
 4. **Your URL is public.** Manifests and scoring logs are public, so anything in the URL is public. If your endpoint needs a token, use a dedicated one you can revoke.
 

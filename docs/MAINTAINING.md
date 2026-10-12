@@ -9,7 +9,7 @@ Notes for whoever runs it. Entrants don't need this page.
 3. `Score pairs` runs on the push to `main`, weekly, or by hand:
    - `score` health-checks every entrant, lists the pairs with no current result on each board, and plays up to 15 of them, each in a child process with a time limit (20 matches × (cap + 15 s) + 2 min). The server is downloaded from PaperMC (checksum pinned in `server.py`) and started on the runner. A pair that fails or times out is skipped and retried next run.
    - The `publish` job validates every file against the repository (`craft-arena-bench validate-results`), commits `duels/` and `replays/`, and deploys the site. If validation fails, nothing is committed.
-4. A bot whose endpoint fails the health check is skipped for the run. Three runs in a row is grounds for delisting (RULES.md); that is a manual step for now.
+4. A bot whose endpoint fails the health check is skipped for the run. A pair in which an entrant was late on more than half of all decisions is not written either (the endpoint or the network to it died mid-run); the `score` log says so and the pair stays outstanding. If a published pair turns out to be hollow for the same reason, delete its two files from `duels/` and `replays/` and re-run `Score pairs`; the validation of published results does not object to a removal. Three runs in a row is grounds for delisting (RULES.md); that is a manual step for now.
 
 ## Locally
 

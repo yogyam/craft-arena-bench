@@ -204,3 +204,33 @@ def test_pair_timeout_scales_with_the_cap():
     assert pair_timeout_seconds("sumo") == 20 * 75 + 120
     assert pair_timeout_seconds("block_uhc") == 20 * 195 + 120
     assert pair_timeout_seconds("block_uhc", 4) < pair_timeout_seconds("block_uhc")
+
+
+def test_effectively_down_entrant_is_not_published(tmp_path, monkeypatch):
+    import asyncio
+
+    from craft_arena_bench.service import scoring
+    from craft_arena_bench.service.manifests import Manifest
+
+    house = new_manifest("House", "CAB", "yogyam", "local:house", [2], ["sumo"], house=True)
+    house.slug = "house-bot"
+    bot = _manifest(name="Slow Bot", tiers=[2], modes=["sumo"])
+    manifests = {"house-bot": house, bot.slug: bot}
+
+    async def fake_play_pair(pair, manifests, submissions_folder, allow_local, matches):
+        doc = {
+            "a": pair.a,
+            "b": pair.b,
+            "mode": "sumo",
+            "tier_hz": 2,
+            "a_latency": {"late_fraction": 0.0},
+            "b_latency": {"late_fraction": 0.8},
+        }
+        return doc, {}
+
+    monkeypatch.setattr(scoring, "play_pair", fake_play_pair)
+    monkeypatch.setattr(scoring, "load_all", lambda folder: manifests)
+    with pytest.raises(SubmissionError, match="effectively down"):
+        asyncio.run(scoring.play_pair_command(str(tmp_path), str(tmp_path / "out"), "sumo", 2, "house-bot", bot.slug, False, 4))
+    assert not (tmp_path / "out").exists()
+    assert isinstance(house, Manifest)

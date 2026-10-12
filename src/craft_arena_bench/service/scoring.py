@@ -26,7 +26,7 @@ from ..match import MatchRunner
 from ..paths import repo_root
 from ..policies import make_policy
 from ..tiers import tier
-from . import MATCHES_PER_PAIR, REPLAYS_PER_PAIR, SEASON
+from . import MATCHES_PER_PAIR, REPLAYS_PER_PAIR, SEASON, UNAVAILABLE_LATE_FRACTION
 from .manifests import HOUSE_ENDPOINT_PREFIX, Manifest, SubmissionError, health_check, load_all, manifest_digest
 from .pairings import Pair, board_name, pair_seeds, pairs_to_play
 
@@ -276,5 +276,12 @@ async def play_pair_command(
             raise SubmissionError(f"{slug} has no valid manifest")
     pair = Pair(mode, hz, *sorted((a, b)))
     document, replays_document = await play_pair(pair, manifests, submissions_folder, allow_local, matches)
+    # A bot that was late on most of its decisions was not really there (its endpoint, or the network to it, was down
+    # mid-run). The rules say a down endpoint is skipped, not scored; the pair is left outstanding for the next run.
+    for side in ("a", "b"):
+        if not manifests[document[side]].house and document[f"{side}_latency"]["late_fraction"] > UNAVAILABLE_LATE_FRACTION:
+            raise SubmissionError(
+                f"{document[side]} was late on {document[f'{side}_latency']['late_fraction']:.0%} of its decisions: endpoint effectively down, pair not written"
+            )
     duel_path, _ = write_pair(document, replays_document, output_folder)
     print(f"{pair.name}: {document['a_wins']}-{document['b_wins']}-{document['draws']} written to {duel_path}", flush=True)
