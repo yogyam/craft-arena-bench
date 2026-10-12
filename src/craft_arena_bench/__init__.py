@@ -7,7 +7,7 @@ __version__ = "0.0.1"
 INTERFACE_VERSION = 1
 
 # Bumped when an arena, a mode's items, time caps or win rule change.
-MODE_SET_VERSION = 1
+MODE_SET_VERSION = 2  # 2: Sumo's cap tiebreak (nearer the centre over the last ten seconds wins)
 
 # Season 1 target. The jar is downloaded from PaperMC at run time and never committed.
 MINECRAFT_VERSION = "26.1.2"

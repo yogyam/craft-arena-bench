@@ -156,7 +156,7 @@ The body does not: choose where to go, decide when to shoot, place blocks, use b
 
 ### Sumo
 
-A 19 by 19 platform, 10 blocks above the ground, no items, fists only. Both bots have Resistance V, so no damage is ever taken and health stays at 20: Sumo is decided by knockback alone. Knockback is vanilla. Halving it was tried and made a bot that circles constantly impossible to push off (every match drew at the cap); at full knockback the house bot beats a circler in 24 to 56 s and a random bot in 3 to 6 s. Falling below the platform loses. 60 s cap; a draw if both still stand.
+A 19 by 19 platform, 10 blocks above the ground, no items, fists only. Both bots have Resistance V, so no damage is ever taken and health stays at 20: Sumo is decided by knockback alone. Knockback is vanilla. Halving it was tried and made a bot that circles constantly impossible to push off (every match drew at the cap); at full knockback the house bot beats a circler in 24 to 56 s and a random bot in 3 to 6 s. Falling below the platform loses. 60 s cap: at the cap the bot that was nearer the centre on average over the last ten seconds wins (reason `cap_centre`); if the two averages are within half a block it is a draw. Ten seconds, not the final tick, so a last-second dash to the centre does not count; holding the inside does. (Mode set version 2, 12 Oct 2026: before it, every match at the cap was a draw, which was most matches between competent bots.)
 
 | Action | The body does |
 |---|---|

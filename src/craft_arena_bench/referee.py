@@ -15,11 +15,34 @@ class Outcome:
 
 
 class SumoReferee:
-    def __init__(self, fall_y: float, cap_seconds: int):
+    """Falling loses. At the cap, the bot that stayed nearer the centre on average over the last ten seconds wins;
+    within half a block of each other it is a draw. A last-second dash to the centre does not help."""
+
+    TIEBREAK_WINDOW_TICKS = 10 * TICKS_PER_SECOND
+    TIEBREAK_MARGIN = 0.5  # blocks
+
+    def __init__(self, fall_y: float, cap_seconds: int, centre: tuple[float, float] | None = None):
         self.fall_y = fall_y
         self.cap_ticks = cap_seconds * TICKS_PER_SECOND
+        self.centre = centre
+        self._dist: tuple[list[float], list[float]] = ([], [])
+
+    def _track(self, a: dict, b: dict) -> None:
+        if self.centre is None:
+            return
+        for i, s in enumerate((a, b)):
+            x, _, z = s["self"]["pos"]
+            self._dist[i].append(((x - self.centre[0]) ** 2 + (z - self.centre[1]) ** 2) ** 0.5)
+            if len(self._dist[i]) > self.TIEBREAK_WINDOW_TICKS:
+                del self._dist[i][0]
+
+    def centre_averages(self) -> tuple[float, float] | None:
+        if self.centre is None or not self._dist[0] or not self._dist[1]:
+            return None
+        return (sum(self._dist[0]) / len(self._dist[0]), sum(self._dist[1]) / len(self._dist[1]))
 
     def update(self, tick: int, a: dict, b: dict, a_died: bool = False, b_died: bool = False) -> Outcome | None:
+        self._track(a, b)
         a_fell = a["self"]["pos"][1] < self.fall_y
         b_fell = b["self"]["pos"][1] < self.fall_y
         if a_fell and b_fell:
@@ -37,6 +60,11 @@ class SumoReferee:
         if b_dead:
             return Outcome("a", "death", tick)
         if tick >= self.cap_ticks:
+            averages = self.centre_averages()
+            if averages is not None:
+                da, db = averages
+                if abs(da - db) >= self.TIEBREAK_MARGIN:
+                    return Outcome("a" if da < db else "b", "cap_centre", tick)
             return Outcome(None, "cap", tick)
         return None
 

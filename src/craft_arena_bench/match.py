@@ -123,7 +123,8 @@ class MatchRunner:
         spawns = self.arena.place_bots(self.rcon, targets, seed)
         if isinstance(self.arena, SumoArena):
             bounds, floor_y, config = self.arena.platform, None, {"platform": self.arena.platform.to_message()}
-            referee = SumoReferee(self.arena.fall_y, self.arena.cap_seconds)
+            centre = ((bounds.min[0] + bounds.max[0] + 1) / 2, (bounds.min[2] + bounds.max[2] + 1) / 2)
+            referee = SumoReferee(self.arena.fall_y, self.arena.cap_seconds, centre)
             uhc: BlockUhcArena | None = None
         else:
             bounds, floor_y, config = self.arena.bounds, self.arena.floor_y, {"arena": self.arena.to_message()}

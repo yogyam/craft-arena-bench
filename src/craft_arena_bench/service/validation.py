@@ -55,7 +55,7 @@ MATCH_FIELDS = {
     "a_events",
     "b_events",
 }
-REASONS = {"fall", "both_fell", "death", "cap", "cap_health", "forfeit"}
+REASONS = {"fall", "both_fell", "death", "cap", "cap_health", "cap_centre", "forfeit"}
 
 
 def _slug(value) -> None:
