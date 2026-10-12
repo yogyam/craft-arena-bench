@@ -7,7 +7,7 @@
  "b_manifest_sha256": "dac800489d98a013d374b3bd5f85ced2218c5d0acf0aaa78054565df436b52ef",
  "season": 1,
  "interface_version": 1,
- "mode_set_version": 1,
+ "mode_set_version": 2,
  "matches_per_pair": 20,
  "seeds": [
   110100,
@@ -31,106 +31,106 @@
   110118,
   110119
  ],
- "played_at": "2026-10-06T03:18:33Z",
+ "played_at": "2026-10-12T19:21:57Z",
  "benchmark_version": "0.0.1",
  "server": {
   "minecraft": "26.1.2",
   "paper_build": 74
  },
  "libraries": {
-  "python": "3.12.14",
+  "python": "3.12.15",
   "platform": "linux",
   "httpx": "0.28.1",
   "websockets": "17.2",
   "numpy": "2.5.3",
   "mineflayer": "4.39.0"
  },
- "a_points": 11.0,
- "b_points": 9.0,
- "a_wins": 11,
- "b_wins": 9,
+ "a_points": 12.0,
+ "b_points": 8.0,
+ "a_wins": 12,
+ "b_wins": 8,
  "draws": 0,
  "a_latency": {
-  "median_ms": 698.9,
-  "late_fraction": 0.1449,
-  "asked": 345
+  "median_ms": 728.8,
+  "late_fraction": 0.2153,
+  "asked": 339
  },
  "b_latency": {
   "median_ms": 0.0,
   "late_fraction": 0.0,
-  "asked": 345
+  "asked": 339
  },
  "matches": [
   {
    "seed": 110100,
    "a_on_spawn": "A",
-   "winner": "a",
-   "reason": "death",
-   "seconds": 5.55,
-   "decisions": 5,
-   "a_health": 6,
-   "b_health": 0.0,
+   "winner": "b",
+   "reason": "forfeit",
+   "seconds": 66.95,
+   "decisions": 66,
+   "a_health": 0.5,
+   "b_health": 4,
    "a_stats": {
-    "asked": 5,
-    "applied": 2,
-    "late_or_missing": 2,
-    "late_fraction": 0.4,
-    "median_ms": 831.2,
-    "p90_ms": 901.1
+    "asked": 66,
+    "applied": 52,
+    "late_or_missing": 14,
+    "late_fraction": 0.2121,
+    "median_ms": 743.4,
+    "p90_ms": 901.2
    },
    "b_stats": {
-    "asked": 5,
-    "applied": 5,
+    "asked": 66,
+    "applied": 66,
     "late_or_missing": 0,
     "late_fraction": 0.0,
     "median_ms": 0.0,
     "p90_ms": 0.0
    },
    "a_events": {
-    "dealt_damage:melee": 1,
-    "dealt_damage:other": 2,
-    "took_damage:melee": 2
+    "dealt_damage:melee": 10,
+    "dealt_damage:other": 6,
+    "sudden_death_started": 1,
+    "took_damage:melee": 18
    },
    "b_events": {
-    "dealt_damage:melee": 2,
-    "took_damage:melee": 1,
-    "took_damage:other": 2
+    "dealt_damage:melee": 18,
+    "sudden_death_started": 1,
+    "took_damage:melee": 10,
+    "took_damage:other": 6
    }
   },
   {
    "seed": 110101,
    "a_on_spawn": "B",
-   "winner": "b",
+   "winner": "a",
    "reason": "death",
-   "seconds": 4.1,
-   "decisions": 4,
-   "a_health": 0.0,
-   "b_health": 6,
+   "seconds": 11.4,
+   "decisions": 11,
+   "a_health": 3,
+   "b_health": 0.0,
    "a_stats": {
-    "asked": 4,
-    "applied": 3,
+    "asked": 11,
+    "applied": 11,
     "late_or_missing": 0,
     "late_fraction": 0.0,
-    "median_ms": 594.8,
-    "p90_ms": 901.1
+    "median_ms": 728.8,
+    "p90_ms": 901.2
    },
    "b_stats": {
-    "asked": 4,
-    "applied": 4,
+    "asked": 11,
+    "applied": 11,
     "late_or_missing": 0,
     "late_fraction": 0.0,
     "median_ms": 0.0,
     "p90_ms": 0.0
    },
    "a_events": {
-    "dealt_damage:melee": 2,
-    "took_damage:melee": 1,
-    "took_damage:other": 2
+    "dealt_damage:melee": 14,
+    "took_damage:other": 13
    },
    "b_events": {
-    "dealt_damage:melee": 1,
-    "dealt_damage:other": 2,
-    "took_damage:melee": 2
+    "dealt_damage:other": 13,
+    "took_damage:melee": 14
    }
   },
   {
@@ -138,40 +138,35 @@
    "a_on_spawn": "A",
    "winner": "a",
    "reason": "death",
-   "seconds": 7.05,
-   "decisions": 7,
-   "a_health": 9,
+   "seconds": 15.4,
+   "decisions": 15,
+   "a_health": 1,
    "b_health": 0.0,
    "a_stats": {
-    "asked": 7,
-    "applied": 4,
-    "late_or_missing": 2,
-    "late_fraction": 0.2857,
-    "median_ms": 776.8,
-    "p90_ms": 900.9
+    "asked": 15,
+    "applied": 3,
+    "late_or_missing": 11,
+    "late_fraction": 0.7333,
+    "median_ms": 758.3,
+    "p90_ms": 901.2
    },
    "b_stats": {
-    "asked": 7,
-    "applied": 7,
+    "asked": 15,
+    "applied": 15,
     "late_or_missing": 0,
     "late_fraction": 0.0,
     "median_ms": 0.0,
     "p90_ms": 0.0
    },
    "a_events": {
-    "bucket_guard": 1,
-    "dealt_damage:melee": 2,
-    "dealt_damage:other": 2,
-    "placed_water": 1,
-    "took_damage:lava": 1,
-    "took_damage:melee": 1
+    "dealt_damage:melee": 10,
+    "dealt_damage:other": 10,
+    "took_damage:melee": 19
    },
    "b_events": {
-    "dealt_damage:lava": 1,
-    "dealt_damage:melee": 1,
-    "placed_lava": 1,
-    "took_damage:melee": 2,
-    "took_damage:other": 2
+    "dealt_damage:melee": 19,
+    "took_damage:melee": 10,
+    "took_damage:other": 10
    }
   },
   {
@@ -179,57 +174,57 @@
    "a_on_spawn": "B",
    "winner": "b",
    "reason": "death",
-   "seconds": 4.3,
-   "decisions": 4,
+   "seconds": 15.25,
+   "decisions": 15,
    "a_health": 0.0,
-   "b_health": 6,
+   "b_health": 1,
    "a_stats": {
-    "asked": 4,
-    "applied": 3,
+    "asked": 15,
+    "applied": 14,
     "late_or_missing": 0,
     "late_fraction": 0.0,
-    "median_ms": 769.3,
-    "p90_ms": 900.9
+    "median_ms": 728.8,
+    "p90_ms": 901.2
    },
    "b_stats": {
-    "asked": 4,
-    "applied": 4,
+    "asked": 15,
+    "applied": 15,
     "late_or_missing": 0,
     "late_fraction": 0.0,
     "median_ms": 0.0,
     "p90_ms": 0.0
    },
    "a_events": {
-    "dealt_damage:melee": 2,
-    "took_damage:melee": 2,
-    "took_damage:other": 1
+    "dealt_damage:melee": 19,
+    "took_damage:melee": 12,
+    "took_damage:other": 8
    },
    "b_events": {
-    "dealt_damage:melee": 2,
-    "dealt_damage:other": 1,
-    "took_damage:melee": 2
+    "dealt_damage:melee": 12,
+    "dealt_damage:other": 8,
+    "took_damage:melee": 19
    }
   },
   {
    "seed": 110104,
    "a_on_spawn": "A",
-   "winner": "a",
+   "winner": "b",
    "reason": "death",
-   "seconds": 4.2,
-   "decisions": 4,
-   "a_health": 6,
-   "b_health": 0.0,
+   "seconds": 15.3,
+   "decisions": 15,
+   "a_health": 0.0,
+   "b_health": 1,
    "a_stats": {
-    "asked": 4,
-    "applied": 3,
-    "late_or_missing": 0,
-    "late_fraction": 0.0,
-    "median_ms": 757.0,
-    "p90_ms": 900.9
+    "asked": 15,
+    "applied": 6,
+    "late_or_missing": 9,
+    "late_fraction": 0.6,
+    "median_ms": 757.3,
+    "p90_ms": 901.3
    },
    "b_stats": {
-    "asked": 4,
-    "applied": 4,
+    "asked": 15,
+    "applied": 15,
     "late_or_missing": 0,
     "late_fraction": 0.0,
     "median_ms": 0.0,
@@ -237,13 +232,13 @@
    },
    "a_events": {
     "dealt_damage:melee": 1,
-    "dealt_damage:other": 2,
-    "took_damage:melee": 2
+    "dealt_damage:other": 18,
+    "took_damage:melee": 20
    },
    "b_events": {
-    "dealt_damage:melee": 2,
+    "dealt_damage:melee": 20,
     "took_damage:melee": 1,
-    "took_damage:other": 2
+    "took_damage:other": 18
    }
   },
   {
@@ -251,35 +246,35 @@
    "a_on_spawn": "B",
    "winner": "b",
    "reason": "death",
-   "seconds": 4.25,
-   "decisions": 4,
+   "seconds": 15.3,
+   "decisions": 15,
    "a_health": 0.0,
-   "b_health": 6,
+   "b_health": 1,
    "a_stats": {
-    "asked": 4,
-    "applied": 3,
+    "asked": 15,
+    "applied": 14,
     "late_or_missing": 0,
     "late_fraction": 0.0,
-    "median_ms": 727.9,
-    "p90_ms": 900.7
+    "median_ms": 746.4,
+    "p90_ms": 901.2
    },
    "b_stats": {
-    "asked": 4,
-    "applied": 4,
+    "asked": 15,
+    "applied": 15,
     "late_or_missing": 0,
     "late_fraction": 0.0,
     "median_ms": 0.0,
     "p90_ms": 0.0
    },
    "a_events": {
-    "dealt_damage:melee": 2,
-    "took_damage:melee": 1,
-    "took_damage:other": 2
+    "dealt_damage:melee": 19,
+    "took_damage:melee": 2,
+    "took_damage:other": 18
    },
    "b_events": {
-    "dealt_damage:melee": 1,
-    "dealt_damage:other": 2,
-    "took_damage:melee": 2
+    "dealt_damage:melee": 2,
+    "dealt_damage:other": 18,
+    "took_damage:melee": 19
    }
   },
   {
@@ -287,35 +282,35 @@
    "a_on_spawn": "A",
    "winner": "a",
    "reason": "death",
-   "seconds": 4.2,
-   "decisions": 4,
-   "a_health": 6,
+   "seconds": 15.3,
+   "decisions": 15,
+   "a_health": 1,
    "b_health": 0.0,
    "a_stats": {
-    "asked": 4,
-    "applied": 3,
-    "late_or_missing": 0,
-    "late_fraction": 0.0,
-    "median_ms": 698.9,
-    "p90_ms": 900.7
+    "asked": 15,
+    "applied": 13,
+    "late_or_missing": 1,
+    "late_fraction": 0.0667,
+    "median_ms": 746.4,
+    "p90_ms": 901.2
    },
    "b_stats": {
-    "asked": 4,
-    "applied": 4,
+    "asked": 15,
+    "applied": 15,
     "late_or_missing": 0,
     "late_fraction": 0.0,
     "median_ms": 0.0,
     "p90_ms": 0.0
    },
    "a_events": {
-    "dealt_damage:melee": 1,
-    "dealt_damage:other": 2,
-    "took_damage:melee": 2
+    "dealt_damage:melee": 4,
+    "dealt_damage:other": 16,
+    "took_damage:melee": 19
    },
    "b_events": {
-    "dealt_damage:melee": 2,
-    "took_damage:melee": 1,
-    "took_damage:other": 2
+    "dealt_damage:melee": 19,
+    "took_damage:melee": 4,
+    "took_damage:other": 16
    }
   },
   {
@@ -323,33 +318,35 @@
    "a_on_spawn": "B",
    "winner": "a",
    "reason": "death",
-   "seconds": 4.25,
-   "decisions": 4,
-   "a_health": 6,
+   "seconds": 15.8,
+   "decisions": 15,
+   "a_health": 1,
    "b_health": 0.0,
    "a_stats": {
-    "asked": 4,
-    "applied": 1,
-    "late_or_missing": 3,
-    "late_fraction": 0.75,
-    "median_ms": 757.0,
+    "asked": 15,
+    "applied": 15,
+    "late_or_missing": 0,
+    "late_fraction": 0.0,
+    "median_ms": 728.8,
     "p90_ms": 901.1
    },
    "b_stats": {
-    "asked": 4,
-    "applied": 4,
+    "asked": 15,
+    "applied": 15,
     "late_or_missing": 0,
     "late_fraction": 0.0,
     "median_ms": 0.0,
     "p90_ms": 0.0
    },
    "a_events": {
-    "dealt_damage:melee": 3,
-    "took_damage:other": 2
+    "dealt_damage:melee": 20,
+    "took_damage:melee": 2,
+    "took_damage:other": 17
    },
    "b_events": {
-    "dealt_damage:other": 2,
-    "took_damage:melee": 3
+    "dealt_damage:melee": 2,
+    "dealt_damage:other": 17,
+    "took_damage:melee": 20
    }
   },
   {
@@ -357,33 +354,35 @@
    "a_on_spawn": "A",
    "winner": "a",
    "reason": "death",
-   "seconds": 4.3,
-   "decisions": 4,
-   "a_health": 6,
+   "seconds": 13.5,
+   "decisions": 13,
+   "a_health": 4,
    "b_health": 0.0,
    "a_stats": {
-    "asked": 4,
-    "applied": 3,
-    "late_or_missing": 0,
-    "late_fraction": 0.0,
-    "median_ms": 750.6,
-    "p90_ms": 900.9
+    "asked": 13,
+    "applied": 2,
+    "late_or_missing": 10,
+    "late_fraction": 0.7692,
+    "median_ms": 746.8,
+    "p90_ms": 901.2
    },
    "b_stats": {
-    "asked": 4,
-    "applied": 4,
+    "asked": 13,
+    "applied": 13,
     "late_or_missing": 0,
     "late_fraction": 0.0,
     "median_ms": 0.0,
     "p90_ms": 0.0
    },
    "a_events": {
-    "dealt_damage:melee": 3,
-    "took_damage:melee": 2
+    "dealt_damage:melee": 8,
+    "dealt_damage:other": 9,
+    "took_damage:melee": 16
    },
    "b_events": {
-    "dealt_damage:melee": 2,
-    "took_damage:melee": 3
+    "dealt_damage:melee": 16,
+    "took_damage:melee": 8,
+    "took_damage:other": 9
    }
   },
   {
@@ -391,35 +390,35 @@
    "a_on_spawn": "B",
    "winner": "a",
    "reason": "death",
-   "seconds": 4.2,
-   "decisions": 4,
-   "a_health": 6,
+   "seconds": 14.75,
+   "decisions": 14,
+   "a_health": 2,
    "b_health": 0.0,
    "a_stats": {
-    "asked": 4,
-    "applied": 4,
+    "asked": 14,
+    "applied": 14,
     "late_or_missing": 0,
     "late_fraction": 0.0,
-    "median_ms": 712.7,
-    "p90_ms": 900.9
+    "median_ms": 728.8,
+    "p90_ms": 901.2
    },
    "b_stats": {
-    "asked": 4,
-    "applied": 4,
+    "asked": 14,
+    "applied": 14,
     "late_or_missing": 0,
     "late_fraction": 0.0,
     "median_ms": 0.0,
     "p90_ms": 0.0
    },
    "a_events": {
-    "dealt_damage:melee": 3,
-    "took_damage:melee": 1,
-    "took_damage:other": 1
+    "dealt_damage:melee": 19,
+    "took_damage:melee": 4,
+    "took_damage:other": 14
    },
    "b_events": {
-    "dealt_damage:melee": 1,
-    "dealt_damage:other": 1,
-    "took_damage:melee": 3
+    "dealt_damage:melee": 4,
+    "dealt_damage:other": 14,
+    "took_damage:melee": 19
    }
   },
   {
@@ -427,35 +426,35 @@
    "a_on_spawn": "A",
    "winner": "b",
    "reason": "death",
-   "seconds": 4.3,
-   "decisions": 4,
+   "seconds": 11.35,
+   "decisions": 11,
    "a_health": 0.0,
-   "b_health": 6,
+   "b_health": 7,
    "a_stats": {
-    "asked": 4,
-    "applied": 4,
-    "late_or_missing": 0,
-    "late_fraction": 0.0,
-    "median_ms": 712.7,
-    "p90_ms": 900.9
+    "asked": 11,
+    "applied": 5,
+    "late_or_missing": 6,
+    "late_fraction": 0.5455,
+    "median_ms": 734.9,
+    "p90_ms": 901.2
    },
    "b_stats": {
-    "asked": 4,
-    "applied": 4,
+    "asked": 11,
+    "applied": 11,
     "late_or_missing": 0,
     "late_fraction": 0.0,
     "median_ms": 0.0,
     "p90_ms": 0.0
    },
    "a_events": {
-    "dealt_damage:melee": 1,
-    "dealt_damage:other": 1,
-    "took_damage:melee": 3
+    "dealt_damage:melee": 3,
+    "dealt_damage:other": 10,
+    "took_damage:melee": 14
    },
    "b_events": {
-    "dealt_damage:melee": 3,
-    "took_damage:melee": 1,
-    "took_damage:other": 1
+    "dealt_damage:melee": 14,
+    "took_damage:melee": 3,
+    "took_damage:other": 10
    }
   },
   {
@@ -463,43 +462,35 @@
    "a_on_spawn": "B",
    "winner": "a",
    "reason": "death",
-   "seconds": 19.7,
-   "decisions": 19,
-   "a_health": 3.649,
+   "seconds": 15.3,
+   "decisions": 15,
+   "a_health": 1,
    "b_health": 0.0,
    "a_stats": {
-    "asked": 19,
-    "applied": 19,
+    "asked": 15,
+    "applied": 15,
     "late_or_missing": 0,
     "late_fraction": 0.0,
-    "median_ms": 684.9,
-    "p90_ms": 900.7
+    "median_ms": 726.4,
+    "p90_ms": 901.2
    },
    "b_stats": {
-    "asked": 19,
-    "applied": 19,
+    "asked": 15,
+    "applied": 15,
     "late_or_missing": 0,
     "late_fraction": 0.0,
     "median_ms": 0.0,
     "p90_ms": 0.0
    },
    "a_events": {
-    "bucket_guard": 1,
-    "dealt_damage:arrow": 1,
-    "dealt_damage:melee": 2,
-    "placed_water": 1,
-    "shot_arrow": 1,
-    "took_damage:lava": 1,
-    "took_damage:other": 2
+    "dealt_damage:melee": 20,
+    "took_damage:melee": 2,
+    "took_damage:other": 17
    },
    "b_events": {
-    "dealt_damage:lava": 1,
-    "dealt_damage:other": 2,
-    "dodged_arrow": 1,
-    "opponent_shot": 1,
-    "placed_lava": 1,
-    "took_damage:arrow": 1,
-    "took_damage:melee": 2
+    "dealt_damage:melee": 2,
+    "dealt_damage:other": 17,
+    "took_damage:melee": 20
    }
   },
   {
@@ -507,224 +498,215 @@
    "a_on_spawn": "A",
    "winner": "a",
    "reason": "death",
-   "seconds": 4.6,
-   "decisions": 4,
-   "a_health": 6,
+   "seconds": 17.6,
+   "decisions": 17,
+   "a_health": 1,
    "b_health": 0.0,
    "a_stats": {
-    "asked": 4,
-    "applied": 4,
-    "late_or_missing": 0,
-    "late_fraction": 0.0,
-    "median_ms": 684.9,
-    "p90_ms": 900.5
+    "asked": 17,
+    "applied": 12,
+    "late_or_missing": 4,
+    "late_fraction": 0.2353,
+    "median_ms": 726.4,
+    "p90_ms": 901.2
    },
    "b_stats": {
-    "asked": 4,
-    "applied": 4,
+    "asked": 17,
+    "applied": 17,
     "late_or_missing": 0,
     "late_fraction": 0.0,
     "median_ms": 0.0,
     "p90_ms": 0.0
    },
    "a_events": {
-    "dealt_damage:melee": 2,
-    "dealt_damage:other": 1,
-    "took_damage:melee": 2
+    "dealt_damage:melee": 3,
+    "dealt_damage:other": 17,
+    "took_damage:melee": 19
    },
    "b_events": {
-    "dealt_damage:melee": 2,
-    "took_damage:melee": 2,
-    "took_damage:other": 1
+    "dealt_damage:melee": 19,
+    "took_damage:melee": 3,
+    "took_damage:other": 17
    }
   },
   {
    "seed": 110113,
    "a_on_spawn": "B",
-   "winner": "b",
-   "reason": "cap_health",
-   "seconds": 180.0,
-   "decisions": 180,
-   "a_health": 2,
-   "b_health": 6,
+   "winner": "a",
+   "reason": "death",
+   "seconds": 15.55,
+   "decisions": 15,
+   "a_health": 1,
+   "b_health": 0.0,
    "a_stats": {
-    "asked": 180,
-    "applied": 152,
-    "late_or_missing": 27,
-    "late_fraction": 0.15,
-    "median_ms": 686.0,
-    "p90_ms": 900.9
+    "asked": 15,
+    "applied": 12,
+    "late_or_missing": 3,
+    "late_fraction": 0.2,
+    "median_ms": 730.8,
+    "p90_ms": 901.2
    },
    "b_stats": {
-    "asked": 180,
-    "applied": 179,
+    "asked": 15,
+    "applied": 15,
     "late_or_missing": 0,
     "late_fraction": 0.0,
     "median_ms": 0.0,
     "p90_ms": 0.0
    },
    "a_events": {
-    "bucket_guard": 1,
-    "dealt_damage:melee": 2,
-    "dealt_damage:other": 2,
-    "placed_water": 1,
-    "shot_arrow": 1,
-    "sudden_death_started": 1,
-    "took_damage:lava": 1,
-    "took_damage:melee": 1,
-    "took_damage:other": 1
+    "dealt_damage:melee": 20,
+    "took_damage:melee": 4,
+    "took_damage:other": 15
    },
    "b_events": {
-    "dealt_damage:lava": 1,
-    "dealt_damage:melee": 1,
-    "dealt_damage:other": 1,
-    "opponent_shot": 1,
-    "placed_lava": 1,
-    "placed_water": 1,
-    "sudden_death_started": 1,
-    "took_damage:melee": 2,
-    "took_damage:other": 2
+    "dealt_damage:melee": 4,
+    "dealt_damage:other": 15,
+    "took_damage:melee": 20
    }
   },
   {
    "seed": 110114,
    "a_on_spawn": "A",
-   "winner": "b",
+   "winner": "a",
    "reason": "death",
-   "seconds": 4.2,
-   "decisions": 4,
-   "a_health": 0.0,
-   "b_health": 6,
+   "seconds": 15.3,
+   "decisions": 15,
+   "a_health": 1,
+   "b_health": 0.0,
    "a_stats": {
-    "asked": 4,
-    "applied": 2,
+    "asked": 15,
+    "applied": 12,
     "late_or_missing": 2,
-    "late_fraction": 0.5,
-    "median_ms": 686.0,
-    "p90_ms": 901.0
+    "late_fraction": 0.1333,
+    "median_ms": 727.9,
+    "p90_ms": 901.2
    },
    "b_stats": {
-    "asked": 4,
-    "applied": 4,
+    "asked": 15,
+    "applied": 15,
     "late_or_missing": 0,
     "late_fraction": 0.0,
     "median_ms": 0.0,
     "p90_ms": 0.0
    },
    "a_events": {
-    "dealt_damage:melee": 2,
-    "took_damage:melee": 3
+    "dealt_damage:melee": 5,
+    "dealt_damage:other": 15,
+    "took_damage:melee": 19
    },
    "b_events": {
-    "dealt_damage:melee": 3,
-    "took_damage:melee": 2
+    "dealt_damage:melee": 19,
+    "took_damage:melee": 5,
+    "took_damage:other": 15
    }
   },
   {
    "seed": 110115,
    "a_on_spawn": "B",
-   "winner": "a",
+   "winner": "b",
    "reason": "death",
-   "seconds": 4.75,
-   "decisions": 4,
-   "a_health": 6,
-   "b_health": 0.0,
+   "seconds": 14.05,
+   "decisions": 14,
+   "a_health": 0.0,
+   "b_health": 3,
    "a_stats": {
-    "asked": 4,
-    "applied": 3,
-    "late_or_missing": 1,
-    "late_fraction": 0.25,
-    "median_ms": 687.7,
-    "p90_ms": 901.0
+    "asked": 14,
+    "applied": 13,
+    "late_or_missing": 0,
+    "late_fraction": 0.0,
+    "median_ms": 726.3,
+    "p90_ms": 901.1
    },
    "b_stats": {
-    "asked": 4,
-    "applied": 4,
+    "asked": 14,
+    "applied": 14,
     "late_or_missing": 0,
     "late_fraction": 0.0,
     "median_ms": 0.0,
     "p90_ms": 0.0
    },
    "a_events": {
-    "dealt_damage:melee": 3,
-    "took_damage:other": 2
+    "dealt_damage:melee": 17,
+    "took_damage:melee": 6,
+    "took_damage:other": 12
    },
    "b_events": {
-    "dealt_damage:other": 2,
-    "took_damage:melee": 3
+    "dealt_damage:melee": 6,
+    "dealt_damage:other": 12,
+    "took_damage:melee": 17
    }
   },
   {
    "seed": 110116,
    "a_on_spawn": "A",
-   "winner": "b",
+   "winner": "a",
    "reason": "death",
-   "seconds": 13.25,
-   "decisions": 13,
-   "a_health": 0.0,
-   "b_health": 13,
+   "seconds": 15.2,
+   "decisions": 15,
+   "a_health": 1,
+   "b_health": 0.0,
    "a_stats": {
-    "asked": 13,
-    "applied": 13,
+    "asked": 15,
+    "applied": 14,
     "late_or_missing": 0,
     "late_fraction": 0.0,
-    "median_ms": 683.6,
-    "p90_ms": 900.9
+    "median_ms": 714.8,
+    "p90_ms": 901.1
    },
    "b_stats": {
-    "asked": 13,
-    "applied": 13,
+    "asked": 15,
+    "applied": 15,
     "late_or_missing": 0,
     "late_fraction": 0.0,
     "median_ms": 0.0,
     "p90_ms": 0.0
    },
    "a_events": {
-    "bucket_guard": 1,
-    "dealt_damage:melee": 1,
-    "placed_water": 1,
-    "took_damage:melee": 3
+    "dealt_damage:melee": 7,
+    "dealt_damage:other": 13,
+    "took_damage:melee": 19
    },
    "b_events": {
-    "dealt_damage:melee": 3,
-    "placed_lava": 1,
-    "took_damage:melee": 1
+    "dealt_damage:melee": 19,
+    "took_damage:melee": 7,
+    "took_damage:other": 13
    }
   },
   {
    "seed": 110117,
    "a_on_spawn": "B",
    "winner": "b",
-   "reason": "forfeit",
-   "seconds": 61.95,
-   "decisions": 61,
-   "a_health": 20,
-   "b_health": 12,
+   "reason": "death",
+   "seconds": 14.3,
+   "decisions": 14,
+   "a_health": 0.0,
+   "b_health": 2,
    "a_stats": {
-    "asked": 61,
-    "applied": 48,
-    "late_or_missing": 13,
-    "late_fraction": 0.2131,
-    "median_ms": 688.5,
-    "p90_ms": 901.0
+    "asked": 14,
+    "applied": 13,
+    "late_or_missing": 0,
+    "late_fraction": 0.0,
+    "median_ms": 711.6,
+    "p90_ms": 901.1
    },
    "b_stats": {
-    "asked": 61,
-    "applied": 61,
+    "asked": 14,
+    "applied": 14,
     "late_or_missing": 0,
     "late_fraction": 0.0,
     "median_ms": 0.0,
     "p90_ms": 0.0
    },
    "a_events": {
-    "dealt_damage:other": 2,
-    "sudden_death_started": 1
+    "dealt_damage:melee": 18,
+    "took_damage:melee": 3,
+    "took_damage:other": 15
    },
    "b_events": {
-    "placed_lava": 1,
-    "placed_water": 1,
-    "sudden_death_started": 1,
-    "took_damage:other": 2
+    "dealt_damage:melee": 3,
+    "dealt_damage:other": 15,
+    "took_damage:melee": 18
    }
   },
   {
@@ -732,35 +714,35 @@
    "a_on_spawn": "A",
    "winner": "a",
    "reason": "death",
-   "seconds": 5.0,
-   "decisions": 5,
-   "a_health": 6,
+   "seconds": 14.75,
+   "decisions": 14,
+   "a_health": 3,
    "b_health": 0.0,
    "a_stats": {
-    "asked": 5,
-    "applied": 4,
-    "late_or_missing": 0,
-    "late_fraction": 0.0,
-    "median_ms": 689.5,
-    "p90_ms": 901.0
+    "asked": 14,
+    "applied": 8,
+    "late_or_missing": 5,
+    "late_fraction": 0.3571,
+    "median_ms": 714.5,
+    "p90_ms": 901.1
    },
    "b_stats": {
-    "asked": 5,
-    "applied": 4,
+    "asked": 14,
+    "applied": 14,
     "late_or_missing": 0,
     "late_fraction": 0.0,
     "median_ms": 0.0,
     "p90_ms": 0.0
    },
    "a_events": {
-    "dealt_damage:melee": 1,
-    "dealt_damage:other": 2,
-    "took_damage:melee": 2
+    "dealt_damage:melee": 3,
+    "dealt_damage:other": 15,
+    "took_damage:melee": 17
    },
    "b_events": {
-    "dealt_damage:melee": 2,
-    "took_damage:melee": 1,
-    "took_damage:other": 2
+    "dealt_damage:melee": 17,
+    "took_damage:melee": 3,
+    "took_damage:other": 15
    }
   },
   {
@@ -768,35 +750,35 @@
    "a_on_spawn": "B",
    "winner": "b",
    "reason": "death",
-   "seconds": 7.75,
-   "decisions": 7,
+   "seconds": 15.25,
+   "decisions": 15,
    "a_health": 0.0,
-   "b_health": 13,
+   "b_health": 1,
    "a_stats": {
-    "asked": 7,
-    "applied": 7,
-    "late_or_missing": 0,
-    "late_fraction": 0.0,
-    "median_ms": 688.9,
-    "p90_ms": 901.0
+    "asked": 15,
+    "applied": 6,
+    "late_or_missing": 8,
+    "late_fraction": 0.5333,
+    "median_ms": 726.3,
+    "p90_ms": 901.2
    },
    "b_stats": {
-    "asked": 7,
-    "applied": 7,
+    "asked": 15,
+    "applied": 15,
     "late_or_missing": 0,
     "late_fraction": 0.0,
     "median_ms": 0.0,
     "p90_ms": 0.0
    },
    "a_events": {
-    "dealt_damage:melee": 1,
-    "placed_water": 1,
-    "took_damage:other": 3
+    "dealt_damage:melee": 19,
+    "took_damage:melee": 1,
+    "took_damage:other": 19
    },
    "b_events": {
-    "dealt_damage:other": 3,
-    "placed_lava": 1,
-    "took_damage:melee": 1
+    "dealt_damage:melee": 1,
+    "dealt_damage:other": 19,
+    "took_damage:melee": 19
    }
   }
  ]
