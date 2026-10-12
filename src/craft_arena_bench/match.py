@@ -8,6 +8,7 @@ counted as late and dropped. More than FORFEIT_LATE_FRACTION late or missing ans
 from __future__ import annotations
 
 import asyncio
+import os
 import secrets
 import time
 from dataclasses import asdict, dataclass, field
@@ -109,16 +110,17 @@ class MatchRunner:
         self.rcon.close()
 
     async def play(
-        self, seed: int, decider_a: Decider, decider_b: Decider, tier: Tier, replay_dir: Path | None = None
+        self, seed: int, decider_a: Decider, decider_b: Decider, tier: Tier, replay_dir: Path | None = None, bodies=None
     ) -> MatchResult:
+        """`bodies` may replace the runner's own: the demo passes (body, HumanOpponent) so a person can fight a bot."""
         t0 = time.monotonic()
         match_id = secrets.token_hex(8)
-        a, b = self.bodies
+        a, b = bodies or self.bodies
         sides = (_Side(a, decider_a), _Side(b, decider_b))
         await asyncio.gather(a.reset(), b.reset())
         self.arena.build(self.rcon, seed)
         targets = (a.uuid or a.username, b.uuid or b.username)  # UUIDs: a public server may hold a human with a bot's name
-        self.arena.place_bots(self.rcon, targets, seed)
+        spawns = self.arena.place_bots(self.rcon, targets, seed)
         if isinstance(self.arena, SumoArena):
             bounds, floor_y, config = self.arena.platform, None, {"platform": self.arena.platform.to_message()}
             referee = SumoReferee(self.arena.fall_y, self.arena.cap_seconds)
@@ -127,7 +129,8 @@ class MatchRunner:
             bounds, floor_y, config = self.arena.bounds, self.arena.floor_y, {"arena": self.arena.to_message()}
             referee = BlockUhcReferee(self.arena.cap_seconds, self.arena.sudden_death_seconds)
             uhc = self.arena
-        await asyncio.gather(a.configure(**config), b.configure(**config))
+        # The spawn is included so a human stand-in can be put back on it when the countdown ends; bodies ignore it.
+        await asyncio.gather(a.configure(**config, spawn=list(spawns[0].pos)), b.configure(**config, spawn=list(spawns[1].pos)))
 
         # Endpoints open their connections now, during the settle, so decision 1 is not slowed by a handshake.
         await asyncio.gather(decider_a.warm_up(), decider_b.warm_up())
@@ -162,6 +165,8 @@ class MatchRunner:
             sb = b.latest
             tick += 1
             snaps = (sa, sb)
+            if tick <= 3 and os.environ.get("CAB_DEBUG"):
+                print(f"debug tick {tick}: a {sa['self']['pos']} b {sb['self']['pos'] if sb else None}", flush=True)
             sudden_death = uhc is not None and referee.sudden_death(tick)
             if sudden_death and not sudden_death_announced:
                 sudden_death_announced = True
@@ -261,7 +266,7 @@ class MatchRunner:
                 {"winner": outcome.winner, "reason": outcome.reason, "tick": outcome.tick},
             )
             result.replay = str(path)
-        errors = [f"{body.username} {e}" for body in self.bodies for e in body.errors]
+        errors = [f"{body.username} {e}" for body in (a, b) for e in body.errors]
         if errors:
             raise RuntimeError("body errors during match: " + "; ".join(errors))
         return result

@@ -106,6 +106,28 @@ def main(argv: list[str] | None = None) -> int:
     validate.add_argument("--allow-local", action="store_true", help="Dry runs only")
     validate.set_defaults(func=_validate)
 
+    arena = sub.add_parser("arena", help="LAN demo on the local server: exhibition matches to watch, or a person fighting a bot")
+    arena.add_argument(
+        "--vs",
+        action="append",
+        default=None,
+        help="A fighter: 'house', 'random', 'circler', or name=URL; repeat (default: house and random)",
+    )
+    arena.add_argument("--mode", default="both", choices=["sumo", "block_uhc", "both"])
+    arena.add_argument("--tier", type=int, default=2, choices=sorted(TIERS))
+    arena.add_argument("--interval", type=float, default=8.0, help="Seconds between exhibition matches")
+    arena.add_argument("--cycles", type=int, default=None, help="Rounds of the round-robin to play (default: forever)")
+    arena.add_argument("--results", type=Path, default=Path("runs/arena/results.json"))
+    arena.add_argument("--replays", type=Path, default=Path("runs/arena/replays"))
+    arena.add_argument(
+        "--challenge",
+        default=None,
+        metavar="PLAYER",
+        help="Instead: one match of PLAYER (already on the server) against --opponent",
+    )
+    arena.add_argument("--opponent", default="house", help="Who the challenger fights: house, random, circler, or a URL")
+    arena.set_defaults(func=lambda a: asyncio.run(_arena(a)))
+
     site = sub.add_parser("build-site", help="Build the leaderboard website")
     site.add_argument("--submissions", default="submissions")
     site.add_argument("--duels", default="duels")
@@ -279,6 +301,25 @@ def _validate(args) -> int:
         _echo(f"Refused: {e}")
         return 1
     _echo(f"{len(args.paths)} files ok")
+    return 0
+
+
+async def _arena(args) -> int:
+    from .demo import challenge, exhibition
+
+    t = tier(args.tier)
+    if args.challenge:
+        mode = "sumo" if args.mode == "both" else args.mode
+        await challenge(args.challenge, mode, t, args.opponent, args.results, args.replays)
+        return 0
+    specs = args.vs or ["house", "random"]
+    fighters = {}
+    for spec in specs:
+        name, _, url = spec.partition("=")
+        fighters[name] = url or name
+    modes = ["sumo", "block_uhc"] if args.mode == "both" else [args.mode]
+    _echo(f"exhibition: {', '.join(fighters)} in {' and '.join(modes)} at {t.hz} Hz; results in {args.results}; stop with Ctrl-C")
+    await exhibition(modes, t, fighters, args.results, args.interval, args.cycles, args.replays)
     return 0
 
 

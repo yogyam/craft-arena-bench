@@ -117,6 +117,28 @@ The decision clock never waits for an answer: the request goes out as a task, th
 
 Match wall time is game time: the server runs in real time whatever the hardware, so the runner is as fast as the Mac. What varies is how long the bots take to finish each other. At N = 20 a Sumo pair is about 3 minutes, a Block UHC pair about 8 minutes at the observed mix and 61 minutes if every match reaches the cap. The scoring run therefore plays Sumo pairs first and stops starting pairs when the next one's worst case would not fit the time budget (`score --time-budget-minutes 300` on a 340-minute job).
 
+## Showing it to people on a LAN
+
+The local server doubles as a demo arena: people on the same network join from Java Minecraft, watch the bots fight from spectator mode, and can fight a bot themselves. Nothing here touches ratings.
+
+```bash
+craft-arena-bench server start                     # if it is not already running
+python adapters/ollama.py --port 9010 &            # and any other endpoint you want in the show
+craft-arena-bench arena --vs house --vs qwen=http://127.0.0.1:9010 --tier 2 --mode both
+```
+
+Tell people the address: this machine's LAN IP (`ipconfig getifaddr en0` on a Mac) and port 25565. The server is in offline mode, so anyone on the network can join with any name; macOS may ask once to allow Java to accept connections. Everyone who joins is put in spectator mode above the arena; a title announces each match and its result; the sidebar keeps the score. Results go to `runs/arena/results.json`, replays to `runs/arena/replays/`.
+
+For a person to fight the house bot, they join first, then on the Mac:
+
+```bash
+craft-arena-bench arena --challenge TheirName --mode sumo          # or block_uhc, or --opponent http://127.0.0.1:9010
+```
+
+They are put in survival with the mode's kit at one spawn, the bot at the other, and a title counts the match in. In Sumo the bot cannot hurt them and they cannot hurt the bot; it is pushing only. The person's health and deaths are read from the server a few times a second; everything else about them the bot sees through the game, the same way it sees another bot. When the match ends they go back to spectator.
+
+Two limits of the demo as it stands: a human cannot be frozen for the countdown, so they get a three-second head start on the bot; and the challenger is addressed by name, which is fine on a private network and would not be on a public one (see docs/ARENA_SERVER.md).
+
 ## The stage 0 check
 
 With the server running:

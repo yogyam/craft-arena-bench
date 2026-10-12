@@ -221,8 +221,8 @@ Each stage ends with something runnable and a short written check. Estimates ass
 22. Announce: Mindcraft Discord (hobbyists with local models), Hao AI Lab / UCSD circles, the Jev community (awesome-jev lists, TypeSafe's Discord if any), X with the GIF. Casual tone; the Boost Arena announcement drafts in `/Users/yogyamehrotra/Desktop/RocketLeague/outreach/announcement.md` are a style reference.
 23. Watch for: endpoints going down mid-run, latency disputes, action-list requests, cheating via endpoint behaviour. Fix, then plan season 2.
 
-### Stage 7: the public arena server (planned 6 Oct 2026)
-A second, always-on server where people watch exhibition matches and fight the bots. Design, threat model and steps in `docs/ARENA_SERVER.md`. Decided 6 Oct 2026: Oracle free tier, chat off, house bot plus opted-in entrants, built now before launch (Yogya's call: lead with a server people can join).
+### Stage 7: the public arena server (planned 6 Oct 2026, deferred 11 Oct 2026 in favour of a LAN demo)
+A second, always-on server where people watch exhibition matches and fight the bots. Design, threat model and steps in `docs/ARENA_SERVER.md`. Decided 6 Oct 2026: Oracle free tier, chat off, house bot plus opted-in entrants, built now before launch. Oracle had no ARM capacity after several tries (4, 2 and 1 cores); the AWS account created on the UCSD address turned out to sit in an organization whose policy denies EC2; Hetzner was ready as Terraform. On 11 Oct 2026 Yogya chose a LAN demo instead: `craft-arena-bench arena` runs exhibition matches on the local server for spectators and a challenge mode where a person fights a bot (docs/SETUP.md). The hosting work stays in `deploy/` for later.
 
 ### Later (not now)
 - 2v2 mode; a survive-N-nights solo task and a parkour task (Mindcraft-style scaffolding); a vision track via Craftless screenshots; a human-playable server where people fight the top bots (what MCJev does; needs a real server host and moderation, not free).

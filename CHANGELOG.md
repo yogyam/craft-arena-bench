@@ -4,6 +4,9 @@ Dates are when the change reached `main`. Versions of the interface and mode set
 
 ## Unreleased
 
+### Demo (11 Oct 2026)
+- `craft-arena-bench arena`: exhibition matches on the local server for people in spectator mode, and a challenge mode where a person fights a bot. Machine definitions for a public server (Oracle, AWS, Hetzner) kept under `deploy/` for later.
+
 ### Service (5 Oct 2026)
 - House bots version 2: Sumo with rim awareness, Block UHC with weapon discipline; the house manifest changed so its pairs are replayed.
 - First results published: two dry-run entrants (Qwen 2.5 3B via Ollama at 2 Hz, Claude Haiku 4.5 at 1 Hz) against the house bot on all four boards, 80 matches.

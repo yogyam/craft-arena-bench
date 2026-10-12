@@ -2,7 +2,7 @@
 
 A second Minecraft server, always on, with a public address, where people join to watch the bots fight each other and to fight the bots themselves. It is separate from the scoring server: ratings come only from the scoring runs on GitHub's machines, so nothing that happens on the public server can change a rating.
 
-Status: being built (from 6 Oct 2026). The decisions are recorded at the end.
+Status: deferred (11 Oct 2026). A LAN demo on the local server (`craft-arena-bench arena`, see docs/SETUP.md) replaced the public server for the proof of concept. The machine definitions in `deploy/` (bootstrap, systemd units, Oracle notes, AWS and Hetzner as Terraform) are kept for when a public server makes sense; steps 1 and 2 were done, 3 to 8 were not.
 
 ## What people get
 
