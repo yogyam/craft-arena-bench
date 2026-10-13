@@ -39,7 +39,7 @@ export ANTHROPIC_API_KEY=...     # optional: adds Claude Haiku 4.5 as a fighter
 ./dev/demo.sh
 ```
 
-That starts the server, Ollama and the adapters if they are not running, prints the address to give people, and runs exhibition matches, house bot against each model and the models against each other, in both modes, until you press Ctrl-C.
+That starts the server, Ollama and the adapters if they are not running, prints the address to give people, and runs exhibition matches, house bot against each model and the models against each other, in both modes, until you press Ctrl-C. With the Haiku fighter in, the show runs at 1 decision per second, the rate a hosted model can keep; without it, at 2.
 
 **What people do.** Open Java Minecraft **26.1.2** (Installations, New installation, release 26.1.2), Multiplayer, Add Server, the address printed above, any name. They appear floating above the arena in spectator mode. A title names each pairing; the two bots are placed, held for a three-second countdown, then fight; a title gives the result, the sidebar keeps score, and the next match starts a few seconds later. Sumo lasts up to a minute, Block UHC from seconds to a few minutes.
 
