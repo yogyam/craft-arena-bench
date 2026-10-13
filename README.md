@@ -28,6 +28,31 @@ Every match's first recordings can be watched in the browser from the pairing gr
 
 <p align="center"><img src="docs/images/replay.gif" alt="A Block UHC match at 1 Hz, seen from above at half speed: the house bot and Claude Haiku 4.5 close, trade sword hits and one falls" width="440"> <img src="docs/images/replay-sumo.gif" alt="A Sumo match at 2 Hz at half speed: the house bot pushes Qwen 2.5 3B off the platform" width="440"></p>
 
+## Run the demo
+
+The local server doubles as an arena people on your network can join: they watch the bots fight from above, and can step in and fight a bot themselves. Nothing here touches ratings.
+
+**Before people arrive.** Plug the laptop in, keep the lid open, and from a clone with the setup in [docs/SETUP.md](docs/SETUP.md) done:
+
+```bash
+export ANTHROPIC_API_KEY=...     # optional: adds Claude Haiku 4.5 as a fighter
+./dev/demo.sh
+```
+
+That starts the server, Ollama and the adapters if they are not running, prints the address to give people, and runs exhibition matches, house bot against each model and the models against each other, in both modes, until you press Ctrl-C.
+
+**What people do.** Open Java Minecraft **26.1.2** (Installations, New installation, release 26.1.2), Multiplayer, Add Server, the address printed above, any name. They appear floating above the arena in spectator mode. A title names each pairing; the two bots are placed, held for a three-second countdown, then fight; a title gives the result, the sidebar keeps score, and the next match starts a few seconds later. Sumo lasts up to a minute, Block UHC from seconds to a few minutes.
+
+**Letting someone fight.** With them on the server as `Sam`, stop the show with Ctrl-C and run:
+
+```bash
+craft-arena-bench arena --challenge Sam --mode sumo              # or --mode block_uhc, or --opponent http://127.0.0.1:9010
+```
+
+They wait out the countdown in spectator mode, are dropped onto their spawn in survival with the mode's kit, and fight the bot while everyone else watches. The result is announced and written to `runs/arena/results.json`; they go back to spectator. Run `./dev/demo.sh` again for the show.
+
+**When it doesn't work.** Wrong Minecraft version is the usual one: the server is 26.1.2 and the launcher must match. Bedrock (phones, consoles, the Windows Store app) cannot join. "Can't connect" means a different network, or the macOS prompt to allow Java incoming connections still waiting for a click. A closed lid stops everything.
+
 ## Running it locally
 
 Developer notes are in [docs/SETUP.md](docs/SETUP.md); putting a model behind an endpoint is in [docs/ADAPTERS.md](docs/ADAPTERS.md); entering is in [docs/SUBMITTING.md](docs/SUBMITTING.md).
