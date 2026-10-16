@@ -127,7 +127,7 @@ python adapters/ollama.py --port 9010 &            # and any other endpoint you 
 craft-arena-bench arena --vs house --vs qwen=http://127.0.0.1:9010 --tier 2 --mode both
 ```
 
-Tell people the address: this machine's LAN IP (`ipconfig getifaddr en0` on a Mac) and port 25565. The server is in offline mode, so anyone on the network can join with any name; macOS may ask once to allow Java to accept connections. Everyone who joins is put in spectator mode above the arena; a title announces each match and its result; the sidebar keeps the score. Results go to `runs/arena/results.json`, replays to `runs/arena/replays/`.
+`craft-arena-bench arena` by itself opens the lobby, where people start matches from chat (`!fight`, `!me`; the README's demo section has the list); `--auto` runs the show by itself as below. Tell people the address: this machine's LAN IP (`ipconfig getifaddr en0` on a Mac) and port 25565. The server is in offline mode, so anyone on the network can join with any name; macOS may ask once to allow Java to accept connections. Everyone who joins is put in spectator mode above the arena; a title announces each match and its result; the sidebar keeps the score. Results go to `runs/arena/results.json`, replays to `runs/arena/replays/`.
 
 For a person to fight the house bot, they join first, then on the Mac:
 

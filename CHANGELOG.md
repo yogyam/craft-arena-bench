@@ -7,6 +7,9 @@ Dates are when the change reached `main`. Versions of the interface and mode set
 ### Modes (12 Oct 2026)
 - Mode set version 2: Sumo's 60 s cap is decided by who stayed nearer the centre on average over the last ten seconds; within half a block it stays a draw. Every pair is replayed.
 
+### Demo (15 Oct 2026)
+- The arena is a lobby: nothing happens until someone on the server types `!fight A B` or `!me B` in chat; `!stop`, `!score`, `!bots`, `!help`. `--auto` keeps the self-running show.
+
 ### Demo (11 Oct 2026)
 - `craft-arena-bench arena`: exhibition matches on the local server for people in spectator mode, and a challenge mode where a person fights a bot. Machine definitions for a public server (Oracle, AWS, Hetzner) kept under `deploy/` for later.
 

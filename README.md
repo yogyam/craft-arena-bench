@@ -30,7 +30,7 @@ Every match's first recordings can be watched in the browser from the pairing gr
 
 ## Run the demo
 
-The local server doubles as an arena people on your network can join: they watch the bots fight from above, and can step in and fight a bot themselves. Nothing here touches ratings.
+The local server doubles as an arena people on your network can join. Nothing happens until someone asks for it in chat: they can start a fight between any two bots, or fight a bot themselves, and everyone else watches from above. Nothing here touches ratings.
 
 **Before people arrive.** Plug the laptop in, keep the lid open, and from a clone with the setup in [docs/SETUP.md](docs/SETUP.md) done:
 
@@ -39,17 +39,22 @@ export ANTHROPIC_API_KEY=...     # optional: adds Claude Haiku 4.5 as a fighter
 ./dev/demo.sh
 ```
 
-That starts the server, Ollama and the adapters if they are not running, prints the address to give people, and runs exhibition matches, house bot against each model and the models against each other, in both modes, until you press Ctrl-C. With the Haiku fighter in, the show runs at 1 decision per second, the rate a hosted model can keep; without it, at 2.
+That starts the server, Ollama and the adapters if they are not running, prints the address to give people, and opens the lobby.
 
-**What people do.** Open Java Minecraft **26.1.2** (Installations, New installation, release 26.1.2), Multiplayer, Add Server, the address printed above, any name. They appear floating above the arena in spectator mode. A title names each pairing; the two bots are placed, held for a three-second countdown, then fight; a title gives the result, the sidebar keeps score, and the next match starts a few seconds later. Sumo lasts up to a minute, Block UHC from seconds to a few minutes.
+**What people do.** Open Java Minecraft **26.1.2** (Installations, New installation, release 26.1.2), Multiplayer, Add Server, the address printed above, any name. They appear floating above the arena in spectator mode with a welcome in chat. Then they type, in chat:
 
-**Letting someone fight.** With them on the server as `Sam`, stop the show with Ctrl-C and run:
+| Command | What happens |
+|---|---|
+| `!bots` | Lists the fighters and the fastest rate each can keep |
+| `!fight house qwen` | Those two fight. Add `sumo` or `uhc` for the mode (Sumo by default) and `1`, `2` or `5` for decisions per second (by default, the slowest rate either fighter needs) |
+| `!me house` | The person typing fights that bot, with the same optional words |
+| `!stop` | Ends the current match |
+| `!score` | The session's tally |
+| `!help` | The list again |
 
-```bash
-craft-arena-bench arena --challenge Sam --mode sumo              # or --mode block_uhc, or --opponent http://127.0.0.1:9010
-```
+One match at a time; commands typed during a match queue up. A title names each pairing; the fighters are placed, held for a three-second countdown, then fight; a title gives the result and the sidebar keeps score. Sumo lasts up to a minute, Block UHC from seconds to a few minutes. A challenger waits out the countdown in spectator mode, is dropped onto their spawn in survival with the mode's kit, and goes back to spectator afterwards. If they leave mid-fight the bot wins by forfeit. Results are appended to `runs/arena/results.json`.
 
-They wait out the countdown in spectator mode, are dropped onto their spawn in survival with the mode's kit, and fight the bot while everyone else watches. The result is announced and written to `runs/arena/results.json`; they go back to spectator. Run `./dev/demo.sh` again for the show.
+For a self-running show instead, `./dev/demo.sh --auto` plays every fighter against every other in both modes until stopped.
 
 **When it doesn't work.** Wrong Minecraft version is the usual one: the server is 26.1.2 and the launcher must match. Bedrock (phones, consoles, the Windows Store app) cannot join. "Can't connect" means a different network, or the macOS prompt to allow Java incoming connections still waiting for a click. A closed lid stops everything.
 

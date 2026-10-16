@@ -111,7 +111,13 @@ def main(argv: list[str] | None = None) -> int:
         "--vs",
         action="append",
         default=None,
-        help="A fighter: 'house', 'random', 'circler', or name=URL; repeat (default: house and random)",
+        help="A fighter: 'house', 'random', 'circler', or name=URL[@hz] where hz is the fastest rate it can keep; repeat (default: house and random)",
+    )
+    arena.add_argument(
+        "--auto", action="store_true", help="Run the round-robin show by itself instead of waiting for !fight commands in chat"
+    )
+    arena.add_argument(
+        "--log", type=Path, default=None, help="The server log to read chat from (default: server/server.log in the repository)"
     )
     arena.add_argument("--mode", default="both", choices=["sumo", "block_uhc", "both"])
     arena.add_argument("--tier", type=int, default=2, choices=sorted(TIERS))
@@ -312,14 +318,27 @@ async def _arena(args) -> int:
         mode = "sumo" if args.mode == "both" else args.mode
         await challenge(args.challenge, mode, t, args.opponent, args.results, args.replays)
         return 0
+    from .demo import Fighter, lobby
+    from .paths import repo_root
+
     specs = args.vs or ["house", "random"]
-    fighters = {}
+    fighters: dict[str, Fighter] = {}
     for spec in specs:
-        name, _, url = spec.partition("=")
-        fighters[name] = url or name
-    modes = ["sumo", "block_uhc"] if args.mode == "both" else [args.mode]
-    _echo(f"exhibition: {', '.join(fighters)} in {' and '.join(modes)} at {t.hz} Hz; results in {args.results}; stop with Ctrl-C")
-    await exhibition(modes, t, fighters, args.results, args.interval, args.cycles, args.replays)
+        name, _, rest = spec.partition("=")
+        url, _, hz = rest.partition("@")
+        fighters[name.lower()] = Fighter(name.lower(), url or name, int(hz) if hz else (5 if not url else 2))
+    if args.auto:
+        modes = ["sumo", "block_uhc"] if args.mode == "both" else [args.mode]
+        _echo(
+            f"exhibition: {', '.join(fighters)} in {' and '.join(modes)} at {t.hz} Hz; results in {args.results}; stop with Ctrl-C"
+        )
+        await exhibition(
+            modes, t, {k: f.spec for k, f in fighters.items()}, args.results, args.interval, args.cycles, args.replays
+        )
+        return 0
+    log = args.log or repo_root() / "server" / "server.log"
+    _echo(f"lobby: fighters {', '.join(fighters)}; reading chat from {log}; results in {args.results}; stop with Ctrl-C")
+    await lobby(fighters, args.results, args.replays, log, args.tier)
     return 0
 
 
