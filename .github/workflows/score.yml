@@ -55,7 +55,7 @@ jobs:
       - name: Play outstanding pairs
         run: craft-arena-bench score --submissions submissions --duels duels --output new_results --max-pairs 15 --start-server --time-budget-minutes 300
 
-      - uses: actions/upload-artifact@043fb46d1a93c77aae656e7c1c64a875d1fc6a0a   # v7.0.1
+      - uses: actions/upload-artifact@cf430e030ddbb5b0abf93d22962f4752f3646cd9   # v7.0.2
         if: always()
         with:
           name: new-results
@@ -63,7 +63,7 @@ jobs:
           if-no-files-found: ignore
           retention-days: 7
 
-      - uses: actions/upload-artifact@043fb46d1a93c77aae656e7c1c64a875d1fc6a0a   # v7.0.1
+      - uses: actions/upload-artifact@cf430e030ddbb5b0abf93d22962f4752f3646cd9   # v7.0.2
         if: always()
         with:
           name: server-log
