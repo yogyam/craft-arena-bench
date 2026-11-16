@@ -10,7 +10,7 @@
   },
   "dependencies": {
     "mineflayer": "^4.39.0",
-    "ws": "^8.18.0"
+    "ws": "^8.23.0"
   },
   "scripts": {
     "test": "node --test"
